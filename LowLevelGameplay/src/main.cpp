@@ -7,7 +7,7 @@ int main()
 	//shape.setFillColor(sf::Color::Green);
 
 	sf::Texture texture;
-	if (!texture.loadFromFile("../vendor/Assets/random.png"))
+	if (!texture.loadFromFile("Textures/image.png"))
 	{
 		return EXIT_FAILURE;
 	}
