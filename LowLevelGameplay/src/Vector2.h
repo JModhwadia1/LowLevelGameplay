@@ -50,6 +50,12 @@ namespace LLGP
 	Vector2<T> operator+(Vector2<T> lhs, const Vector2<T>& rhs) { return lhs += rhs; }
 
 	//TODO make the -= and - version
+	template<typename T> requires arithmetic<T>
+	Vector2<T> operator-=(Vector2<T>& lhs, const Vector2<T>& rhs){ lhs.x -= rhs.x; lhs.y -= rhs.y; return lhs; }
+
+	template<typename T> requires arithmetic<T>
+	Vector2<T> operator-(Vector2<T> lhs, const Vector2<T>& rhs) { return lhs -= rhs; }
+	
 	template<typename T, typename U> requires arithmetic<T> and arithmetic<U>
 	Vector2<T>& operator*=(Vector2<T>& v, const U a) { v.x *= a; v.y *= a; return v; }
 
@@ -60,6 +66,11 @@ namespace LLGP
 	Vector2<T> operator*(const U a, Vector2<T> v) { return v *= a; }
 	
 	//TODO make the /= and / versions
+	template<typename T, typename U> requires arithmetic<T>and arithmetic<U>
+	Vector2<T>& operator/=(Vector2<T>& v, const U a) { v.x /= a; v.y /= a; return v; }
+
+	template<typename T, typename U> requires arithmetic<T>and arithmetic<U>
+	Vector2<T> operator/(Vector2<T> v, const U a) { return v /= a; }
 
 	template<typename T> requires arithmetic<T>
 	inline bool operator==(Vector2 <T>& lhs, const Vector2<T>& rhs) 
@@ -76,6 +87,24 @@ namespace LLGP
 	const Vector2<T> Vector2<T>::zero(static_cast<T>(0), static_cast<T>(0));
 
 	//TODO: implement the other static const values
+	template<typename T> requires arithmetic<T>
+	const Vector2<T> Vector2<T>::one(static_cast<T>(1), static_cast<T>(1));
+
+
+	template<typename T> requires arithmetic<T>
+	const Vector2<T> Vector2<T>::up(static_cast<T>(0), static_cast<T>(1));
+
+	template<typename T> requires arithmetic<T>
+	const Vector2<T> Vector2<T>::down(static_cast<T>(0), static_cast<T>(-1));
+
+	template<typename T> requires arithmetic<T>
+	const Vector2<T> Vector2<T>::right(static_cast<T>(1), static_cast<T>(0));
+
+	template<typename T> requires arithmetic<T>
+	const Vector2<T> Vector2<T>::left(static_cast<T>(-1), static_cast<T>(0));
+
+
+
 
 	// implement some useful typedefs
 	typedef Vector2<int>	Vector2i;
