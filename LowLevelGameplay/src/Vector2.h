@@ -23,11 +23,11 @@ namespace LLGP
 		
 		float GetSqrMagnitude() { return x * x + y * y; }
 		float GetMagnitude() { return sqrt(GetSqrMagnitude());}
-		Vector2<T>& Normalise() { *this /= GetMagnitude(); return *this }
+		Vector2<T>& Normalise() { *this /= GetMagnitude(); return *this; }
 		Vector2<T> Normalised() { return *this / GetMagnitude(); }
-
+		
 		static float Dot(const Vector2<T> lhs, const Vector2<T> rhs) { return (float)(lhs.x * rhs.x + lhs.y + rhs.y); }
-		static float Angle(Vector2<T> lhs, Vector2<T> rhs) { return acos(Dot(lhs.Normalised(), rhs.Normalised()); }
+		static float Angle(Vector2<T> lhs, Vector2<T> rhs) { return acos(Dot(lhs.Normalised(), rhs.Normalised())); }
 
 		static const Vector2 zero;
 		static const Vector2 one;
@@ -39,7 +39,8 @@ namespace LLGP
 
 
 	};
-
+	template<typename T> 
+	Vector2<T> LengthSq(const Vector2<T>& v) { return static_cast<T>((v.x * v.x) + (v.y * v.y)); }
 	template<typename T> requires arithmetic<T>
 	Vector2<T> operator-(const Vector2<T>& rhs) { return Vector2<T>(-rhs.x, -rhs.y); }
 
@@ -77,7 +78,7 @@ namespace LLGP
 	{	
 		Vector2<T> dist = lhs - rhs; 
 		float mag = dist.x * dist.x + dist.y * dist.y; 
-		return mag < 9.99999944E-11f
+		return mag < 9.99999944E-11f;
 	}
 
 	template<typename T> requires arithmetic<T>
@@ -110,6 +111,8 @@ namespace LLGP
 	typedef Vector2<int>	Vector2i;
 	typedef Vector2<unsigned int> Vector2u;
 	typedef Vector2<double> Vector2d;
+	typedef Vector2<double> Vector2f;
+
 
 }
 
