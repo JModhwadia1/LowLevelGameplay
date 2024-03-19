@@ -1,6 +1,8 @@
 #pragma once
 #include "Vector2.h"
 #include <SFML/Graphics.hpp>
+#include "Transform.h"
+#include "Rigidbody.h"
 class Player
 {
 public:
@@ -20,7 +22,10 @@ public:
 	LLGP::Vector2f mPosition = LLGP::Vector2f(0.0f, 0.0f);
 	
 	LLGP::Vector2f direction;
+	
 
+	Transform* _transform;
+	Rigidbody* _rigidbody;
 
 };
 
