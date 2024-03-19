@@ -12,7 +12,7 @@ public:
 
 	void UpdateMovement(float dt);
 	float AccelerationSpeed = 200.0f;
-	float mMaxSpeed = 500.0f;
+	float mMaxSpeed = 300.0f;
 
 	sf::Sprite mSprite;
 	LLGP::Vector2f mAcceleration = LLGP::Vector2f(0.0f, 0.0f);
@@ -20,6 +20,7 @@ public:
 	LLGP::Vector2f mPosition = LLGP::Vector2f(0.0f, 0.0f);
 
 	LLGP::Vector2f direction;
+
 
 };
 

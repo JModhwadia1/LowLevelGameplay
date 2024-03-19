@@ -3,6 +3,16 @@
 
 namespace LLGP
 {
+
+	static constexpr float Pi = 3.1415926535f;
+	static constexpr float Half = 0.5f;
+	static constexpr float RadianConversionConstant = 180.0f;
+
+
+	static constexpr float RadiansToDegrees(float rad) { return rad * (RadianConversionConstant / Pi); }
+	static constexpr float DegreesToRadians(float deg) { return deg * (Pi / RadianConversionConstant); }
+
+
 	template<typename T> requires arithmetic<T>
 	struct Vector2
 	{
