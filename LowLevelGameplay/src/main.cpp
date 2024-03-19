@@ -23,7 +23,6 @@ int main()
 
 	mPlayer = new Player(texture);
 
-	auto timePoint = std::chrono::steady_clock::now();
 	std::chrono::steady_clock::time_point lastTime = std::chrono::steady_clock::now();
 	float deltaTime = 0.0f;
 	/*sf::Sprite sprite(texture);*/
@@ -42,13 +41,6 @@ int main()
 		deltaTime = std::chrono::duration_cast<std::chrono::microseconds>(now - lastTime).count() / 1000000.f;
 		lastTime = now;
 
-		// Get Deltatime
-	/*	float dt;
-		
-			const auto newTimePoint = std::chrono::steady_clock::now();
-			dt = std::chrono::duration<float>(newTimePoint - timePoint).count();
-			timePoint = newTimePoint;*/
-		
 
 		mPlayer->Update(deltaTime);
 		
