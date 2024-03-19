@@ -18,7 +18,7 @@ public:
 	LLGP::Vector2f mAcceleration = LLGP::Vector2f(0.0f, 0.0f);
 	LLGP::Vector2f mVelocity = LLGP::Vector2f(0.0f, 0.0f);
 	LLGP::Vector2f mPosition = LLGP::Vector2f(0.0f, 0.0f);
-
+	
 	LLGP::Vector2f direction;
 
 

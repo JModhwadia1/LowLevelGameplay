@@ -1,16 +1,22 @@
 #pragma once
 #include <arithmetic_concept.h>
+#include <SFML/Graphics.hpp>
 
+
+
+#define PI  3.1415926535f
+#define Half  0.5f
+#define RadianConversionConstant 180.0f
 namespace LLGP
 {
 
 	static constexpr float Pi = 3.1415926535f;
-	static constexpr float Half = 0.5f;
-	static constexpr float RadianConversionConstant = 180.0f;
+	//static constexpr float Half = 0.5f;
+	//static constexpr float RadianConversionConstant = 180.0f;
 
 
-	static constexpr float RadiansToDegrees(float rad) { return rad * (RadianConversionConstant / Pi); }
-	static constexpr float DegreesToRadians(float deg) { return deg * (Pi / RadianConversionConstant); }
+	static constexpr float RadiansToDegrees(float rad) { return rad * (RadianConversionConstant / PI); }
+	static constexpr float DegreesToRadians(float deg) { return deg * (PI / RadianConversionConstant); }
 
 
 	template<typename T> requires arithmetic<T>
@@ -24,9 +30,17 @@ namespace LLGP
 		Vector2(const Vector2&) = default; // copy constructor
 		Vector2(T _x, T _y) : x(_x), y(_y) {}
 		
+
 		template<typename U> requires arithmetic<U>
 		explicit Vector2(const Vector2<U>& in) :
 			x(static_cast<T>(in.x)), y(static_cast<T>(in.y)) {}
+
+		template<typename U> requires arithmetic<U>
+		explicit Vector2(const sf::Vector2<U>& in) :
+			x(static_cast<T>(in.x)), y(static_cast<T>(in.y)) {}
+
+		template<typename U> requires arithmetic<U>
+		operator sf::Vector2<U>() { return sf::Vector2<U>(static_cast<U>(x), static_cast<U>(y)); }
 
 
 #pragma   endregion
@@ -97,6 +111,8 @@ namespace LLGP
 	template<typename T> requires arithmetic<T>
 	const Vector2<T> Vector2<T>::zero(static_cast<T>(0), static_cast<T>(0));
 
+
+	
 	//TODO: implement the other static const values
 	template<typename T> requires arithmetic<T>
 	const Vector2<T> Vector2<T>::one(static_cast<T>(1), static_cast<T>(1));
@@ -121,7 +137,7 @@ namespace LLGP
 	typedef Vector2<int>	Vector2i;
 	typedef Vector2<unsigned int> Vector2u;
 	typedef Vector2<double> Vector2d;
-	typedef Vector2<double> Vector2f;
+	typedef Vector2<float> Vector2f;
 
 
 }

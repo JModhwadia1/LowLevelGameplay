@@ -26,7 +26,7 @@ void Player::Update(float dt)
 	}*/
 
 	mPosition += mVelocity * dt;
-	mSprite.setPosition(mPosition.x,mPosition.y);
+	mSprite.setPosition(mPosition);
 }
 
 void Player::Render(sf::RenderWindow& window)
