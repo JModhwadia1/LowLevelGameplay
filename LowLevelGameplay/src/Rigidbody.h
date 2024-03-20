@@ -10,6 +10,7 @@ public:
 	void Update(float deltaTime);
 	void AddForce(LLGP::Vector2f Force);
 	void SetDirection(LLGP::Vector2f direction) { mDirection = direction; }
+	void SetMaxSpeed(float speed) { mMaxSpeed = speed; }
 private:
 	float mMaxSpeed = 300.0f;
 	Transform* _transform;

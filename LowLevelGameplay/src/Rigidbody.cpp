@@ -15,6 +15,7 @@ void Rigidbody::Update(float deltaTime)
 	//mVelocity += mAcceleration * deltaTime;
 
 	mVelocity = mDirection * mMaxSpeed;
+
 	//Clamp Speed
    /*if (LLGP::LengthSq(mVelocity) > (mMaxSpeed * mMaxSpeed))
    {

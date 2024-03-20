@@ -6,8 +6,13 @@
 class Entity
 {
 public:
-	Entity();
+	Entity(sf::Texture& texture);
 	~Entity();
+
+	void Update(float dt);
+	void Draw(sf::RenderWindow& window);
+	Rigidbody* GetRigidbody() { return _rigidbody; }
+
 private:
 
 	Texture2D* _texture;
