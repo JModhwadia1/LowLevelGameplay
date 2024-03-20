@@ -20,7 +20,8 @@ int main()
 	{
 		return EXIT_FAILURE;
 	}
-
+	std::shared_ptr<sf::Texture> sharedtexture = std::make_shared<sf::Texture>();
+	sharedtexture->loadFromFile("Textures/player.png", sf::IntRect(0, 0, 5, 11));
 	mPlayer = new Player(texture);
 
 	std::chrono::steady_clock::time_point lastTime = std::chrono::steady_clock::now();
