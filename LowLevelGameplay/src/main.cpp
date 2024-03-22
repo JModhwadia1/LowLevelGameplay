@@ -1,14 +1,61 @@
 #include <SFML/Graphics.hpp>
 #include <chrono>
 #include "Player.h"
+#include "Event.h"
 #include <iostream>
 
 
 
 #define FIXEDFRAMERATE 0.016
+class B
+{
+public:
+	
+	LLGP::Event<int> OnSomething;
+	
+	
+	void BroadcastOnSomething(int arg1)
+	{
+		OnSomething(arg1);
+	}
+};
+class A
+{
+private:
+	B* other;
+public:
+	A();
+	A(B* _other) : other(_other) { other->OnSomething += std::bind(&A::Handle_ThatSomething, this, std::placeholders::_1); }
+	void Handle_ThatSomething(int in)
+	{
+		std::cout << in << std::endl;
+		other->OnSomething -= std::bind(&A::Handle_ThatSomething, this, std::placeholders::_1);
+	 }
 
+};
+
+void UsefulFunction(int a, int b)
+{
+	std::cout << a << b << std::endl;
+}
 int main()
 {
+
+	B uno;
+	A dos(&uno);
+
+	uno.OnSomething(50);
+	uno.OnSomething(30);
+
+
+
+
+	LLGP::Event<int, int>eventTest;
+
+	eventTest += &UsefulFunction;
+	eventTest(5, 6);
+
+	
 	Player* mPlayer = nullptr;
 
 	sf::RenderWindow window(sf::VideoMode(600, 600), "SFML works!");
