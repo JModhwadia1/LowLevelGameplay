@@ -12,6 +12,7 @@ public:
 	void Update(float dt);
 	void Draw(sf::RenderWindow& window);
 	Rigidbody* GetRigidbody() { return _rigidbody; }
+	Texture2D* GetTexture2D() { return _texture; }
 
 private:
 

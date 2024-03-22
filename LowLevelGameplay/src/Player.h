@@ -4,6 +4,18 @@
 #include "Transform.h"
 #include "Rigidbody.h"
 #include "Entity.h"
+#include "Animation.h"
+
+enum AnimationIndex
+{
+	WalkingUp,
+	WalkingDown,
+	WalkingLeft,
+	WalkingRight,
+	Count
+};
+
+
 class Player : public Entity
 {
 public:
@@ -16,7 +28,9 @@ public:
 	void UpdateMovement(float dt);
 	float AccelerationSpeed = 200.0f;
 	float mMaxSpeed = 300.0f;
-		
+private:
+	Animation animations[int(AnimationIndex::Count)]; // 4 anims
+	AnimationIndex currentAnimation = AnimationIndex::WalkingLeft;
 
 };
 

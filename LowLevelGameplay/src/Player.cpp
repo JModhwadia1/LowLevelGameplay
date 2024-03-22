@@ -2,6 +2,7 @@
 #include <iostream>
 
 
+
 Player::Player(sf::Texture& texture) : Entity(texture)
 {
 	//mSprite = sf::Sprite(texture);
@@ -13,7 +14,15 @@ Player::Player(sf::Texture& texture) : Entity(texture)
 	//Setup Rigidbody
 	//_rigidbody = new Rigidbody(_transform);
 	GetRigidbody()->SetMaxSpeed(1000.0f);
-	
+	GetTexture2D()->GetSprite()->setScale(5, 5);
+	GetTexture2D()->GetSprite()->setTextureRect(sf::IntRect(0,0,5,11));
+
+	animations[int(AnimationIndex::WalkingUp)] = Animation(23, 0, 7, 12,"Textures/Player.png");
+	animations[int(AnimationIndex::WalkingDown)] = Animation(14, 0, 7, 12, "Textures/Player.png");
+	animations[int(AnimationIndex::WalkingLeft)] = Animation(0, 0, 5, 12, "Textures/Player.png");
+	animations[int(AnimationIndex::WalkingRight)] = Animation(7, 0, 5, 12, "Textures/Player.png");
+
+
 
 }
 
@@ -21,7 +30,11 @@ void Player::Update(float dt)
 {
 
 	UpdateMovement(dt);
+	animations[int(currentAnimation)].Update(dt);
+	animations[int(currentAnimation)].ApplyToSprite(*GetTexture2D()->GetSprite());
 	Entity::Update(dt);
+	
+
 	
 }
 
@@ -42,6 +55,7 @@ void Player::UpdateMovement(float dt)
 		direction.y -= 1.0f;
 		//_rigidbody->SetDirection(direction);
 		GetRigidbody()->SetDirection(direction);
+		currentAnimation = AnimationIndex::WalkingUp;
 		
 	}
 
@@ -50,6 +64,8 @@ void Player::UpdateMovement(float dt)
 		direction.y += 1.0f;
 		//_rigidbody->SetDirection(direction);
 		GetRigidbody()->SetDirection(direction);
+		currentAnimation = AnimationIndex::WalkingDown;
+
 	}
 
 	if (sf::Keyboard::isKeyPressed(sf::Keyboard::D) || sf::Keyboard::isKeyPressed(sf::Keyboard::Right))
@@ -57,6 +73,7 @@ void Player::UpdateMovement(float dt)
 		direction.x += 1.0f;
 		//_rigidbody->SetDirection(direction);
 		GetRigidbody()->SetDirection(direction);
+		currentAnimation = AnimationIndex::WalkingRight;
 	}
 
 	if (sf::Keyboard::isKeyPressed(sf::Keyboard::A) || sf::Keyboard::isKeyPressed(sf::Keyboard::Left))
@@ -64,6 +81,8 @@ void Player::UpdateMovement(float dt)
 		direction.x -= 1.0f;
 		//_rigidbody->SetDirection(direction);
 		GetRigidbody()->SetDirection(direction);
+		currentAnimation = AnimationIndex::WalkingLeft;
+
 	}
 
 	//if ((((accel.x * accel.x) + (accel.y * accel.y)) > 0.0f))
