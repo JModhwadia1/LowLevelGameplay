@@ -3,7 +3,7 @@
 
 
 
-Player::Player(sf::Texture& texture) : Entity(texture)
+Player::Player(sf::Texture* texture) : Entity(texture)
 {
 	//mSprite = sf::Sprite(texture);
 	// Setup Transform
@@ -13,14 +13,14 @@ Player::Player(sf::Texture& texture) : Entity(texture)
 
 	//Setup Rigidbody
 	//_rigidbody = new Rigidbody(_transform);
-	GetRigidbody()->SetMaxSpeed(1000.0f);
+	GetRigidbody()->SetMaxSpeed(mMaxSpeed);
 	GetTexture2D()->GetSprite()->setScale(5, 5);
 	GetTexture2D()->GetSprite()->setTextureRect(sf::IntRect(0,0,5,11));
 
-	animations[int(AnimationIndex::WalkingUp)] = Animation(23, 0, 7, 12,"Textures/Player.png");
-	animations[int(AnimationIndex::WalkingDown)] = Animation(14, 0, 7, 12, "Textures/Player.png");
-	animations[int(AnimationIndex::WalkingLeft)] = Animation(0, 0, 5, 12, "Textures/Player.png");
-	animations[int(AnimationIndex::WalkingRight)] = Animation(7, 0, 5, 12, "Textures/Player.png");
+	animations[int(AnimationIndex::WalkingUp)] = Animation(23, 0, 7, 12,"Textures/Player.png",texture);
+	animations[int(AnimationIndex::WalkingDown)] = Animation(14, 0, 7, 12, "Textures/Player.png",texture);
+	animations[int(AnimationIndex::WalkingLeft)] = Animation(0, 0, 5, 12, "Textures/Player.png",texture);
+	animations[int(AnimationIndex::WalkingRight)] = Animation(7, 0, 5, 12, "Textures/Player.png",texture);
 
 
 
@@ -31,7 +31,7 @@ void Player::Update(float dt)
 
 	UpdateMovement(dt);
 	animations[int(currentAnimation)].Update(dt);
-	animations[int(currentAnimation)].ApplyToSprite(*GetTexture2D()->GetSprite());
+	animations[int(currentAnimation)].ApplyToSprite(GetTexture2D()->GetSprite());
 	Entity::Update(dt);
 	
 

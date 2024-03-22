@@ -1,8 +1,10 @@
 #include "Texture2D.h"
 
-Texture2D::Texture2D(sf::Texture& texture)
+Texture2D::Texture2D(sf::Texture* texture)
 {
-	mSprite = new sf::Sprite(texture);
+	mSprite = new sf::Sprite(*texture);
+	//mSprite = new sf::Sprite();
+	//SetTexture(*texture);
 }
 
 

@@ -2,10 +2,40 @@
 #include <chrono>
 #include "Player.h"
 #include <iostream>
-
+#include "Event.h"
 
 
 #define FIXEDFRAMERATE 0.016
+
+//class B
+//{
+//public:
+//	LLGP::Event<int> OnSomething;
+//	
+//	void BroadcastOnSomething(int arg1)
+//	{
+//		OnSomething(arg1);
+//	}
+//private:
+//
+//};
+//
+//class A
+//{
+//public:
+//	A(B*other)
+//
+//private:
+//	B* other;
+//};
+
+
+
+
+
+
+
+
 
 int main()
 {
@@ -20,9 +50,9 @@ int main()
 	{
 		return EXIT_FAILURE;
 	}
-	std::shared_ptr<sf::Texture> sharedtexture = std::make_shared<sf::Texture>();
-	sharedtexture->loadFromFile("Textures/player.png", sf::IntRect(0, 0, 5, 11));
-	mPlayer = new Player(texture);
+	/*std::shared_ptr<sf::Texture> sharedtexture = std::make_shared<sf::Texture>();
+	sharedtexture->loadFromFile("Textures/player.png", sf::IntRect(0, 0, 5, 11));*/
+	mPlayer = new Player(&texture);
 
 	std::chrono::steady_clock::time_point lastTime = std::chrono::steady_clock::now();
 	float deltaTime = 0.0f;

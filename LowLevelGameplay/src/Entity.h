@@ -6,7 +6,7 @@
 class Entity
 {
 public:
-	Entity(sf::Texture& texture);
+	Entity(sf::Texture* texture);
 	~Entity();
 
 	void Update(float dt);

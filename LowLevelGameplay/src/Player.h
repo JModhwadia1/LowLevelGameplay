@@ -19,7 +19,7 @@ enum AnimationIndex
 class Player : public Entity
 {
 public:
-	explicit Player(sf::Texture& texture);
+	explicit Player(sf::Texture* texture);
 
 	void Update(float dt);
 	void Render(sf::RenderWindow& window);

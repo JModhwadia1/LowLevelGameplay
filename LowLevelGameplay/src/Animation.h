@@ -5,10 +5,10 @@ class Animation
 {
 public:
 	Animation() = default;
-	Animation(int x, int y, int width, int height, std::string filePath)
+	Animation(int x, int y, int width, int height, std::string filePath,sf::Texture* texture)
 	{
 		//texture.loadFromFile("Textures/spritesheet.jpg");
-		_texture.loadFromFile(filePath);
+		_texture = texture;
 		//_texture = texture;
 		for (int i = 0; i < numberOfFrames; i++)
 		{
@@ -22,12 +22,12 @@ public:
 
 	}
 	// Will set the actual texture to the spite required for the animation
-	void ApplyToSprite(sf::Sprite& s) const
+	void ApplyToSprite(sf::Sprite* s) const
 	{
 		// Set the texture of the spriets
-		s.setTexture(_texture);
+		s->setTexture(*_texture);
 		// Set the texture rect based on the index of the animation 
-		s.setTextureRect(frames[indexFrame]);
+		s->setTextureRect(frames[indexFrame]);
 	}
 	void Update(float dt)
 	{
@@ -48,11 +48,12 @@ private:
 			indexFrame = 0;
 		}
 
+
 	}
 private:
 	static constexpr int numberOfFrames = 3;
 	static constexpr float holdTime = 0.1f; // how long a frame will last till
-	sf::Texture _texture;
+	sf::Texture* _texture;
 	sf::IntRect frames[numberOfFrames]; // total amount of rects required for the animation
 	int indexFrame = 0;		// index of the frame
 	float elapsedTime = 0.0f; // time elapsed

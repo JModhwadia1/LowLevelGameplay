@@ -1,6 +1,6 @@
 #include "Entity.h"
 
-Entity::Entity(sf::Texture& texture)
+Entity::Entity(sf::Texture* texture)
 {
 	_texture = new Texture2D(texture);
 	_transform = new Transform(LLGP::Vector2f(0, 0), LLGP::Vector2f(1, 1));
