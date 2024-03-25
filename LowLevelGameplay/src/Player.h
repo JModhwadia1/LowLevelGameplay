@@ -3,7 +3,7 @@
 #include <SFML/Graphics.hpp>
 #include "Transform.h"
 #include "Rigidbody.h"
-#include "Entity.h"
+#include "GameObject.h"
 #include "Animation.h"
 
 enum AnimationIndex
@@ -16,7 +16,7 @@ enum AnimationIndex
 };
 
 
-class Player : public Entity
+class Player : public GameObject
 {
 public:
 	explicit Player(sf::Texture& texture);

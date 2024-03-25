@@ -1,5 +1,5 @@
 #include "Rigidbody.h"
-
+#include <SFML/Window/Mouse.hpp>
 Rigidbody::Rigidbody(Transform* transform)
 {
 	_transform = transform;
@@ -14,8 +14,10 @@ void Rigidbody::Update(float deltaTime)
 	LLGP::Vector2f pos = _transform->GetPosition();
 	//mVelocity += mAcceleration * deltaTime;
 
-	mVelocity = mDirection * mMaxSpeed;
 
+	
+	
+	mVelocity = mDirection * mMaxSpeed;
 	//Clamp Speed
    /*if (LLGP::LengthSq(mVelocity) > (mMaxSpeed * mMaxSpeed))
    {

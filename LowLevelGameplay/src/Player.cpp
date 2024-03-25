@@ -1,9 +1,10 @@
 #include "Player.h"
 #include <iostream>
+#include <SFML/Window/Mouse.hpp>
 
 
 
-Player::Player(sf::Texture& texture) : Entity(texture)
+Player::Player(sf::Texture& texture) : GameObject(texture)
 {
 	//mSprite = sf::Sprite(texture);
 	// Setup Transform
@@ -13,7 +14,7 @@ Player::Player(sf::Texture& texture) : Entity(texture)
 
 	//Setup Rigidbody
 	//_rigidbody = new Rigidbody(_transform);
-	GetRigidbody()->SetMaxSpeed(1000.0f);
+	GetRigidbody()->SetMaxSpeed(mMaxSpeed);
 	GetTexture2D()->GetSprite()->setScale(5, 5);
 	GetTexture2D()->GetSprite()->setTextureRect(sf::IntRect(0,0,5,11));
 
@@ -29,10 +30,12 @@ Player::Player(sf::Texture& texture) : Entity(texture)
 void Player::Update(float dt)
 {
 
+
+	
 	UpdateMovement(dt);
 	animations[int(currentAnimation)].Update(dt);
 	animations[int(currentAnimation)].ApplyToSprite(*GetTexture2D()->GetSprite());
-	Entity::Update(dt);
+	GameObject::Update(dt);
 	
 
 	
@@ -41,7 +44,7 @@ void Player::Update(float dt)
 void Player::Render(sf::RenderWindow& window)
 {
 	//window.draw(mSprite);
-	Entity::Draw(window);
+	GameObject::Draw(window);
 }
 
 void Player::UpdateMovement(float dt)

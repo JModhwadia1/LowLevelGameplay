@@ -57,6 +57,7 @@ int main()
 
 	
 	Player* mPlayer = nullptr;
+	Player* mPlayer2 = nullptr;
 
 	sf::RenderWindow window(sf::VideoMode(600, 600), "SFML works!");
 	//sf::CircleShape shape(100.f);
@@ -69,7 +70,13 @@ int main()
 	}
 	std::shared_ptr<sf::Texture> sharedtexture = std::make_shared<sf::Texture>();
 	sharedtexture->loadFromFile("Textures/player.png", sf::IntRect(0, 0, 5, 11));
+
+	
+
+
+
 	mPlayer = new Player(texture);
+
 
 	std::chrono::steady_clock::time_point lastTime = std::chrono::steady_clock::now();
 	float deltaTime = 0.0f;
@@ -89,9 +96,10 @@ int main()
 		deltaTime = std::chrono::duration_cast<std::chrono::microseconds>(now - lastTime).count() / 1000000.f;
 		lastTime = now;
 
-
-		mPlayer->Update(deltaTime);
+	
 		
+		
+		mPlayer->Update(deltaTime);
 		timeSincePhysicsStep += deltaTime;
 
 		while (timeSincePhysicsStep > FIXEDFRAMERATE)
