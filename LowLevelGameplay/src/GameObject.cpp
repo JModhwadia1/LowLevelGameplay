@@ -1,5 +1,5 @@
 #include "GameObject.h"
-
+#include "GlobalEvents.h"
 GameObject::GameObject(sf::Texture& texture)
 {
 	_texture = new Texture2D(texture);
@@ -43,22 +43,25 @@ template<class T> requires isComponent<T>
 T* GameObject::AddComponent()
 {
 	std::unique_ptr<Component> newComp = std::make_unique<T>(this);
+	OnUpdate += std::bind(&Component::Update, newComp, std::placeholders::_1);
 	m_Components.push_back(std::move(newComp));
 	return static_cast<T*>(m_Components[m_Components.size()].get());
 }
 template<class T> requires isComponent<T>
 bool GameObject::RemoveComponent(T* comp)
 {
-	/*if (!std::find(m_Components.begin, m_Components.end, comp)
+
+	if (!std::find(m_Components.begin, m_Components.end, comp)
 	{
 		std::cout << "component not found" << std::cout;
 		return false;
 	}
 	else 
 	{
+		OnUpdate -= std::bind(&Component::Update, comp, std::placeholders::_1);
 		m_Components.erase(comp);
 		return true;
-	}*/
+	}
 
 	
 	

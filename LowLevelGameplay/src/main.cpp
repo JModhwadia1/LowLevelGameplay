@@ -2,11 +2,17 @@
 #include <chrono>
 #include "Player.h"
 #include "Event.h"
+#include "InputManager.h"
 #include <iostream>
 
 
 
+#include "GlobalEvents.h"
+
 #define FIXEDFRAMERATE 0.016
+
+
+
 class B
 {
 public:
@@ -73,11 +79,10 @@ int main()
 
 	
 
-
-
+	// create player
 	mPlayer = new Player(texture);
 
-
+	// Init last time
 	std::chrono::steady_clock::time_point lastTime = std::chrono::steady_clock::now();
 	float deltaTime = 0.0f;
 	/*sf::Sprite sprite(texture);*/
@@ -91,24 +96,27 @@ int main()
 			if (event.type == sf::Event::Closed)
 				window.close();
 		}
-
+		// get time now
 		std::chrono::steady_clock::time_point now = std::chrono::steady_clock::now();
+		// set deltatime
 		deltaTime = std::chrono::duration_cast<std::chrono::microseconds>(now - lastTime).count() / 1000000.f;
+		// set lasttime to the time now
 		lastTime = now;
 
-	
+
+		InputManager::HandleInputs();
+		OnUpdate(deltaTime);
 		
-		
+		// Update player
 		mPlayer->Update(deltaTime);
+		// Increase physics step value
 		timeSincePhysicsStep += deltaTime;
 
 		while (timeSincePhysicsStep > FIXEDFRAMERATE)
 		{
 			// Collect collision info
 			// dispatch collisions
-
 			std::cout << "Hello WOrld" << std::endl;
-
 			timeSincePhysicsStep -= FIXEDFRAMERATE;
 		}
 		

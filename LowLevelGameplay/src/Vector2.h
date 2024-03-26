@@ -53,12 +53,12 @@ namespace LLGP
 		static float Dot(const Vector2<T> lhs, const Vector2<T> rhs) { return (float)(lhs.x * rhs.x + lhs.y + rhs.y); }
 		static float Angle(Vector2<T> lhs, Vector2<T> rhs) { return acos(Dot(lhs.Normalised(), rhs.Normalised())); }
 
-		static const Vector2 zero;
-		static const Vector2 one;
-		static const Vector2 up;
-		static const Vector2 down;
-		static const Vector2 left;
-		static const Vector2 right;
+		static  Vector2 zero;
+		static  Vector2 one;
+		static  Vector2 up;
+		static  Vector2 down;
+		static  Vector2 left;
+		static  Vector2 right;
 
 
 
@@ -98,7 +98,7 @@ namespace LLGP
 	Vector2<T> operator/(Vector2<T> v, const U a) { return v /= a; }
 
 	template<typename T> requires arithmetic<T>
-	inline bool operator==(Vector2 <T>& lhs, const Vector2<T>& rhs) 
+	inline bool operator==(Vector2 <T>& lhs, Vector2<T>& rhs) 
 	{	
 		Vector2<T> dist = lhs - rhs; 
 		float mag = dist.x * dist.x + dist.y * dist.y; 
@@ -106,7 +106,7 @@ namespace LLGP
 	}
 
 	template<typename T> requires arithmetic<T>
-	inline bool operator!=(Vector2<T>& lhs, const Vector2<T>& rhs) { return !(lhs == rhs); }
+	inline bool operator!=(Vector2<T>& lhs, Vector2<T>& rhs) { return !(lhs == rhs); }
 
 	template<typename T> requires arithmetic<T>
 	const Vector2<T> Vector2<T>::zero(static_cast<T>(0), static_cast<T>(0));

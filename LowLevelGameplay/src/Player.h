@@ -5,6 +5,7 @@
 #include "Rigidbody.h"
 #include "GameObject.h"
 #include "Animation.h"
+#include "InputManager.h"
 
 enum AnimationIndex
 {
@@ -25,7 +26,7 @@ public:
 	void Render(sf::RenderWindow& window);
 
 	LLGP::Vector2f direction;
-	void UpdateMovement(float dt);
+	void UpdateMovement(LLGP::Vector2f _moveInput);
 	float AccelerationSpeed = 200.0f;
 	float mMaxSpeed = 300.0f;
 private:

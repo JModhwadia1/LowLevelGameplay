@@ -14,6 +14,8 @@ Player::Player(sf::Texture& texture) : GameObject(texture)
 
 	//Setup Rigidbody
 	//_rigidbody = new Rigidbody(_transform);
+	InputManager::OnMovePerformed += std::bind(&Player::UpdateMovement, this, std::placeholders::_1);
+	
 	GetRigidbody()->SetMaxSpeed(mMaxSpeed);
 	GetTexture2D()->GetSprite()->setScale(5, 5);
 	GetTexture2D()->GetSprite()->setTextureRect(sf::IntRect(0,0,5,11));
@@ -29,16 +31,10 @@ Player::Player(sf::Texture& texture) : GameObject(texture)
 
 void Player::Update(float dt)
 {
-
-
-	
-	UpdateMovement(dt);
+	//UpdateMovement(dt);
 	animations[int(currentAnimation)].Update(dt);
 	animations[int(currentAnimation)].ApplyToSprite(*GetTexture2D()->GetSprite());
 	GameObject::Update(dt);
-	
-
-	
 }
 
 void Player::Render(sf::RenderWindow& window)
@@ -47,17 +43,20 @@ void Player::Render(sf::RenderWindow& window)
 	GameObject::Draw(window);
 }
 
-void Player::UpdateMovement(float dt)
+void Player::UpdateMovement(LLGP::Vector2f _moveInput)
 {
+
+
 	LLGP::Vector2f accel(0.0f, 0.0f);
 	direction = LLGP::Vector2f(0.0f, 0.0f);
 	//_rigidbody->SetDirection(direction);
-	GetRigidbody()->SetDirection(direction);
+	GetRigidbody()->SetDirection(_moveInput);
+
 	if (sf::Keyboard::isKeyPressed(sf::Keyboard::W) || sf::Keyboard::isKeyPressed(sf::Keyboard::Up))
 	{
 		direction.y -= 1.0f;
 		//_rigidbody->SetDirection(direction);
-		GetRigidbody()->SetDirection(direction);
+		GetRigidbody()->SetDirection(direction); 
 		currentAnimation = AnimationIndex::WalkingUp;
 		
 	}

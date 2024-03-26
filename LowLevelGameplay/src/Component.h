@@ -12,6 +12,8 @@ public:
 
 	virtual void OwnerActiveChange(bool newActive) {}
 
+	virtual void Update(float dt) {}
+
 protected:
 	GameObject* _GameObject;
 };

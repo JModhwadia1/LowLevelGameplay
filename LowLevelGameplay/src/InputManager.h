@@ -1,16 +1,20 @@
 #pragma once
 #include "Event.h"
+#include "Vector2.h"
 #include "SFML/Graphics.hpp"
 
 
 
-class InputManager
+static class InputManager
 {
-
-	LLGP::Event < sf::Keyboard::Key> onPressed;
 	
-	InputManager();
+public:
+	static LLGP::Event<LLGP::Vector2f> OnMovePerformed;
+	//static LLGP::Event<LLGP::Vector2f> OnMoveCancelled;
 
-	void HandleInputs();
+	static void HandleInputs();
+private:
+	static LLGP::Vector2f MoveInputObserver;
+
 };
 
