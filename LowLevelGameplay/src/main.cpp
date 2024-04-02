@@ -71,11 +71,19 @@ int main()
 	std::shared_ptr<sf::Texture> sharedtexture = std::make_shared<sf::Texture>();
 	sharedtexture->loadFromFile("Textures/player.png", sf::IntRect(0, 0, 5, 11));
 
-	
+	sf::Texture texture2;
+	if (!texture2.loadFromFile("Textures/player.png", sf::IntRect(0, 0, 5, 11)))
+	{
+		return EXIT_FAILURE;
+	}
 
 
 
 	mPlayer = new Player(texture);
+	mPlayer2 = new Player(texture2);
+	mPlayer2->GetTransform()->SetPosition(LLGP::Vector2f(100.0f, 100.0f));
+
+	
 
 
 	std::chrono::steady_clock::time_point lastTime = std::chrono::steady_clock::now();
@@ -97,9 +105,12 @@ int main()
 		lastTime = now;
 
 	
-		
+		LLGP::Vector2f directionToPlayer = mPlayer->GetTransform()->GetPosition() - mPlayer2->GetTransform()->GetPosition();
+
+		mPlayer2->GetRigidbody()->AddForce(directionToPlayer.Normalised() * 100.0f);
 		
 		mPlayer->Update(deltaTime);
+		mPlayer2->Update(deltaTime);
 		timeSincePhysicsStep += deltaTime;
 
 		while (timeSincePhysicsStep > FIXEDFRAMERATE)
@@ -114,6 +125,7 @@ int main()
 		
 		window.clear();
 		mPlayer->Render(window);
+		mPlayer2->Render(window);
 		window.display();
 	}
 

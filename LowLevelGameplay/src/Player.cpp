@@ -11,7 +11,7 @@ Player::Player(sf::Texture& texture) : GameObject(texture)
 	/*_transform = new Transform(LLGP::Vector2f(250, 250), LLGP::Vector2f(5, 5));
 	mSprite.setPosition(_transform->GetPosition());
 	mSprite.setScale(_transform->GetScale());*/
-
+	//GetTransform()->SetPosition(LLGP::Vector2f(100.0f, 100.0f));
 	//Setup Rigidbody
 	//_rigidbody = new Rigidbody(_transform);
 	GetRigidbody()->SetMaxSpeed(mMaxSpeed);
@@ -33,6 +33,7 @@ void Player::Update(float dt)
 
 	
 	UpdateMovement(dt);
+	std::cout << GetRigidbody()->mAcceleration.GetMagnitude() << std::endl;
 	animations[int(currentAnimation)].Update(dt);
 	animations[int(currentAnimation)].ApplyToSprite(*GetTexture2D()->GetSprite());
 	GameObject::Update(dt);
@@ -51,42 +52,53 @@ void Player::UpdateMovement(float dt)
 {
 	LLGP::Vector2f accel(0.0f, 0.0f);
 	direction = LLGP::Vector2f(0.0f, 0.0f);
+	
 	//_rigidbody->SetDirection(direction);
-	GetRigidbody()->SetDirection(direction);
+	
+
+	
 	if (sf::Keyboard::isKeyPressed(sf::Keyboard::W) || sf::Keyboard::isKeyPressed(sf::Keyboard::Up))
 	{
 		direction.y -= 1.0f;
 		//_rigidbody->SetDirection(direction);
-		GetRigidbody()->SetDirection(direction);
+		GetRigidbody()->AddForce(direction * mMaxSpeed);
 		currentAnimation = AnimationIndex::WalkingUp;
 		
 	}
+	
 
-	if (sf::Keyboard::isKeyPressed(sf::Keyboard::S) || sf::Keyboard::isKeyPressed(sf::Keyboard::Down))
+	else if (sf::Keyboard::isKeyPressed(sf::Keyboard::S) || sf::Keyboard::isKeyPressed(sf::Keyboard::Down))
 	{
 		direction.y += 1.0f;
 		//_rigidbody->SetDirection(direction);
-		GetRigidbody()->SetDirection(direction);
+		GetRigidbody()->AddForce(direction * mMaxSpeed);
 		currentAnimation = AnimationIndex::WalkingDown;
 
 	}
 
-	if (sf::Keyboard::isKeyPressed(sf::Keyboard::D) || sf::Keyboard::isKeyPressed(sf::Keyboard::Right))
+	else if (sf::Keyboard::isKeyPressed(sf::Keyboard::D) || sf::Keyboard::isKeyPressed(sf::Keyboard::Right))
 	{
 		direction.x += 1.0f;
 		//_rigidbody->SetDirection(direction);
-		GetRigidbody()->SetDirection(direction);
+		//GetRigidbody()->SetDirection(direction);
+		GetRigidbody()->AddForce(direction * mMaxSpeed);
+
 		currentAnimation = AnimationIndex::WalkingRight;
 	}
 
-	if (sf::Keyboard::isKeyPressed(sf::Keyboard::A) || sf::Keyboard::isKeyPressed(sf::Keyboard::Left))
+	else if (sf::Keyboard::isKeyPressed(sf::Keyboard::A) || sf::Keyboard::isKeyPressed(sf::Keyboard::Left))
 	{
 		direction.x -= 1.0f;
 		//_rigidbody->SetDirection(direction);
-		GetRigidbody()->SetDirection(direction);
+	//	GetRigidbody()->SetDirection(direction);
+		GetRigidbody()->AddForce(direction * mMaxSpeed);
+
 		currentAnimation = AnimationIndex::WalkingLeft;
 
 	}
+	
+
+	
 
 	//if ((((accel.x * accel.x) + (accel.y * accel.y)) > 0.0f))
 	//{

@@ -53,12 +53,12 @@ namespace LLGP
 		static float Dot(const Vector2<T> lhs, const Vector2<T> rhs) { return (float)(lhs.x * rhs.x + lhs.y + rhs.y); }
 		static float Angle(Vector2<T> lhs, Vector2<T> rhs) { return acos(Dot(lhs.Normalised(), rhs.Normalised())); }
 
-		static const Vector2 zero;
-		static const Vector2 one;
-		static const Vector2 up;
-		static const Vector2 down;
-		static const Vector2 left;
-		static const Vector2 right;
+		 static Vector2 zero;
+		  static Vector2 one;
+		  static Vector2 up;
+		  static Vector2 down;
+		  static Vector2 left;
+		  static Vector2 right;
 
 
 
@@ -109,26 +109,26 @@ namespace LLGP
 	inline bool operator!=(Vector2<T>& lhs, const Vector2<T>& rhs) { return !(lhs == rhs); }
 
 	template<typename T> requires arithmetic<T>
-	const Vector2<T> Vector2<T>::zero(static_cast<T>(0), static_cast<T>(0));
+	 Vector2<T> Vector2<T>::zero(static_cast<T>(0), static_cast<T>(0));
 
 
 	
 	//TODO: implement the other static const values
 	template<typename T> requires arithmetic<T>
-	const Vector2<T> Vector2<T>::one(static_cast<T>(1), static_cast<T>(1));
+	 Vector2<T> Vector2<T>::one(static_cast<T>(1), static_cast<T>(1));
 
 
 	template<typename T> requires arithmetic<T>
-	const Vector2<T> Vector2<T>::up(static_cast<T>(0), static_cast<T>(1));
+	Vector2<T> Vector2<T>::up(static_cast<T>(0), static_cast<T>(1));
 
 	template<typename T> requires arithmetic<T>
-	const Vector2<T> Vector2<T>::down(static_cast<T>(0), static_cast<T>(-1));
+	 Vector2<T> Vector2<T>::down(static_cast<T>(0), static_cast<T>(-1));
 
 	template<typename T> requires arithmetic<T>
-	const Vector2<T> Vector2<T>::right(static_cast<T>(1), static_cast<T>(0));
+	 Vector2<T> Vector2<T>::right(static_cast<T>(1), static_cast<T>(0));
 
 	template<typename T> requires arithmetic<T>
-	const Vector2<T> Vector2<T>::left(static_cast<T>(-1), static_cast<T>(0));
+	 Vector2<T> Vector2<T>::left(static_cast<T>(-1), static_cast<T>(0));
 
 
 

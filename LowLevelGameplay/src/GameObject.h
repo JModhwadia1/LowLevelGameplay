@@ -15,6 +15,7 @@ public:
 	void Draw(sf::RenderWindow& window);
 	Rigidbody* GetRigidbody() { return _rigidbody; }
 	Texture2D* GetTexture2D() { return _texture; }
+	Transform* GetTransform() { return _transform; }
 
 	inline void SetName(std::string newName) { m_Name = newName; }
 	inline std::string GetName() { return m_Name; }

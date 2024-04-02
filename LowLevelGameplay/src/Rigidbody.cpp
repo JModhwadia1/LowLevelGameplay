@@ -12,12 +12,16 @@ Rigidbody::~Rigidbody()
 void Rigidbody::Update(float deltaTime)
 {
 	LLGP::Vector2f pos = _transform->GetPosition();
-	//mVelocity += mAcceleration * deltaTime;
-
+	
+    mAcceleration += _netForce / 1.0f;
+	
+	mVelocity += mAcceleration * deltaTime;
+	
+	
 
 	
 	
-	mVelocity = mDirection * mMaxSpeed;
+	//mVelocity = mDirection * mMaxSpeed;
 	//Clamp Speed
    /*if (LLGP::LengthSq(mVelocity) > (mMaxSpeed * mMaxSpeed))
    {
@@ -35,9 +39,9 @@ void Rigidbody::Update(float deltaTime)
    //std::cout << "x " << mVelocity.x <<"y " << mVelocity.y << std::endl;
 	pos += mVelocity * deltaTime;
 	_transform->SetPosition(pos);
+
+	// set it to 0 as its calculated each frame
+	mAcceleration = LLGP::Vector2f::zero;
+	_netForce = LLGP::Vector2f::zero;
 }
 
-void Rigidbody::AddForce(LLGP::Vector2f Force)
-{
-	mVelocity += Force;
-}

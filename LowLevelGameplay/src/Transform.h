@@ -11,7 +11,7 @@ public:
 
 
 	// Position
-	void SetPosition(LLGP::Vector2f& pos) { mPosition = pos; }
+	void SetPosition(LLGP::Vector2f pos) { mPosition = pos; }
 	 LLGP::Vector2f GetPosition() { return mPosition; }
 	
 	void SetScale(LLGP::Vector2f& scale) { mScale = scale; }
