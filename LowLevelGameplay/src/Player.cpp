@@ -6,17 +6,13 @@
 
 Player::Player(sf::Texture& texture) : GameObject(texture)
 {
-	//mSprite = sf::Sprite(texture);
-	// Setup Transform
-	/*_transform = new Transform(LLGP::Vector2f(250, 250), LLGP::Vector2f(5, 5));
-	mSprite.setPosition(_transform->GetPosition());
-	mSprite.setScale(_transform->GetScale());*/
-	//GetTransform()->SetPosition(LLGP::Vector2f(100.0f, 100.0f));
-	//Setup Rigidbody
-	//_rigidbody = new Rigidbody(_transform);
+	
 	GetRigidbody()->SetMaxSpeed(mMaxSpeed);
 	GetTexture2D()->GetSprite()->setScale(5, 5);
 	GetTexture2D()->GetSprite()->setTextureRect(sf::IntRect(0,0,5,11));
+	_boxCollider = new BoxCollider(GetTransform(), LLGP::Vector2f(25.0f, 55.0f));
+	_sphereCollider = new SphereCollider(GetTransform(), 20.0f);
+	SetCollider(_boxCollider);
 
 	animations[int(AnimationIndex::WalkingUp)] = Animation(23, 0, 7, 12,"Textures/Player.png");
 	animations[int(AnimationIndex::WalkingDown)] = Animation(14, 0, 7, 12, "Textures/Player.png");
@@ -29,16 +25,10 @@ Player::Player(sf::Texture& texture) : GameObject(texture)
 
 void Player::Update(float dt)
 {
-
-
-	
 	UpdateMovement(dt);
-	std::cout << GetRigidbody()->mAcceleration.GetMagnitude() << std::endl;
 	animations[int(currentAnimation)].Update(dt);
 	animations[int(currentAnimation)].ApplyToSprite(*GetTexture2D()->GetSprite());
 	GameObject::Update(dt);
-	
-
 	
 }
 

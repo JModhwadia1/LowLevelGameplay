@@ -5,6 +5,8 @@
 #include "Rigidbody.h"
 #include "GameObject.h"
 #include "Animation.h"
+#include "BoxCollider.h"
+#include "SphereCollider.h"
 
 enum AnimationIndex
 {
@@ -31,6 +33,8 @@ public:
 private:
 	Animation animations[int(AnimationIndex::Count)]; // 4 anims
 	AnimationIndex currentAnimation = AnimationIndex::WalkingLeft;
+	BoxCollider* _boxCollider;
+	SphereCollider* _sphereCollider;
 
 };
 

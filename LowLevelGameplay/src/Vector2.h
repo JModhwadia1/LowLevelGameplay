@@ -4,6 +4,7 @@
 
 
 
+
 #define PI  3.1415926535f
 #define Half  0.5f
 #define RadianConversionConstant 180.0f
@@ -17,7 +18,7 @@ namespace LLGP
 
 	static constexpr float RadiansToDegrees(float rad) { return rad * (RadianConversionConstant / PI); }
 	static constexpr float DegreesToRadians(float deg) { return deg * (PI / RadianConversionConstant); }
-
+	
 
 	template<typename T> requires arithmetic<T>
 	struct Vector2
@@ -49,7 +50,6 @@ namespace LLGP
 		float GetMagnitude() { return sqrt(GetSqrMagnitude());}
 		Vector2<T>& Normalise() { *this /= GetMagnitude(); return *this; }
 		Vector2<T> Normalised() { return *this / GetMagnitude(); }
-		
 		static float Dot(const Vector2<T> lhs, const Vector2<T> rhs) { return (float)(lhs.x * rhs.x + lhs.y + rhs.y); }
 		static float Angle(Vector2<T> lhs, Vector2<T> rhs) { return acos(Dot(lhs.Normalised(), rhs.Normalised())); }
 

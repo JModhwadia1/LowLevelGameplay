@@ -1,6 +1,7 @@
 #include <SFML/Graphics.hpp>
 #include <chrono>
 #include "Player.h"
+#include "Enemy.h"
 #include "Event.h"
 #include <iostream>
 
@@ -58,6 +59,8 @@ int main()
 	
 	Player* mPlayer = nullptr;
 	Player* mPlayer2 = nullptr;
+	Enemy* enemy = nullptr;
+	
 
 	sf::RenderWindow window(sf::VideoMode(600, 600), "SFML works!");
 	//sf::CircleShape shape(100.f);
@@ -80,9 +83,9 @@ int main()
 
 
 	mPlayer = new Player(texture);
-	mPlayer2 = new Player(texture2);
-	mPlayer2->GetTransform()->SetPosition(LLGP::Vector2f(100.0f, 100.0f));
-
+	enemy = new Enemy(texture2);
+	enemy->SetPlayerRef(mPlayer);
+	//enemy->GetTransform()->SetPosition(LLGP::Vector2f(100.0f, 100.0f));
 	
 
 
@@ -104,13 +107,19 @@ int main()
 		deltaTime = std::chrono::duration_cast<std::chrono::microseconds>(now - lastTime).count() / 1000000.f;
 		lastTime = now;
 
-	
-		LLGP::Vector2f directionToPlayer = mPlayer->GetTransform()->GetPosition() - mPlayer2->GetTransform()->GetPosition();
-
-		mPlayer2->GetRigidbody()->AddForce(directionToPlayer.Normalised() * 100.0f);
 		
 		mPlayer->Update(deltaTime);
-		mPlayer2->Update(deltaTime);
+		enemy->Update(deltaTime);
+		
+		
+
+		CollisionManifold manifold;
+
+		if (mPlayer->IsCollideable() && enemy->IsCollideable() && mPlayer->GetCollider()->CollidesWith(*enemy->GetCollider(), manifold))
+		{
+			std::cout << "COLLISION" << std::endl;
+		}
+
 		timeSincePhysicsStep += deltaTime;
 
 		while (timeSincePhysicsStep > FIXEDFRAMERATE)
@@ -125,7 +134,7 @@ int main()
 		
 		window.clear();
 		mPlayer->Render(window);
-		mPlayer2->Render(window);
+		enemy->Draw(window);
 		window.display();
 	}
 

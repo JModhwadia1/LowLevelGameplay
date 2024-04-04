@@ -2,8 +2,9 @@
 #include "Transform.h"
 #include "Texture2D.h"
 #include "Rigidbody.h"
-#include "Object.h"
 
+#include "Object.h"
+class Collider;
 class GameObject : public Object
 {
 public:
@@ -23,10 +24,12 @@ public:
 
 	inline void SetTag(std::string newTag) { m_Tag = newTag; }
 	inline bool CompareTag(std::string comp) { return m_Tag == comp; }
-
+	void SetCollider(Collider* collider) { _collider = collider; }
+	Collider* GetCollider() { return _collider; }
 	template<class T> requires isComponent<T> T* GetComponent();
 	template<class T> requires isComponent<T> T* AddComponent();
 	template<class T> requires isComponent<T>  bool RemoveComponent(T* comp);
+	bool IsCollideable() const { return _collider != nullptr; }
 
 
 private:
@@ -35,10 +38,13 @@ private:
 	std::string m_Name;
 	std::string m_Tag;
 	bool m_Active;
+	Collider* _collider = nullptr;
 
 	Texture2D* _texture;
 	Transform* _transform;
 	Rigidbody* _rigidbody;
 	std::vector <std::unique_ptr<Component>> m_Components;
+
+
 };
 
