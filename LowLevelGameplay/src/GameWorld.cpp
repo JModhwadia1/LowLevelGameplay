@@ -22,6 +22,8 @@ void GameWorld::Init()
 
 	mPlayer = new Player(this,mPlayerTex);
 	mEnemy = new Enemy(this, mEnemyTex);
+
+
 	mEnemy->SetPlayerRef(mPlayer);
 	mGameobjects.push_back(mPlayer);
 	mGameobjects.push_back(mEnemy);

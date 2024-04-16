@@ -23,7 +23,7 @@ public:
 	void OnCollision(GameObject& other) override;
 
 private:
-	float mBulletSpeed = 200.0f;
+	float mBulletSpeed = 20.0f;
 	const GameObject* mOwner = nullptr;
 	float mDamage = 10.0f;
 	

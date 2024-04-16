@@ -125,7 +125,7 @@ int main()
 			// Collect collision info
 			// dispatch collisions
 
-			std::cout << "Hello WOrld" << std::endl;
+			
 
 			timeSincePhysicsStep -= FIXEDFRAMERATE;
 		}

@@ -1,8 +1,8 @@
 #pragma once
 #include "Vector2.h"
 #include <SFML/Graphics.hpp>
-#include "Transform.h"
-#include "Rigidbody.h"
+//#include "Transform.h"
+//#include "Rigidbody.h"
 #include "GameObject.h"
 #include "Animation.h"
 #include "BoxCollider.h"

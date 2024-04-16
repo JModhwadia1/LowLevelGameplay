@@ -1,4 +1,6 @@
 #include "Enemy.h"
+#include "Player.h"
+#include "GameWorld.h"
 #include <iostream>
 
 Enemy::Enemy(GameWorld* world, sf::Texture* texture) : GameObject(world, texture)
@@ -11,6 +13,7 @@ Enemy::Enemy(GameWorld* world, sf::Texture* texture) : GameObject(world, texture
 	_boxCollider = new BoxCollider(GetTransform(), LLGP::Vector2f(25.0f, 55.0f));
 	_sphereCollider = new SphereCollider(GetTransform(), 20.0f);
 	SetCollider(_sphereCollider);
+	_playerRef = GetWorld()->GetPlayer();
 }
 
 void Enemy::Update(float dt)
@@ -55,7 +58,7 @@ void Enemy::ChaseState()
 	LLGP::Vector2f direction = _playerRef->GetTransform()->GetPosition() - GetTransform()->GetPosition();
 	
 	// Chase towawrds the player
-	//GetRigidbody()->AddForce(direction.Normalised() * GetRigidbody()->GetMaxSpeed());
+	GetRigidbody()->AddForce(direction.Normalised() * GetRigidbody()->GetMaxSpeed());
 }
 
 void Enemy::AttackState()

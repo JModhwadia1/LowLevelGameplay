@@ -1,9 +1,10 @@
 #pragma once
 #include "GameObject.h"
-#include "Player.h"
+//#include "Player.h"
 #include "BoxCollider.h"
 #include "SphereCollider.h"
 
+class Player;
 
 enum States
 {

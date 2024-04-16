@@ -3,10 +3,11 @@
 #include "Texture2D.h"
 #include "Rigidbody.h"
 #include "Object.h"
-#include "GameWorld.h"
+//#include "GameWorld.h"
 
 
 class Collider;
+class GameWorld;
 class GameObject : public Object
 {
 public:
@@ -30,9 +31,11 @@ public:
 	inline bool CompareTag(std::string comp) { return m_Tag == comp; }
 	void SetCollider(Collider* collider) { _collider = collider; }
 	Collider* GetCollider() { return _collider; }
+
 	template<class T> requires isComponent<T> T* GetComponent();
 	template<class T> requires isComponent<T> T* AddComponent();
 	template<class T> requires isComponent<T>  bool RemoveComponent(T* comp);
+
 	bool IsCollideable() const { return _collider != nullptr; }
 
 	virtual void OnCollision(GameObject& other) {}

@@ -9,11 +9,14 @@ public:
 
 	void Update(float deltaTime);
 	
+	bool IsKinematic;
 	
 	void SetMaxSpeed(float speed) { mMaxSpeed = speed; }
 	void SetNetForce(LLGP::Vector2f force) { _netForce = force; }
 	LLGP::Vector2f GetNetForce() { return _netForce; }
 	void AddForce(LLGP::Vector2f force) { _netForce += force; }
+
+	void ResetVelocity() { mVelocity = LLGP::Vector2f(0, 0); }
 
 	LLGP::Vector2f GetAcceleration() { return mAcceleration; }
 	LLGP::Vector2f GetVelocity() { return mVelocity; }

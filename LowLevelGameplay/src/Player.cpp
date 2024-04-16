@@ -44,14 +44,11 @@ void Player::UpdateMovement(float dt)
 	LLGP::Vector2f accel(0.0f, 0.0f);
 	direction = LLGP::Vector2f(0.0f, 0.0f);
 	
-	//_rigidbody->SetDirection(direction);
-	
 
 	
 	if (sf::Keyboard::isKeyPressed(sf::Keyboard::W) || sf::Keyboard::isKeyPressed(sf::Keyboard::Up))
 	{
 		direction.y -= 1.0f;
-		//_rigidbody->SetDirection(direction);
 		GetRigidbody()->AddForce(direction * mMaxSpeed);
 		currentAnimation = AnimationIndex::WalkingUp;
 		
@@ -60,28 +57,23 @@ void Player::UpdateMovement(float dt)
 
 	else if (sf::Keyboard::isKeyPressed(sf::Keyboard::S) || sf::Keyboard::isKeyPressed(sf::Keyboard::Down))
 	{
+	
 		direction.y += 1.0f;
-		//_rigidbody->SetDirection(direction);
 		GetRigidbody()->AddForce(direction * mMaxSpeed);
 		currentAnimation = AnimationIndex::WalkingDown;
-
 	}
 
 	else if (sf::Keyboard::isKeyPressed(sf::Keyboard::D) || sf::Keyboard::isKeyPressed(sf::Keyboard::Right))
 	{
 		direction.x += 1.0f;
-		//_rigidbody->SetDirection(direction);
-		//GetRigidbody()->SetDirection(direction);
 		GetRigidbody()->AddForce(direction * mMaxSpeed);
-
 		currentAnimation = AnimationIndex::WalkingRight;
 	}
 
 	else if (sf::Keyboard::isKeyPressed(sf::Keyboard::A) || sf::Keyboard::isKeyPressed(sf::Keyboard::Left))
 	{
+		
 		direction.x -= 1.0f;
-		//_rigidbody->SetDirection(direction);
-	//	GetRigidbody()->SetDirection(direction);
 		GetRigidbody()->AddForce(direction * mMaxSpeed);
 		currentAnimation = AnimationIndex::WalkingLeft;
 
@@ -95,11 +87,17 @@ void Player::UpdateMovement(float dt)
 		params.mDirection = direction * 2.0f;
 		params.mDamage = 10.0f;
 
-	///*	Bullet* bullet = new Bullet(GetWorld(), &GetTexture2D()->GetTexture());
-	//	bullet->Launch(&params);*/
-	//	std::cout << "Launched Bullet" << std::endl;
+		sf::Texture* bulletTex = new sf::Texture();
 
-		
+		if (!bulletTex->loadFromFile("Textures/player.png", sf::IntRect(14, 0, 7, 12)))
+		{
+			std::cout << "Bullet texture cannot be loaded" << std::endl;
+		}
+
+		Bullet* bullet = new Bullet(GetWorld(), bulletTex);
+		bullet->Launch(&params);
+
+		std::cout << bullet->GetTransform()->GetPosition().x << std::endl;
 	}
 	
 

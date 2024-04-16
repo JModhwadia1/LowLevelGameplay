@@ -1,4 +1,5 @@
 #include "Bullet.h"
+#include <iostream>
 
 Bullet::Bullet(GameWorld* world, sf::Texture* texture) : GameObject(world, texture)
 {
@@ -9,7 +10,8 @@ Bullet::Bullet(GameWorld* world, sf::Texture* texture) : GameObject(world, textu
 void Bullet::Launch(const BulletLaunchParams* params)
 {
 	GetTransform()->SetPosition(params->mStartPos);
-	GetRigidbody()->SetVelocity((params->mDirection * mBulletSpeed).Normalised());
+	//GetRigidbody()->SetVelocity((params->mDirection * mBulletSpeed).Normalised());
+	//GetRigidbody()->AddForce(params->mDirection * mBulletSpeed);
 
 	mOwner = params->mOwner;
 	mDamage = params->mDamage;
