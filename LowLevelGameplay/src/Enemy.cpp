@@ -1,7 +1,7 @@
 #include "Enemy.h"
 #include <iostream>
 
-Enemy::Enemy(sf::Texture& texture) : GameObject(texture)
+Enemy::Enemy(GameWorld* world, sf::Texture* texture) : GameObject(world, texture)
 {
 
 	GetRigidbody()->SetMaxSpeed(200.0f);
@@ -39,7 +39,7 @@ void Enemy::Update(float dt)
 	GameObject::Update(dt);
 }
 
-void Enemy::Draw(sf::RenderWindow& window)
+void Enemy::Draw(sf::RenderWindow* window)
 {
 	GameObject::Draw(window);
 }
@@ -81,3 +81,15 @@ void Enemy::UpdateStates()
 		ChangeCurrentState(States::Chase);
 	}
 }
+
+void Enemy::OnCollision(GameObject& other)
+{
+	if (Player* player = dynamic_cast<Player*>(&other))
+	{
+		std::cout << "Player collided with enemy" << std::endl;
+	}
+}
+
+
+
+

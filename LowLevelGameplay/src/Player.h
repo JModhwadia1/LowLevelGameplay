@@ -21,10 +21,10 @@ enum AnimationIndex
 class Player : public GameObject
 {
 public:
-	explicit Player(sf::Texture& texture);
+	explicit Player(GameWorld* world, sf::Texture* texture);
 
 	void Update(float dt);
-	void Render(sf::RenderWindow& window);
+	void Render(sf::RenderWindow* window);
 
 	LLGP::Vector2f direction;
 	void UpdateMovement(float dt);

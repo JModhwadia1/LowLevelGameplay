@@ -1,9 +1,6 @@
-#include <SFML/Graphics.hpp>
+#include "GameWorld.h"
 #include <chrono>
-#include "Player.h"
-#include "Enemy.h"
-#include "Event.h"
-#include <iostream>
+
 
 
 
@@ -57,34 +54,34 @@ int main()
 	eventTest(5, 6);
 
 	
-	Player* mPlayer = nullptr;
+	/*Player* mPlayer = nullptr;
 	Player* mPlayer2 = nullptr;
-	Enemy* enemy = nullptr;
+	Enemy* enemy = nullptr;*/
 	
 
 	sf::RenderWindow window(sf::VideoMode(600, 600), "SFML works!");
 	//sf::CircleShape shape(100.f);
 	//shape.setFillColor(sf::Color::Green);
 
-	sf::Texture texture;
-	if (!texture.loadFromFile("Textures/player.png", sf::IntRect(0,0,5,11)))
-	{
-		return EXIT_FAILURE;
-	}
-	std::shared_ptr<sf::Texture> sharedtexture = std::make_shared<sf::Texture>();
-	sharedtexture->loadFromFile("Textures/player.png", sf::IntRect(0, 0, 5, 11));
+	//sf::Texture texture;
+	//if (!texture.loadFromFile("Textures/player.png", sf::IntRect(0,0,5,11)))
+	//{
+	//	return EXIT_FAILURE;
+	//}
+	//std::shared_ptr<sf::Texture> sharedtexture = std::make_shared<sf::Texture>();
+	//sharedtexture->loadFromFile("Textures/player.png", sf::IntRect(0, 0, 5, 11));
 
-	sf::Texture texture2;
-	if (!texture2.loadFromFile("Textures/player.png", sf::IntRect(0, 0, 5, 11)))
-	{
-		return EXIT_FAILURE;
-	}
+	//sf::Texture texture2;
+	//if (!texture2.loadFromFile("Textures/player.png", sf::IntRect(0, 0, 5, 11)))
+	//{
+	//	return EXIT_FAILURE;
+	//}
+	
+	GameWorld* mWorld = new GameWorld(&window);
 
-
-
-	mPlayer = new Player(texture);
-	enemy = new Enemy(texture2);
-	enemy->SetPlayerRef(mPlayer);
+	//mPlayer = new Player(texture);
+	//enemy = new Enemy(texture2);
+	//enemy->SetPlayerRef(mPlayer);
 	//enemy->GetTransform()->SetPosition(LLGP::Vector2f(100.0f, 100.0f));
 	
 
@@ -107,8 +104,9 @@ int main()
 		deltaTime = std::chrono::duration_cast<std::chrono::microseconds>(now - lastTime).count() / 1000000.f;
 		lastTime = now;
 
+		mWorld->Update(deltaTime);
 		
-		mPlayer->Update(deltaTime);
+		/*mPlayer->Update(deltaTime);
 		enemy->Update(deltaTime);
 		
 		
@@ -118,7 +116,7 @@ int main()
 		if (mPlayer->IsCollideable() && enemy->IsCollideable() && mPlayer->GetCollider()->CollidesWith(*enemy->GetCollider(), manifold))
 		{
 			std::cout << "COLLISION" << std::endl;
-		}
+		}*/
 
 		timeSincePhysicsStep += deltaTime;
 
@@ -133,8 +131,9 @@ int main()
 		}
 		
 		window.clear();
-		mPlayer->Render(window);
-		enemy->Draw(window);
+		/*mPlayer->Render(window);
+		enemy->Draw(window);*/
+		mWorld->Render(&window);
 		window.display();
 	}
 

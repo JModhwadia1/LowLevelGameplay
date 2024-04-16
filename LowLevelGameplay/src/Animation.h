@@ -5,10 +5,17 @@ class Animation
 {
 public:
 	Animation() = default;
-	Animation(int x, int y, int width, int height, std::string filePath)
+	Animation(int x, int y, int width, int height, std::string filePath, sf::Texture& texture)
 	{
-		//texture.loadFromFile("Textures/spritesheet.jpg");
+		_texture = texture;
 		_texture.loadFromFile(filePath);
+
+		
+		/*if (!_texture.loadFromFile(filePath))
+		{
+			std::cout << "can't load texture in animation" << std::endl;
+		}*/
+		
 		//_texture = texture;
 		for (int i = 0; i < numberOfFrames; i++)
 		{
@@ -45,7 +52,7 @@ private:
 		// Check if the index is greater than the total amount of frames
 		if (++indexFrame >= numberOfFrames)
 		{
-			indexFrame = 0;
+			indexFrame = 0;	
 		}
 
 	}

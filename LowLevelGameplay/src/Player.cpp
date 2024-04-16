@@ -1,10 +1,11 @@
 #include "Player.h"
 #include <iostream>
+#include "Bullet.h"
 #include <SFML/Window/Mouse.hpp>
 
 
 
-Player::Player(sf::Texture& texture) : GameObject(texture)
+Player::Player(GameWorld* world, sf::Texture* texture) : GameObject(world, texture)
 {
 	
 	GetRigidbody()->SetMaxSpeed(mMaxSpeed);
@@ -14,10 +15,10 @@ Player::Player(sf::Texture& texture) : GameObject(texture)
 	_sphereCollider = new SphereCollider(GetTransform(), 20.0f);
 	SetCollider(_boxCollider);
 
-	animations[int(AnimationIndex::WalkingUp)] = Animation(23, 0, 7, 12,"Textures/Player.png");
-	animations[int(AnimationIndex::WalkingDown)] = Animation(14, 0, 7, 12, "Textures/Player.png");
-	animations[int(AnimationIndex::WalkingLeft)] = Animation(0, 0, 5, 12, "Textures/Player.png");
-	animations[int(AnimationIndex::WalkingRight)] = Animation(7, 0, 5, 12, "Textures/Player.png");
+	animations[int(AnimationIndex::WalkingUp)] = Animation(23, 0, 7, 12,"Textures/Player.png",*texture);
+	animations[int(AnimationIndex::WalkingDown)] = Animation(14, 0, 7, 12, "Textures/Player.png",*texture);
+	animations[int(AnimationIndex::WalkingLeft)] = Animation(0, 0, 5, 12, "Textures/Player.png",*texture);
+	animations[int(AnimationIndex::WalkingRight)] = Animation(7, 0, 5, 12, "Textures/Player.png",*texture);
 
 
 
@@ -32,7 +33,7 @@ void Player::Update(float dt)
 	
 }
 
-void Player::Render(sf::RenderWindow& window)
+void Player::Render(sf::RenderWindow* window)
 {
 	//window.draw(mSprite);
 	GameObject::Draw(window);
@@ -82,9 +83,23 @@ void Player::UpdateMovement(float dt)
 		//_rigidbody->SetDirection(direction);
 	//	GetRigidbody()->SetDirection(direction);
 		GetRigidbody()->AddForce(direction * mMaxSpeed);
-
 		currentAnimation = AnimationIndex::WalkingLeft;
 
+	}
+
+	if (sf::Keyboard::isKeyPressed(sf::Keyboard::Space)) {
+
+		BulletLaunchParams params;
+		params.mOwner = this;
+		params.mStartPos = GetTransform()->GetPosition() * 2.0f;
+		params.mDirection = direction * 2.0f;
+		params.mDamage = 10.0f;
+
+	///*	Bullet* bullet = new Bullet(GetWorld(), &GetTexture2D()->GetTexture());
+	//	bullet->Launch(&params);*/
+	//	std::cout << "Launched Bullet" << std::endl;
+
+		
 	}
 	
 

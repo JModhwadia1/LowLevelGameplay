@@ -17,6 +17,7 @@ public:
 
 	LLGP::Vector2f GetAcceleration() { return mAcceleration; }
 	LLGP::Vector2f GetVelocity() { return mVelocity; }
+	void SetVelocity(LLGP::Vector2f velocity) { mVelocity = velocity; }
 	float GetMaxSpeed() { return mMaxSpeed; }
 
 protected:
