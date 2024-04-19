@@ -32,6 +32,7 @@ void GameWorld::Init()
 
 	mPlayer = new Player(this,mResources.mPlayerTex);
 	mEnemy = new Enemy(this, mResources.mEnemyTex);
+	
 
 
 

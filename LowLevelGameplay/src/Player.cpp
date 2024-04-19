@@ -16,11 +16,14 @@ Player::Player(GameWorld* world, sf::Texture* texture) : GameObject(world, textu
 	_sphereCollider = new SphereCollider(GetTransform(), 20.0f);
 	SetCollider(_boxCollider);
 
+	healthcomp = new HealthComponent();
+	healthcomp->OnHealthUpdated += std::bind(&Player::PrintHealth, this, std::placeholders::_1);
+
+
 	animations[int(AnimationIndex::WalkingUp)] = Animation(23, 0, 7, 12,"Textures/Player.png",*texture);
 	animations[int(AnimationIndex::WalkingDown)] = Animation(14, 0, 7, 12, "Textures/Player.png",*texture);
 	animations[int(AnimationIndex::WalkingLeft)] = Animation(0, 0, 5, 12, "Textures/Player.png",*texture);
 	animations[int(AnimationIndex::WalkingRight)] = Animation(7, 0, 5, 12, "Textures/Player.png",*texture);
-
 
 
 }
@@ -93,20 +96,25 @@ void Player::UpdateMovement(float dt)
 			params.mDirection = mPrevDirection;
 			params.mDamage = 10.0f;
 
-			if (Bullet* bullet = GetWorld().SpawnGameobject<Bullet>()) 
+			if (Bullet* bullet = GetWorld().SpawnGameobject<Bullet>(GetWorld().GetResources().mBulletTex)) 
 			{
 				bullet->Launch(&params);
 			}
-			
-			
-			
 		}
-		
-
 		
 	}
 
+	if (sf::Keyboard::isKeyPressed(sf::Keyboard::Q)) {
 	
+		healthcomp->TakeDamage(10.0f);
+	}
+
+
 	GetRigidbody()->AddForce(direction * mMaxSpeed);
 	direction = LLGP::Vector2f(0.0f, 0.0f);
+}
+
+void Player::PrintHealth(float Amount)
+{
+	std::cout << "Amount" << Amount << std::endl;
 }

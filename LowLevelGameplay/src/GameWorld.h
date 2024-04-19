@@ -18,7 +18,6 @@ public:
 		sf::Texture* mEnemyTex;
 		sf::Texture* mBulletTex;
 
-
 	};
 
 
@@ -33,29 +32,24 @@ public:
 	void AddToGameobjects(GameObject* gameobject) { mGameobjects.push_back(gameobject); }
 
 	template <typename T>
-	T* SpawnGameobject();
+	T* SpawnGameobject(sf::Texture* tex);
 
 	void UpdateCollisions();
 	sf::RenderWindow* mWindow;
+
 private:
-	
 	Player* mPlayer = nullptr;
 	Enemy* mEnemy = nullptr;
-
 	Resources mResources;
-
 	std::vector<GameObject*> mGameobjects;
-	
-
 };
 
 template<typename T>
-T* GameWorld::SpawnGameobject() 
+T* GameWorld::SpawnGameobject(sf::Texture* tex) 
 {
-	if (T* newGameobject = new T(*this)) 
+	if (T* newGameobject = new T(this, tex)) 
 	{
 		mGameobjects.push_back(newGameobject);
-
 		return newGameobject;
 	}
 	return nullptr;

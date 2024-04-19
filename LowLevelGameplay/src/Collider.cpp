@@ -1,5 +1,6 @@
 #include "Collider.h"
 #include "BoxCollider.h"
+
 inline float DistanceToPointAABB(LLGP::Vector2f point, BoxCollider& coll)
 {
 	float sqDist = 0.0f;

@@ -1,10 +1,16 @@
 #include "Bullet.h"
 #include <iostream>
 #include "GameWorld.h"
+#include "BoxCollider.h"
 
 Bullet::Bullet(GameWorld* world, sf::Texture* texture) : GameObject(world, world->GetResources().mBulletTex)
 {
 	GetRigidbody()->SetMaxSpeed(mBulletSpeed);
+
+	mBoxCollider = new BoxCollider(GetTransform(), LLGP::Vector2f(2.0f, 2.0f));
+
+	SetCollider(mBoxCollider);
+
 	
 }
 
@@ -21,7 +27,11 @@ void Bullet::Launch(const BulletLaunchParams* params)
 
 void Bullet::OnCollision(GameObject& other)
 {
-	std::cout << "Bullet Collided " << std::endl;
+
+	if (Enemy* enemy = dynamic_cast<Enemy*>(&other)) {
+
+		std::cout << "Bullet Collided with enemy" << std::endl;
+	}
 }
 
 void Bullet::Update(float dt)

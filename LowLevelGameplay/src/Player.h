@@ -7,6 +7,10 @@
 #include "Animation.h"
 #include "BoxCollider.h"
 #include "SphereCollider.h"
+#include "HealthComponent.h"
+//#include "Event.h"
+
+//class HealthComponent;
 
 enum EFacingDirection {
 	FACING_RIGHT,
@@ -38,6 +42,8 @@ public:
 	void UpdateMovement(float dt);
 	float AccelerationSpeed = 200.0f;
 	float mMaxSpeed = 300.0f;
+
+	void PrintHealth(float Amount);
 	
 private:
 	Animation animations[int(AnimationIndex::Count)]; // 4 anims
@@ -48,6 +54,8 @@ private:
 	float mShootCooldown;
 	float mShootDelay = 0.1f;
 	EFacingDirection mFacingDirection = EFacingDirection::FACING_LEFT;
+
+	HealthComponent* healthcomp;
 
 
 };

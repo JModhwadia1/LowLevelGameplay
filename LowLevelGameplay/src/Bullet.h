@@ -1,6 +1,8 @@
 #pragma once
 #include "GameObject.h"
 
+class BoxCollider;
+
 struct  BulletLaunchParams
 {
 	const GameObject* mOwner = nullptr;
@@ -23,7 +25,7 @@ public:
 	void OnCollision(GameObject& other) override;
 
 	void Draw(sf::RenderWindow* window)override;
-	
+	BoxCollider* mBoxCollider;
 
 private:
 	float mBulletSpeed = 500.0;
