@@ -13,12 +13,23 @@ class GameWorld
 {
 public:
 
-	GameWorld(sf::RenderWindow* window);
+	struct Resources {
+		sf::Texture* mPlayerTex;
+		sf::Texture* mEnemyTex;
+		sf::Texture* mBulletTex;
+
+
+	};
+
+
+public:
+
+	 GameWorld(sf::RenderWindow* window);
 	void Init();
 	void Update(float DeltaTime);
 	void Render(sf::RenderWindow* window);
 	Player* GetPlayer() const { return mPlayer; }
-	
+	const Resources& GetResources() { return mResources; }
 	void AddToGameobjects(GameObject* gameobject) { mGameobjects.push_back(gameobject); }
 
 	template <typename T>
@@ -31,8 +42,7 @@ private:
 	Player* mPlayer = nullptr;
 	Enemy* mEnemy = nullptr;
 
-	sf::Texture* mPlayerTex;
-	sf::Texture* mEnemyTex;
+	Resources mResources;
 
 	std::vector<GameObject*> mGameobjects;
 	

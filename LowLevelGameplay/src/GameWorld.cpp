@@ -8,24 +8,33 @@ GameWorld::GameWorld(sf::RenderWindow* window)
 
 void GameWorld::Init()
 {
-	mPlayerTex = new sf::Texture();
-	mEnemyTex = new sf::Texture();
-	if (!mPlayerTex->loadFromFile("Textures/player.png", sf::IntRect(0, 0, 5, 11)))
+	//mPlayerTex = new sf::Texture();
+	//mEnemyTex = new sf::Texture();
+	mResources.mPlayerTex = new sf::Texture();
+	mResources.mBulletTex = new sf::Texture();
+	mResources.mEnemyTex = new sf::Texture();
+	if (!mResources.mPlayerTex->loadFromFile("Textures/player.png", sf::IntRect(0, 0, 5, 11)))
 	{
 		std::cout << "Player texture not loaded" << std::endl;
 		return;
 	}
-	if (!mEnemyTex->loadFromFile("Textures/player.png", sf::IntRect(0, 0, 5, 11)))
+	if (!mResources.mEnemyTex->loadFromFile("Textures/player.png", sf::IntRect(0, 0, 5, 11)))
 	{
 		std::cout << "Enemy texture not loaded" << std::endl;
 		return;
 	}
 
-	mPlayer = new Player(this,mPlayerTex);
-	mEnemy = new Enemy(this, mEnemyTex);
+	if (!mResources.mBulletTex->loadFromFile("Textures/player.png", sf::IntRect(0, 0, 5, 11)))
+	{
+		std::cout << "Enemy texture not loaded" << std::endl;
+		return;
+	}
+
+	mPlayer = new Player(this,mResources.mPlayerTex);
+	mEnemy = new Enemy(this, mResources.mEnemyTex);
 
 
-	mEnemy->SetPlayerRef(mPlayer);
+
 	mGameobjects.push_back(mPlayer);
 	mGameobjects.push_back(mEnemy);
 	

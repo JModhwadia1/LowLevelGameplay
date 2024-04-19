@@ -2,7 +2,7 @@
 #include <iostream>
 #include "GameWorld.h"
 
-Bullet::Bullet(GameWorld* world, sf::Texture* texture) : GameObject(world, texture)
+Bullet::Bullet(GameWorld* world, sf::Texture* texture) : GameObject(world, world->GetResources().mBulletTex)
 {
 	GetRigidbody()->SetMaxSpeed(mBulletSpeed);
 	

@@ -93,16 +93,13 @@ void Player::UpdateMovement(float dt)
 			params.mDirection = mPrevDirection;
 			params.mDamage = 10.0f;
 
-			sf::Texture* bulletTex = new sf::Texture();
-
-			if (!bulletTex->loadFromFile("Textures/player.png", sf::IntRect(14, 0, 7, 12)))
+			if (Bullet* bullet = GetWorld().SpawnGameobject<Bullet>()) 
 			{
-				std::cout << "Bullet texture cannot be loaded" << std::endl;
+				bullet->Launch(&params);
 			}
-
-			Bullet* bullet = new Bullet(&GetWorld(), bulletTex);
-			bullet->Launch(&params);
-			GetWorld().AddToGameobjects(bullet);
+			
+			
+			
 		}
 		
 
