@@ -6,14 +6,14 @@
 Enemy::Enemy(GameWorld* world, sf::Texture* texture) : GameObject(world, texture)
 {
 
-	GetRigidbody()->SetMaxSpeed(200.0f);
+	GetRigidbody()->SetMaxSpeed(mMaxSpeed);
 	GetTexture2D()->GetSprite()->setScale(5, 5);
 	GetTexture2D()->GetSprite()->setTextureRect(sf::IntRect(0, 0, 5, 11));
 	GetTransform()->SetPosition(LLGP::Vector2f(100.f, 100.f));
 	_boxCollider = new BoxCollider(GetTransform(), LLGP::Vector2f(25.0f, 55.0f));
 	_sphereCollider = new SphereCollider(GetTransform(), 20.0f);
 	SetCollider(_sphereCollider);
-	_playerRef = GetWorld()->GetPlayer();
+	_playerRef = GetWorld().GetPlayer();
 }
 
 void Enemy::Update(float dt)
@@ -58,7 +58,7 @@ void Enemy::ChaseState()
 	LLGP::Vector2f direction = _playerRef->GetTransform()->GetPosition() - GetTransform()->GetPosition();
 	
 	// Chase towawrds the player
-	GetRigidbody()->AddForce(direction.Normalised() * GetRigidbody()->GetMaxSpeed());
+	GetRigidbody()->AddForce(direction.Normalised() * mMaxSpeed);
 }
 
 void Enemy::AttackState()

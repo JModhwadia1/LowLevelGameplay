@@ -15,10 +15,10 @@ void Rigidbody::Update(float deltaTime)
 	// Get pos each frame
 	LLGP::Vector2f pos = _transform->GetPosition();
 	// Get Accel
-    mAcceleration += _netForce / 1.0f;
-
+   // mAcceleration += _netForce / 1.0f;
+	
 	// Get velocity
-	mVelocity += mAcceleration * deltaTime;
+	//mVelocity = mAcceleration * mMaxSpeed;
 
 	// Increase pos
 	pos += mVelocity * deltaTime;
@@ -26,8 +26,9 @@ void Rigidbody::Update(float deltaTime)
 	// Set position
 	_transform->SetPosition(pos);
 
-	// set it to 0 as its calculated each frame
+	//// set it to 0 as its calculated each frame
 	mAcceleration = LLGP::Vector2f::zero;
-	_netForce = LLGP::Vector2f::zero;
+	mVelocity = LLGP::Vector2f::zero;
+	//_netForce = LLGP::Vector2f::zero;
 }
 

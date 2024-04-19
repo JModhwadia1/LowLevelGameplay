@@ -15,8 +15,8 @@ public:
 	GameObject(GameWorld* world, sf::Texture* texture);
 	~GameObject();
 
-	void Update(float dt);
-	void Draw(sf::RenderWindow* window);
+	virtual void Update(float dt);
+	virtual void Draw(sf::RenderWindow* window);
 	Rigidbody* GetRigidbody() { return _rigidbody; }
 	Texture2D* GetTexture2D() { return _texture; }
 	Transform* GetTransform() { return _transform; }
@@ -25,7 +25,7 @@ public:
 	inline std::string GetName() { return m_Name; }
 	void SetActive(bool newActive) { m_Active = newActive; }
 
-	GameWorld* GetWorld() const { return mWorld; }
+	GameWorld& GetWorld() const { return *mWorld; }
 
 	inline void SetTag(std::string newTag) { m_Tag = newTag; }
 	inline bool CompareTag(std::string comp) { return m_Tag == comp; }

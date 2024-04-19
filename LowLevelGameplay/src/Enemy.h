@@ -21,8 +21,8 @@ public:
 
 
 	void ChangeCurrentState(States state) { _currentState = state; }
-	void Update(float dt);
-	void Draw(sf::RenderWindow* window);
+	void Update(float dt)override;
+	void Draw(sf::RenderWindow* window)override;
 	void IdleState();
 	void ChaseState();
 	void AttackState();
@@ -36,6 +36,7 @@ public:
 protected:
 	States _currentState = States::Idle;
 private:
+	float mMaxSpeed = 200.0f;
 	Player* _playerRef = nullptr;
 	float AttackDistance = 50.0f;
 	BoxCollider* _boxCollider;

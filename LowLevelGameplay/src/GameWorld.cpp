@@ -2,6 +2,7 @@
 
 GameWorld::GameWorld(sf::RenderWindow* window)
 {
+	mWindow = window;
 	Init();
 }
 
@@ -32,16 +33,28 @@ void GameWorld::Init()
 
 void GameWorld::Update(float DeltaTime)
 {
-	mPlayer->Update(DeltaTime);
-	mEnemy->Update(DeltaTime);
+	/*mPlayer->Update(DeltaTime);
+	mEnemy->Update(DeltaTime);*/
+
+	for (int i = 0; i < mGameobjects.size(); i++)
+	{
+		mGameobjects[i]->Update(DeltaTime);
+	}
+
 
 	UpdateCollisions();
 }
 
 void GameWorld::Render(sf::RenderWindow* window)
 {
-	mPlayer->Render(window);
-	mEnemy->Draw(window);
+	/*mPlayer->Draw(window);
+	mEnemy->Draw(window);*/
+
+
+	for (int i = 0; i < mGameobjects.size(); i++)
+	{
+		mGameobjects[i]->Draw(window);
+	}
 }
 
 void GameWorld::UpdateCollisions()

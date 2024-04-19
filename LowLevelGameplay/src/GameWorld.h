@@ -8,20 +8,24 @@
 
 
 
+
 class GameWorld
 {
 public:
+
 	GameWorld(sf::RenderWindow* window);
 	void Init();
 	void Update(float DeltaTime);
 	void Render(sf::RenderWindow* window);
 	Player* GetPlayer() const { return mPlayer; }
 	
+	void AddToGameobjects(GameObject* gameobject) { mGameobjects.push_back(gameobject); }
+
 	template <typename T>
 	T* SpawnGameobject();
 
 	void UpdateCollisions();
-
+	sf::RenderWindow* mWindow;
 private:
 	
 	Player* mPlayer = nullptr;
@@ -31,6 +35,7 @@ private:
 	sf::Texture* mEnemyTex;
 
 	std::vector<GameObject*> mGameobjects;
+	
 
 };
 
@@ -41,7 +46,7 @@ T* GameWorld::SpawnGameobject()
 	{
 		mGameobjects.push_back(newGameobject);
 
-		return mGameobjects;
+		return newGameobject;
 	}
 	return nullptr;
 }

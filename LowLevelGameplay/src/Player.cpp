@@ -1,6 +1,7 @@
 #include "Player.h"
 #include <iostream>
 #include "Bullet.h"
+#include "GameWorld.h"
 #include <SFML/Window/Mouse.hpp>
 
 
@@ -33,7 +34,7 @@ void Player::Update(float dt)
 	
 }
 
-void Player::Render(sf::RenderWindow* window)
+void Player::Draw(sf::RenderWindow* window)
 {
 	//window.draw(mSprite);
 	GameObject::Draw(window);
@@ -41,79 +42,74 @@ void Player::Render(sf::RenderWindow* window)
 
 void Player::UpdateMovement(float dt)
 {
-	LLGP::Vector2f accel(0.0f, 0.0f);
-	direction = LLGP::Vector2f(0.0f, 0.0f);
 	
-
+	
 	
 	if (sf::Keyboard::isKeyPressed(sf::Keyboard::W) || sf::Keyboard::isKeyPressed(sf::Keyboard::Up))
 	{
+		mFacingDirection = FACING_UP;
 		direction.y -= 1.0f;
-		GetRigidbody()->AddForce(direction * mMaxSpeed);
 		currentAnimation = AnimationIndex::WalkingUp;
-		
+		mPrevDirection = direction;
 	}
 	
 
 	else if (sf::Keyboard::isKeyPressed(sf::Keyboard::S) || sf::Keyboard::isKeyPressed(sf::Keyboard::Down))
 	{
-	
+		mFacingDirection = FACING_DOWN;
 		direction.y += 1.0f;
-		GetRigidbody()->AddForce(direction * mMaxSpeed);
-		currentAnimation = AnimationIndex::WalkingDown;
+		currentAnimation = AnimationIndex::WalkingDown; 
+		mPrevDirection = direction;
 	}
 
 	else if (sf::Keyboard::isKeyPressed(sf::Keyboard::D) || sf::Keyboard::isKeyPressed(sf::Keyboard::Right))
 	{
+		mFacingDirection = FACING_RIGHT;
 		direction.x += 1.0f;
-		GetRigidbody()->AddForce(direction * mMaxSpeed);
 		currentAnimation = AnimationIndex::WalkingRight;
+		mPrevDirection = direction;
 	}
 
 	else if (sf::Keyboard::isKeyPressed(sf::Keyboard::A) || sf::Keyboard::isKeyPressed(sf::Keyboard::Left))
 	{
-		
+		mFacingDirection = FACING_LEFT;
 		direction.x -= 1.0f;
-		GetRigidbody()->AddForce(direction * mMaxSpeed);
 		currentAnimation = AnimationIndex::WalkingLeft;
+		mPrevDirection = direction;
 
 	}
-
+	
+	mShootCooldown -= dt;
 	if (sf::Keyboard::isKeyPressed(sf::Keyboard::Space)) {
 
-		BulletLaunchParams params;
-		params.mOwner = this;
-		params.mStartPos = GetTransform()->GetPosition() * 2.0f;
-		params.mDirection = direction * 2.0f;
-		params.mDamage = 10.0f;
 
-		sf::Texture* bulletTex = new sf::Texture();
+		if (mShootCooldown <= 0) {
 
-		if (!bulletTex->loadFromFile("Textures/player.png", sf::IntRect(14, 0, 7, 12)))
-		{
-			std::cout << "Bullet texture cannot be loaded" << std::endl;
+			mShootCooldown = mShootDelay;
+
+			BulletLaunchParams params;
+			params.mOwner = this;
+			params.mStartPos = GetTransform()->GetPosition();
+			params.mDirection = mPrevDirection;
+			params.mDamage = 10.0f;
+
+			sf::Texture* bulletTex = new sf::Texture();
+
+			if (!bulletTex->loadFromFile("Textures/player.png", sf::IntRect(14, 0, 7, 12)))
+			{
+				std::cout << "Bullet texture cannot be loaded" << std::endl;
+			}
+
+			Bullet* bullet = new Bullet(&GetWorld(), bulletTex);
+			bullet->Launch(&params);
+			GetWorld().AddToGameobjects(bullet);
 		}
+		
 
-		Bullet* bullet = new Bullet(GetWorld(), bulletTex);
-		bullet->Launch(&params);
-
-		std::cout << bullet->GetTransform()->GetPosition().x << std::endl;
+		
 	}
-	
 
 	
-
-	//if ((((accel.x * accel.x) + (accel.y * accel.y)) > 0.0f))
-	//{
-	//	accel = accel.Normalised();
-	//	accel *= AccelerationSpeed;
-
-	//	mAcceleration = accel;
-
-	//	//SetAcceleration(accel);
-	//}
-	//else
-	//{
-	//	mAcceleration = mVelocity * -1.0f;
-	//}
+	GetRigidbody()->AddForce(direction * mMaxSpeed);
+	direction = LLGP::Vector2f(0.0f, 0.0f);
 }

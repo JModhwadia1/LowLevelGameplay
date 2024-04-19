@@ -19,13 +19,17 @@ public:
 	const GameObject* GetOwner() const { return mOwner ? mOwner : this; }
 	float GetDamage() const { return mDamage; }
 	float GetBulletSpeed() { return mBulletSpeed; }
-
+	void Update(float dt) override;
 	void OnCollision(GameObject& other) override;
 
+	void Draw(sf::RenderWindow* window)override;
+	
+
 private:
-	float mBulletSpeed = 20.0f;
+	float mBulletSpeed = 500.0;
 	const GameObject* mOwner = nullptr;
 	float mDamage = 10.0f;
+	LLGP::Vector2f mDirection;
 	
 };
 
