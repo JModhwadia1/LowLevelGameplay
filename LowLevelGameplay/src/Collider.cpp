@@ -17,3 +17,4 @@ inline float DistanceToPointAABB(LLGP::Vector2f point, BoxCollider& coll)
 
 	return sqDist;
 }
+

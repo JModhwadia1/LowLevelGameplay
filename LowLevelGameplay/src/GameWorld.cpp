@@ -7,6 +7,11 @@ GameWorld::GameWorld(sf::RenderWindow* window)
 	Init();
 }
 
+GameWorld::~GameWorld()
+{
+	mPlayer->OnPlayerDied -= std::bind(&GameWorld::HandlePlayerDied, this, std::placeholders::_1);
+}
+
 void GameWorld::Init()
 {
 	//mPlayerTex = new sf::Texture();
@@ -32,6 +37,7 @@ void GameWorld::Init()
 	}
 
 	mPlayer = new Player(this,mResources.mPlayerTex);
+	mPlayer->OnPlayerDied += std::bind(&GameWorld::HandlePlayerDied, this, std::placeholders::_1);
 	mEnemy = new Enemy(this, mResources.mEnemyTex);
 	mPlayer->GetTransform()->SetPosition(LLGP::Vector2f(960.0f, 540.0f));
 
@@ -49,15 +55,18 @@ void GameWorld::Update(float DeltaTime)
 
 	for (int i = 0; i < mGameobjects.size(); i++)
 	{
-		mGameobjects[i]->Update(DeltaTime);
+		if (mGameobjects[i]) {
+			mGameobjects[i]->Update(DeltaTime);
+		}
 	}
 
-	if (IsGameobjectOutOfBounds(mPlayer)) {
-		std::cout << "Player is out of bounds" << std::endl;
-	}
+	//if (IsGameobjectOutOfBounds(mPlayer)) {
+	//	//std::cout << "Player is out of bounds" << std::endl;
+	//}
 	
 
 	UpdateCollisions();
+	UpdateArenaBounds(DeltaTime);
 }
 
 void GameWorld::Render(sf::RenderWindow* window)
@@ -68,7 +77,10 @@ void GameWorld::Render(sf::RenderWindow* window)
 
 	for (int i = 0; i < mGameobjects.size(); i++)
 	{
-		mGameobjects[i]->Draw(window);
+		if (mGameobjects[i] != nullptr) {
+
+			mGameobjects[i]->Draw(window);
+		}
 	}
 
 	RenderArenaBounds();
@@ -139,4 +151,13 @@ void GameWorld::UpdateArenaBounds(float dt)
 			}
 		}
 	}
+}
+
+void GameWorld::HandlePlayerDied(bool die)
+{
+
+	auto player = std::find(mGameobjects.begin(), mGameobjects.end(), mPlayer);
+	mGameobjects.erase(player);
+	delete mPlayer;
+	mPlayer = nullptr;
 }

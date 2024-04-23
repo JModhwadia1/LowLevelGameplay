@@ -4,11 +4,12 @@
 #include "Rigidbody.h"
 #include "Object.h"
 //#include "GameWorld.h"
+#include "Event.h"
 
 
 class Collider;
 class GameWorld;
-class Event;
+//class Event;
 class GameObject : public Object
 {
 public:
@@ -33,7 +34,7 @@ public:
 	void SetCollider(Collider* collider) { _collider = collider; }
 	Collider* GetCollider() { return _collider; }
 	
-	void ApplyDamage(const GameObject* source, float damage);
+	void ApplyDamage( GameObject* source, float damage);
 
 	template<class T> requires isComponent<T> T* GetComponent();
 	template<class T> requires isComponent<T> T* AddComponent();
@@ -44,7 +45,7 @@ public:
 	virtual void OnCollision(GameObject& other) {}
 
 
-	LLGP::Event<const GameObject*, float> OnDamageTaken;
+	LLGP::Event<GameObject*, float> OnDamageTaken;
 
 protected:
 	virtual bool ColllidesWith(const GameObject& other) const { return false; }

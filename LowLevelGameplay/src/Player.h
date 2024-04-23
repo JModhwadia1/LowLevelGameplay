@@ -33,6 +33,7 @@ class Player : public GameObject
 {
 public:
 	explicit Player(GameWorld* world, sf::Texture* texture);
+	~Player();
 
 	virtual void Update(float dt)override;
 	void Draw(sf::RenderWindow* window)override;
@@ -45,6 +46,8 @@ public:
 	void HandleOnDied(bool Die);
 
 	void PrintHealth(float Amount);
+
+	LLGP::Event<bool> OnPlayerDied;
 	
 private:
 	Animation animations[int(AnimationIndex::Count)]; // 4 anims

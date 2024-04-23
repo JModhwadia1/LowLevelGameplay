@@ -10,7 +10,7 @@ public:
 	
 	void UpdateHealth();
 
-	void TakeDamage(const GameObject* Source, float Amount);
+	void TakeDamage(GameObject* Source, float Amount);
 	
 	void Kill();
 

@@ -7,18 +7,21 @@ GameObject::GameObject(GameWorld* world, sf::Texture* texture)
 	_transform = new Transform(LLGP::Vector2f(0, 0), LLGP::Vector2f(1, 1));
 	_rigidbody = new Rigidbody(_transform);
 	 mWorld = world;
-
-
 }
 
 GameObject::~GameObject()
 {
+	_texture = nullptr;
+	_rigidbody = nullptr;
+	_transform = nullptr;
+	_collider = nullptr;
+	mWorld = nullptr;
+
 }
 
 void GameObject::Update(float dt)
 {
 	_rigidbody->Update(dt);
-	//mSprite.setPosition(_transform->GetPosition());
 	_texture->GetSprite()->setPosition(_transform->GetPosition());
 }
 
@@ -27,7 +30,7 @@ void GameObject::Draw(sf::RenderWindow* window)
 	_texture->Draw(window);
 }
 
-void GameObject::ApplyDamage(const GameObject* source, float damage)
+void GameObject::ApplyDamage(GameObject* source, float damage)
 {
 	OnDamageTaken(source, damage);
 }
@@ -57,17 +60,13 @@ T* GameObject::AddComponent()
 template<class T> requires isComponent<T>
 bool GameObject::RemoveComponent(T* comp)
 {
-	/*if (!std::find(m_Components.begin, m_Components.end, comp)
+	if (!std::find(m_Components.begin, m_Components.end, comp))
 	{
-		std::cout << "component not found" << std::cout;
 		return false;
 	}
 	else 
 	{
 		m_Components.erase(comp);
 		return true;
-	}*/
-
-	
-	
+	}	
 }

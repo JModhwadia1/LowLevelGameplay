@@ -22,11 +22,12 @@ public:
 
 public:
 	 GameWorld(sf::RenderWindow* window);
+	 ~GameWorld();
 	const float arenaSize = 900;
 	void Init();
 	void Update(float DeltaTime);
 	void Render(sf::RenderWindow* window);
-	Player* GetPlayer() const { return mPlayer; }
+	Player* GetPlayer() const { if (mPlayer != nullptr) { return mPlayer; } }
 	const Resources& GetResources() { return mResources; }
 	void AddToGameobjects(GameObject* gameobject) { mGameobjects.push_back(gameobject); }
 
@@ -38,6 +39,8 @@ public:
 	sf::RenderWindow* mWindow;
 
 	void UpdateArenaBounds(float dt);
+
+	void HandlePlayerDied(bool die);
 
 private:
 	Player* mPlayer = nullptr;

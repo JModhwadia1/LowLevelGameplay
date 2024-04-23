@@ -29,6 +29,17 @@ Player::Player(GameWorld* world, sf::Texture* texture) : GameObject(world, textu
 
 }
 
+Player::~Player()
+{
+	healthcomp->OnHealthUpdated -= std::bind(&Player::PrintHealth, this, std::placeholders::_1);
+	healthcomp->OnDied -= std::bind(&Player::HandleOnDied, this, std::placeholders::_1);
+	
+	healthcomp = nullptr;
+	_boxCollider = nullptr;
+	_sphereCollider = nullptr;
+
+}
+
 void Player::Update(float dt)
 {
 	UpdateMovement(dt);
@@ -46,8 +57,6 @@ void Player::Draw(sf::RenderWindow* window)
 
 void Player::UpdateMovement(float dt)
 {
-	
-	
 	
 	if (sf::Keyboard::isKeyPressed(sf::Keyboard::W) || sf::Keyboard::isKeyPressed(sf::Keyboard::Up))
 	{
@@ -117,8 +126,9 @@ void Player::UpdateMovement(float dt)
 
 void Player::HandleOnDied(bool Die)
 {
-	if (Die) {
-		
+	if (Die)
+	{
+		OnPlayerDied(Die);
 	}
 }
 

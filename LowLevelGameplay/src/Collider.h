@@ -23,6 +23,7 @@ protected:
 
 public:
 	Collider(Transform* transform) { _transform = transform; }
+	
 
 	virtual bool CollidesWith(Collider& other, CollisionManifold& out) = 0;
 	virtual bool CollidesWith(SphereCollider& other, CollisionManifold& out) = 0;
