@@ -8,6 +8,7 @@
 
 class Collider;
 class GameWorld;
+class Event;
 class GameObject : public Object
 {
 public:
@@ -31,6 +32,8 @@ public:
 	inline bool CompareTag(std::string comp) { return m_Tag == comp; }
 	void SetCollider(Collider* collider) { _collider = collider; }
 	Collider* GetCollider() { return _collider; }
+	
+	void ApplyDamage(const GameObject* source, float damage);
 
 	template<class T> requires isComponent<T> T* GetComponent();
 	template<class T> requires isComponent<T> T* AddComponent();
@@ -40,13 +43,16 @@ public:
 
 	virtual void OnCollision(GameObject& other) {}
 
+
+	LLGP::Event<const GameObject*, float> OnDamageTaken;
+
 protected:
 	virtual bool ColllidesWith(const GameObject& other) const { return false; }
 
 
 private:
 
-
+	
 	std::string m_Name;
 	std::string m_Tag;
 	bool m_Active;
@@ -56,7 +62,7 @@ private:
 	Transform* _transform;
 	Rigidbody* _rigidbody;
 	std::vector <std::unique_ptr<Component>> m_Components;
-
+	
 	GameWorld* mWorld;
 
 

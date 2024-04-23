@@ -16,8 +16,9 @@ Player::Player(GameWorld* world, sf::Texture* texture) : GameObject(world, textu
 	_sphereCollider = new SphereCollider(GetTransform(), 20.0f);
 	SetCollider(_boxCollider);
 
-	healthcomp = new HealthComponent();
+	healthcomp = new HealthComponent(this);
 	healthcomp->OnHealthUpdated += std::bind(&Player::PrintHealth, this, std::placeholders::_1);
+	healthcomp->OnDied += std::bind(&Player::HandleOnDied, this, std::placeholders::_1);
 
 
 	animations[int(AnimationIndex::WalkingUp)] = Animation(23, 0, 7, 12,"Textures/Player.png",*texture);
@@ -106,12 +107,19 @@ void Player::UpdateMovement(float dt)
 
 	if (sf::Keyboard::isKeyPressed(sf::Keyboard::Q)) {
 	
-		healthcomp->TakeDamage(10.0f);
+		healthcomp->TakeDamage(nullptr,10.0f);
 	}
 
 
 	GetRigidbody()->AddForce(direction * mMaxSpeed);
 	direction = LLGP::Vector2f(0.0f, 0.0f);
+}
+
+void Player::HandleOnDied(bool Die)
+{
+	if (Die) {
+		
+	}
 }
 
 void Player::PrintHealth(float Amount)

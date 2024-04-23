@@ -1,5 +1,6 @@
 #include "GameWorld.h"
 
+
 GameWorld::GameWorld(sf::RenderWindow* window)
 {
 	mWindow = window;
@@ -32,7 +33,7 @@ void GameWorld::Init()
 
 	mPlayer = new Player(this,mResources.mPlayerTex);
 	mEnemy = new Enemy(this, mResources.mEnemyTex);
-	
+	mPlayer->GetTransform()->SetPosition(LLGP::Vector2f(960.0f, 540.0f));
 
 
 
@@ -51,6 +52,10 @@ void GameWorld::Update(float DeltaTime)
 		mGameobjects[i]->Update(DeltaTime);
 	}
 
+	if (IsGameobjectOutOfBounds(mPlayer)) {
+		std::cout << "Player is out of bounds" << std::endl;
+	}
+	
 
 	UpdateCollisions();
 }
@@ -65,7 +70,37 @@ void GameWorld::Render(sf::RenderWindow* window)
 	{
 		mGameobjects[i]->Draw(window);
 	}
+
+	RenderArenaBounds();
 }
+
+void GameWorld::RenderArenaBounds()
+{
+	const float lineThickness = 16.0f;
+	
+	sf::RectangleShape arena(sf::Vector2f(arenaSize, arenaSize));
+
+	arena.setOrigin(sf::Vector2f(arenaSize, arenaSize) * 0.5f);
+	arena.setOutlineColor(sf::Color::Red);
+	arena.setFillColor(sf::Color::Transparent);
+	arena.setOutlineThickness(lineThickness);
+	arena.setPosition(960.0f, 540.0f);
+	
+
+	mWindow->draw(arena);
+
+}
+
+bool GameWorld::IsGameobjectOutOfBounds(GameObject* gameobject)
+{
+	sf::FloatRect bounds = gameobject->GetTexture2D()->GetSprite()->getGlobalBounds();
+		
+	return ((bounds.left <= 500.0f) ||  // Left side of rectangle
+			 (bounds.top <= 50.0f ) ||	// Top of the triangle
+		(bounds.left + bounds.width) >= (1430.0f) || // Right side of the triangle
+		(bounds.top + bounds.height) >= (950.0f));	// Bottom side of the triangle
+}
+
 
 void GameWorld::UpdateCollisions()
 {
@@ -85,6 +120,22 @@ void GameWorld::UpdateCollisions()
 					a->OnCollision(*b);
 					b->OnCollision(*a);
 				}
+			}
+		}
+	}
+}
+
+void GameWorld::UpdateArenaBounds(float dt)
+{
+	const float Damage = 1000.0f;
+	
+	for (GameObject* object : mGameobjects)
+	{
+		if (object != nullptr)
+		{
+			if (IsGameobjectOutOfBounds(object)) 
+			{
+				object->ApplyDamage(nullptr, Damage);
 			}
 		}
 	}

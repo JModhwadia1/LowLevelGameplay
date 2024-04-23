@@ -1,4 +1,5 @@
 #include "GameObject.h"
+#include "Event.h"
 
 GameObject::GameObject(GameWorld* world, sf::Texture* texture)
 {
@@ -24,6 +25,11 @@ void GameObject::Update(float dt)
 void GameObject::Draw(sf::RenderWindow* window)
 {
 	_texture->Draw(window);
+}
+
+void GameObject::ApplyDamage(const GameObject* source, float damage)
+{
+	OnDamageTaken(source, damage);
 }
 
 template <class T> requires isComponent<T>

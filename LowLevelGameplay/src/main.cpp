@@ -54,37 +54,13 @@ int main()
 	eventTest(5, 6);
 
 	
-	/*Player* mPlayer = nullptr;
-	Player* mPlayer2 = nullptr;
-	Enemy* enemy = nullptr;*/
+
 	
 
-	sf::RenderWindow window(sf::VideoMode(600, 600), "SFML works!");
-	//sf::CircleShape shape(100.f);
-	//shape.setFillColor(sf::Color::Green);
-
-	//sf::Texture texture;
-	//if (!texture.loadFromFile("Textures/player.png", sf::IntRect(0,0,5,11)))
-	//{
-	//	return EXIT_FAILURE;
-	//}
-	//std::shared_ptr<sf::Texture> sharedtexture = std::make_shared<sf::Texture>();
-	//sharedtexture->loadFromFile("Textures/player.png", sf::IntRect(0, 0, 5, 11));
-
-	//sf::Texture texture2;
-	//if (!texture2.loadFromFile("Textures/player.png", sf::IntRect(0, 0, 5, 11)))
-	//{
-	//	return EXIT_FAILURE;
-	//}
+	sf::RenderWindow window(sf::VideoMode(1920, 1080), "SFML works!");
+	
 	
 	GameWorld* mWorld = new GameWorld(&window);
-
-	//mPlayer = new Player(texture);
-	//enemy = new Enemy(texture2);
-	//enemy->SetPlayerRef(mPlayer);
-	//enemy->GetTransform()->SetPosition(LLGP::Vector2f(100.0f, 100.0f));
-	
-
 
 	std::chrono::steady_clock::time_point lastTime = std::chrono::steady_clock::now();
 	float deltaTime = 0.0f;

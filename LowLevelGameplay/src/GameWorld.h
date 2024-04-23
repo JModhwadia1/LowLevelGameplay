@@ -17,13 +17,12 @@ public:
 		sf::Texture* mPlayerTex;
 		sf::Texture* mEnemyTex;
 		sf::Texture* mBulletTex;
-
 	};
 
 
 public:
-
 	 GameWorld(sf::RenderWindow* window);
+	const float arenaSize = 900;
 	void Init();
 	void Update(float DeltaTime);
 	void Render(sf::RenderWindow* window);
@@ -31,11 +30,14 @@ public:
 	const Resources& GetResources() { return mResources; }
 	void AddToGameobjects(GameObject* gameobject) { mGameobjects.push_back(gameobject); }
 
+	void RenderArenaBounds();
+	bool IsGameobjectOutOfBounds(GameObject* gameobject);
 	template <typename T>
-	T* SpawnGameobject(sf::Texture* tex);
-
+	T* SpawnGameobject(sf::Texture* texture);
 	void UpdateCollisions();
 	sf::RenderWindow* mWindow;
+
+	void UpdateArenaBounds(float dt);
 
 private:
 	Player* mPlayer = nullptr;
@@ -45,9 +47,9 @@ private:
 };
 
 template<typename T>
-T* GameWorld::SpawnGameobject(sf::Texture* tex) 
+T* GameWorld::SpawnGameobject(sf::Texture* texture) 
 {
-	if (T* newGameobject = new T(this, tex)) 
+	if (T* newGameobject = new T(this, texture)) 
 	{
 		mGameobjects.push_back(newGameobject);
 		return newGameobject;
