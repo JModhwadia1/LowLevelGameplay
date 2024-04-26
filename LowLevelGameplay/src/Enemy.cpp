@@ -91,7 +91,7 @@ void Enemy::OnCollision(GameObject& other)
 {
 	if (Player* player = dynamic_cast<Player*>(&other))
 	{
-		std::cout << "Player collided with enemy" << std::endl;
+	
 	}
 }
 
