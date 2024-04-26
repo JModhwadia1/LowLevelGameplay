@@ -6,7 +6,6 @@
 
 class InputManager
 {
-
 	LLGP::Event < sf::Keyboard::Key> onPressed;
 	
 	InputManager();

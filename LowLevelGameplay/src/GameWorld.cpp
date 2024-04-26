@@ -1,4 +1,5 @@
 #include "GameWorld.h"
+#include "Vector2.h"
 
 
 GameWorld::GameWorld(sf::RenderWindow* window)
@@ -66,7 +67,14 @@ void GameWorld::Update(float DeltaTime)
 	
 
 	UpdateCollisions();
-	UpdateArenaBounds(DeltaTime);
+
+	mEnemySpawnTime -= DeltaTime;
+
+	if (mEnemySpawnTime <= 0.0f) {
+		mEnemySpawnTime = 5.0f;
+		SpawnNewEnemy();
+	}
+	//UpdateArenaBounds(DeltaTime);
 }
 
 void GameWorld::Render(sf::RenderWindow* window)
@@ -137,6 +145,17 @@ void GameWorld::UpdateCollisions()
 	}
 }
 
+void GameWorld::SpawnNewEnemy()
+{
+	const LLGP::Vector2f spawnPos(LLGP::FRandomRange(500.0f, 1430.f), LLGP::FRandomRange(50.0f, 950.0f));
+
+	GameObject* newEnemy = nullptr;
+
+	newEnemy = SpawnGameobject<Enemy>(GetResources().mEnemyTex);
+	newEnemy->GetTransform()->SetPosition(spawnPos);
+
+}
+
 void GameWorld::UpdateArenaBounds(float dt)
 {
 	const float Damage = 1000.0f;
@@ -153,6 +172,7 @@ void GameWorld::UpdateArenaBounds(float dt)
 	}
 }
 
+// Delete player from the world and remove it from the list of gameobjects
 void GameWorld::HandlePlayerDied(bool die)
 {
 

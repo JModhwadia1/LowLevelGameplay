@@ -38,8 +38,10 @@ public:
 	void UpdateCollisions();
 	sf::RenderWindow* mWindow;
 
-	void UpdateArenaBounds(float dt);
+	void SpawnNewEnemy();
 
+	void UpdateArenaBounds(float dt);
+	GameWorld* GetWorld() { return this; }
 	void HandlePlayerDied(bool die);
 
 private:
@@ -47,6 +49,8 @@ private:
 	Enemy* mEnemy = nullptr;
 	Resources mResources;
 	std::vector<GameObject*> mGameobjects;
+
+	float mEnemySpawnTime = 5.0f;
 };
 
 template<typename T>

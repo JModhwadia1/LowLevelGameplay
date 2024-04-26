@@ -9,10 +9,10 @@ Enemy::Enemy(GameWorld* world, sf::Texture* texture) : GameObject(world, texture
 	GetRigidbody()->SetMaxSpeed(mMaxSpeed);
 	GetTexture2D()->GetSprite()->setScale(5, 5);
 	GetTexture2D()->GetSprite()->setTextureRect(sf::IntRect(0, 0, 5, 11));
-	GetTransform()->SetPosition(LLGP::Vector2f(100.f, 100.f));
+	//GetTransform()->SetPosition(LLGP::Vector2f(100.f, 100.f));
 	_boxCollider = new BoxCollider(GetTransform(), LLGP::Vector2f(25.0f, 55.0f));
 	_sphereCollider = new SphereCollider(GetTransform(), 20.0f);
-	SetCollider(_sphereCollider);
+	SetCollider(_boxCollider);
 
 }
 
@@ -73,7 +73,7 @@ void Enemy::DeathState()
 
 void Enemy::UpdateStates()
 {
-	if (_playerRef == nullptr) return;
+	//if (_playerRef == nullptr) return;
 	_playerRef = GetWorld().GetPlayer();
 	float  distanceToPlayer = (_playerRef->GetTransform()->GetPosition() - GetTransform()->GetPosition()).GetMagnitude();
 
