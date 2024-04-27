@@ -3,6 +3,7 @@
 #include "Player.h"
 #include "Enemy.h"
 #include "Event.h"
+#include "ObjectPool.h"
 #include <iostream>
 
 
@@ -21,6 +22,7 @@ public:
 
 
 public:
+	 GameWorld() = default;
 	 GameWorld(sf::RenderWindow* window);
 	 ~GameWorld();
 	const float arenaSize = 900;
@@ -44,6 +46,8 @@ public:
 	GameWorld* GetWorld() { return this; }
 	void HandlePlayerDied(bool die);
 
+	ObjectPool m_ObjectPoolInstance;
+
 private:
 	Player* mPlayer = nullptr;
 	Enemy* mEnemy = nullptr;
@@ -51,6 +55,8 @@ private:
 	std::vector<GameObject*> mGameobjects;
 
 	float mEnemySpawnTime = 5.0f;
+
+
 };
 
 template<typename T>

@@ -1,14 +1,7 @@
 #include "ObjectPool.h"
 #include "GameWorld.h"
 
-ObjectPool::ObjectPool(GameWorld* world)
-{
-	mWorld = world;
-}
 
-ObjectPool::~ObjectPool()
-{
-}
 
 void ObjectPool::Start()
 {
@@ -42,17 +35,30 @@ GameObject* ObjectPool::GetPooledObject(std::string tag)
 	//	}
 	//}
 
-	for (int i = 0; i < m_Pools.size(); i++)
+	// Loop through all the pools
+	for (int i = 0; i <m_Pools.size(); i++)
 	{
-		// name of the pool 
-		if (m_Pools[i].GetName() == tag) {
+		// Loop through all the objects in the current iteration of the pool
+		for (int  j= 0;  j < m_Pools[i]._Objects.size(); j++)
+		{
+			// Check if the current object has the same tag 
+			if (m_Pools[i]._Objects[j]->CompareTag(tag)) {
 
-			// Need a way to return the gameobject
-			for (int i = 0; i < m_Pools[i]; i++)
-			{
-
+				// if the tag matches  the gameobjects tag then return it
+				return m_Pools[i].GetPooledObject(tag);
 			}
 		}
-		return nullptr;
+	}
+}
+
+GameObject* Pool::GetPooledObject(std::string tag)
+{
+	for (int i = 0; i < _Objects.size(); i++)
+	{
+		if (_Objects[i]->CompareTag(tag))
+		{
+
+			return _Objects[i];
+		}
 	}
 }

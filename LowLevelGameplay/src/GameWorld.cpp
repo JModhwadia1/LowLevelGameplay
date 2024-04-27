@@ -1,5 +1,10 @@
 #include "GameWorld.h"
 #include "Vector2.h"
+#include "Bullet.h"
+
+
+
+
 
 
 GameWorld::GameWorld(sf::RenderWindow* window)
@@ -46,6 +51,9 @@ void GameWorld::Init()
 
 	mGameobjects.push_back(mPlayer);
 	mGameobjects.push_back(mEnemy);
+	m_ObjectPoolInstance = ObjectPool::Get();
+
+
 	
 }
 

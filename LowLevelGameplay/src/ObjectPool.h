@@ -16,22 +16,35 @@ struct Pool
 {
 	//TODO: add utility functions for getting next avail and returning
 	std::vector<GameObject*> _Objects;
+
+	GameObject* GetPooledObject(std::string tag);
 };
 
 class ObjectPool {
 public:
 
-	ObjectPool(GameWorld* world );
-	~ObjectPool();
+	ObjectPool(const ObjectPool&) = delete;
+	static ObjectPool& Get()
+	{
+		return Instance;
+	}
+
 
 	void Start();
+	void SetWorld(GameWorld* world) { mWorld = world; }
 	GameObject* GetPooledObject(std::string tag);
-	static ObjectPool sharedInstance;
 
 	std::vector<ObjectPoolItem> objectsToPool;
 private:
+
+	ObjectPool() {}
 	std::vector<Pool> m_Pools;
+	static ObjectPool Instance;
 	
 	GameWorld* mWorld;
 
 };
+
+ObjectPool ObjectPool::Instance;
+
+

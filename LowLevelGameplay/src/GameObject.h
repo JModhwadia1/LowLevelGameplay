@@ -30,6 +30,7 @@ public:
 	GameWorld& GetWorld() const { return *mWorld; }
 
 	inline void SetTag(std::string newTag) { m_Tag = newTag; }
+	
 	inline bool CompareTag(std::string comp) { return m_Tag == comp; }
 	void SetCollider(Collider* collider) { _collider = collider; }
 	Collider* GetCollider() { return _collider; }
