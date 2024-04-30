@@ -17,7 +17,7 @@ class Bullet : public GameObject
 public:
 	Bullet(GameWorld* world, sf::Texture* texture);
 	void Launch(const BulletLaunchParams* params);
-
+	virtual void Start() override;
 	const GameObject* GetOwner() const { return mOwner ? mOwner : this; }
 	float GetDamage() const { return mDamage; }
 	float GetBulletSpeed() { return mBulletSpeed; }

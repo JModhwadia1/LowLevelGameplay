@@ -35,9 +35,9 @@ public:
 	explicit Player(GameWorld* world, sf::Texture* texture);
 	~Player();
 
+	virtual void Start() override;
 	virtual void Update(float dt)override;
 	void Draw(sf::RenderWindow* window)override;
-
 	LLGP::Vector2f direction;
 	LLGP::Vector2f mPrevDirection;
 	void UpdateMovement(float dt);

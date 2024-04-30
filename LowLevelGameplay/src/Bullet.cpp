@@ -26,6 +26,10 @@ void Bullet::Launch(const BulletLaunchParams* params)
 	GameObject::Draw(GetWorld().mWindow);
 }
 
+void Bullet::Start()
+{
+}
+
 void Bullet::OnCollision(GameObject& other)
 {
 

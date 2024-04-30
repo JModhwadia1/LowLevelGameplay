@@ -1,6 +1,7 @@
 #pragma once
 #include "GameObject.h"
 #include <vector>
+#include "Factory.h"
 
 class GameWorld;
 
@@ -11,8 +12,9 @@ class ObjectPoolItem {
 public:
 	/*ObjectPoolItem(int AMOUNTTOPOOL, GameObject OBJECTTOPOOL)*/
 	int amountToPool;
-	GameObject objectToPool;
-	std::type_info typeToPool;
+	/*GameObject objectToPool;*/
+	
+	GameobjectFactory* factory;
 	bool expand = true;
 };
 

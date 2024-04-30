@@ -16,7 +16,7 @@ public:
 	GameObject() = default;
 	GameObject(GameWorld* world, sf::Texture* texture);
 	~GameObject();
-
+	virtual void Start();
 	virtual void Update(float dt);
 	virtual void Draw(sf::RenderWindow* window);
 	Rigidbody* GetRigidbody() { return _rigidbody; }

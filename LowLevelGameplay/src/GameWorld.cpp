@@ -40,7 +40,7 @@ void GameWorld::Init()
 
 	
 
-	ObjectPool::objectsToPool.push_back(ObjectPoolItem());
+	/*ObjectPool::objectsToPool.push_back(ObjectPoolItem());*/
 
 
 	

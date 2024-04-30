@@ -22,7 +22,7 @@ class Enemy : public GameObject
 public:
 	Enemy(GameWorld* world,sf::Texture* texture);
 
-
+	void Start() override;
 	void ChangeCurrentState(States state) { _currentState = state; }
 	void Update(float dt)override;
 	void Draw(sf::RenderWindow* window)override;

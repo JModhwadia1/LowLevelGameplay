@@ -18,7 +18,6 @@ void ObjectPool::Start()
 		for (int j= 0; j < objectsToPool[i].amountToPool; j++)
 		{
 			// Need a way to ignore the gameobject type so that we can use item.objectToPool
-			
 			GameObject* obj = mWorld->SpawnGameobject<GameObject>(mWorld->GetResources().mPlayerTex);	
 			m_Pools[i]._Objects.push_back(obj);
 		}
