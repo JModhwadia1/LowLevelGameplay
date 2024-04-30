@@ -2,6 +2,7 @@
 #include <iostream>
 #include "GameWorld.h"
 #include "BoxCollider.h"
+#include "Enemy.h"
 
 Bullet::Bullet(GameWorld* world, sf::Texture* texture) : GameObject(world, world->GetResources().mBulletTex)
 {

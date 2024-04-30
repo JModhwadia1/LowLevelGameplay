@@ -1,6 +1,8 @@
 #include "Enemy.h"
 #include "Player.h"
 #include "GameWorld.h"
+#include "BoxCollider.h"
+#include "SphereCollider.h"
 #include <iostream>
 
 Enemy::Enemy(GameWorld* world, sf::Texture* texture) : GameObject(world, texture)
@@ -8,7 +10,7 @@ Enemy::Enemy(GameWorld* world, sf::Texture* texture) : GameObject(world, texture
 
 	GetRigidbody()->SetMaxSpeed(mMaxSpeed);
 	GetTexture2D()->GetSprite()->setScale(5, 5);
-	GetTexture2D()->GetSprite()->setTextureRect(sf::IntRect(0, 0, 5, 11));
+	//GetTexture2D()->GetSprite()->setTextureRect(sf::IntRect(0, 0, 5, 11));
 	//GetTransform()->SetPosition(LLGP::Vector2f(100.f, 100.f));
 	_boxCollider = new BoxCollider(GetTransform(), LLGP::Vector2f(25.0f, 55.0f));
 	_sphereCollider = new SphereCollider(GetTransform(), 20.0f);

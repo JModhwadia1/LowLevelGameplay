@@ -1,21 +1,22 @@
 #pragma once
 #include "GameObject.h"
 //#include "Player.h"
-#include "BoxCollider.h"
-#include "SphereCollider.h"
+
 
 class Player;
-
-enum States
-{
-	Idle,
-	Chase,
-	Attack,
-	Death
-};
+class BoxCollider;
+class SphereCollider;
 
 class Enemy : public GameObject
 {
+	enum States
+	{
+		Idle,
+		Chase,
+		Attack,
+		Death
+	};
+
 public:
 	Enemy(GameWorld* world,sf::Texture* texture);
 

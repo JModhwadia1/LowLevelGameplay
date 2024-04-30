@@ -2,7 +2,7 @@
 
 bool LineCollider::CollidesWith(SphereCollider& other, CollisionManifold& out)
 {
-	
+	return false;
 }
 
 bool LineCollider::CollidesWith(BoxCollider& other, CollisionManifold& out)
