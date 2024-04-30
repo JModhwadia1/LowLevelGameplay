@@ -39,7 +39,8 @@ void GameWorld::Init()
 	mGameobjects.push_back(mEnemy);
 
 	
-	//m_ObjectPoolInstance = ObjectPool::Get();
+
+	ObjectPool::objectsToPool.push_back(ObjectPoolItem());
 
 
 	

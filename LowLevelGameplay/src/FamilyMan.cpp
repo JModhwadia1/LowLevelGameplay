@@ -17,10 +17,12 @@ FamilyMan::FamilyMan(GameWorld* world, sf::Texture* texture) : Family(world, tex
 
 FamilyMan::~FamilyMan()
 {
+
 }
 
 void FamilyMan::IdleState()
 {
+
 }
 
 void FamilyMan::WanderState(float dt)
@@ -42,11 +44,11 @@ void FamilyMan::WanderState(float dt)
 
 	LLGP::Vector2f direction = randomPoint - GetTransform()->GetPosition();
 	GetRigidbody()->AddForce(direction.Normalised() * m_MaxSpeed);
-	
 }
 
 void FamilyMan::DeathState()
 {
+
 }
 
 void FamilyMan::Draw(sf::RenderWindow* window)

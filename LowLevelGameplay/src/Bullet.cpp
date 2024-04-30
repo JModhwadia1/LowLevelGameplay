@@ -37,7 +37,6 @@ void Bullet::OnCollision(GameObject& other)
 
 void Bullet::Update(float dt)
 {
-	
 	GetRigidbody()->AddForce(mDirection * mBulletSpeed);
 	GameObject::Update(dt);
 }

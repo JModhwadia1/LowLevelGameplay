@@ -69,7 +69,7 @@ public:
 	GameWorld* GetWorld() { return this; }
 	void HandlePlayerDied(bool die);
 
-	//ObjectPool m_ObjectPoolInstance;
+	
 
 private:
 	Player* mPlayer = nullptr;
@@ -79,6 +79,8 @@ private:
 	std::vector<GameObject*> mGameobjects;
 
 	float mEnemySpawnTime = 5.0f;
+
+
 
 
 };

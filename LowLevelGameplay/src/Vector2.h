@@ -116,8 +116,8 @@ namespace LLGP
 		return mag < 9.99999944E-11f;
 	}
 
-	template<typename T> requires arithmetic<T>
-	inline bool operator!=(Vector2<T>& lhs, const Vector2<T>& rhs) { return !(lhs == rhs); }
+	//template<typename T> requires arithmetic<T>
+	//inline bool operator!=(Vector2<T>& lhs, const Vector2<T>& rhs) { return !(lhs == rhs); }
 
 	template<typename T> requires arithmetic<T>
 	 Vector2<T> Vector2<T>::zero(static_cast<T>(0), static_cast<T>(0));

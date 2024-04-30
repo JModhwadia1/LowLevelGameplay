@@ -9,6 +9,7 @@ Texture2D::Texture2D(sf::Texture* texture)
 
 Texture2D::~Texture2D()
 {
+	mSprite = nullptr;
 }
 
 void Texture2D::Draw(sf::RenderWindow* window)

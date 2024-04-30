@@ -7,6 +7,8 @@ class Player;
 class BoxCollider;
 class SphereCollider;
 
+
+
 class Enemy : public GameObject
 {
 	enum States
