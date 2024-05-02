@@ -31,7 +31,7 @@ void GameWorld::Init()
 	mPlayer->OnPlayerDied += std::bind(&GameWorld::HandlePlayerDied, this, std::placeholders::_1);
 	mEnemy = new Enemy(this, mResources.mTanksTex);
 	mPlayer->GetTransform()->SetPosition(LLGP::Vector2f(960.0f, 540.0f));
-	mFamilyMan = /*SpawnGameobject<FamilyMan>(mResources.mMenTex);*/new FamilyMan(this, mResources.mMenTex);
+	mFamilyMan = /*SpawnGameobject<FamilyMan>(mResources.mMenTex);*/new FamilyMan(this, mResources.mEnemyTex);
 
 
 	mGameobjects.push_back(mPlayer);
@@ -160,7 +160,7 @@ void GameWorld::Update(float DeltaTime)
 
 	if (mEnemySpawnTime <= 0.0f) {
 		mEnemySpawnTime = 5.0f;
-		SpawnNewEnemy();
+		//SpawnNewEnemy();
 	}
 	//UpdateArenaBounds(DeltaTime);
 }

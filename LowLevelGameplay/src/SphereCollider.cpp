@@ -1,5 +1,6 @@
 #include "SphereCollider.h"
 #include "BoxCollider.h"
+#include "LineCollider.h"
 #include <iostream>
 
 
@@ -79,6 +80,12 @@ bool SphereCollider::CollidesWith(BoxCollider& other, CollisionManifold& out)
 
 	return diff.GetMagnitude() < this->_radius;
 
+}
+
+bool SphereCollider::CollidesWith(LineCollider& other, CollisionManifold& out)
+{
+
+	return other.LineCircle(other.GetHeadPoint().x,other.GetHeadPoint().y,other.GetTailPoint().x,other.GetTailPoint().y,GetPosition().x,GetPosition().y,this->_radius);
 }
 
 

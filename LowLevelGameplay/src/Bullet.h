@@ -2,6 +2,7 @@
 #include "GameObject.h"
 
 class BoxCollider;
+class LineCollider;
 
 struct  BulletLaunchParams
 {
@@ -26,6 +27,7 @@ public:
 
 	void Draw(sf::RenderWindow* window)override;
 	BoxCollider* mBoxCollider;
+	LineCollider* mLineCollider;
 
 private:
 	float mBulletSpeed = 500.0;

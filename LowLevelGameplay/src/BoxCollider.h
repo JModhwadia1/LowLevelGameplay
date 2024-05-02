@@ -9,6 +9,7 @@ public:
 	bool CollidesWith(Collider& other, CollisionManifold& out) override { return other.CollidesWith(*this, out);}
 	bool CollidesWith(SphereCollider& other, CollisionManifold& out) override;
 	bool CollidesWith(BoxCollider& other, CollisionManifold& out) override;
+	bool CollidesWith(LineCollider& other, CollisionManifold& out) override;
 	
 	LLGP::Vector2f GetCenter() { return _center; }
 	void SetCenter(LLGP::Vector2f center) { _center = center; }

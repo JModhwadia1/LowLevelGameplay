@@ -4,6 +4,7 @@
 
 class SphereCollider;
 class BoxCollider;
+class LineCollider;
 
 struct ContactPoint {
 	LLGP::Vector2f Position;
@@ -28,7 +29,7 @@ public:
 	virtual bool CollidesWith(Collider& other, CollisionManifold& out) = 0;
 	virtual bool CollidesWith(SphereCollider& other, CollisionManifold& out) = 0;
 	virtual bool CollidesWith(BoxCollider& other, CollisionManifold& out) = 0;
-
+	virtual bool CollidesWith(LineCollider& other, CollisionManifold& out) = 0;
 	LLGP::Vector2f GetPosition() const { return _transform->GetPosition(); }
 };
 

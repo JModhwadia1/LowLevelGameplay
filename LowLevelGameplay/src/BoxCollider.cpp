@@ -1,7 +1,7 @@
 #include "BoxCollider.h"
 #include "SphereCollider.h"
 #include "Collider.cpp"
-
+#include "LineCollider.h"
 float  clamp2(float value, float min, float max);
 
 
@@ -63,6 +63,18 @@ bool BoxCollider::CollidesWith(BoxCollider& other, CollisionManifold& out)
 	//
 	//	 
 	
+}
+bool BoxCollider::CollidesWith(LineCollider& other, CollisionManifold& out)
+{
+	LLGP::Vector2f otherHeadPoint = other.GetHeadPoint();
+	LLGP::Vector2f otherTailPoint = other.GetTailPoint();
+
+	if (this->_max.x < otherTailPoint.x ||
+		this->_max.y < otherTailPoint.y ||
+		this->_max.x > otherHeadPoint.x ||
+		this->_max.y > otherHeadPoint.y)
+		return false;
+	return true;
 }
 float  clamp2(float value, float min, float max)
 {

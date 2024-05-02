@@ -19,6 +19,10 @@ GameObject::~GameObject()
 
 }
 
+void GameObject::Start()
+{
+}
+
 void GameObject::Update(float dt)
 {
 	_rigidbody->Update(dt);

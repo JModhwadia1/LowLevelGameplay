@@ -13,9 +13,13 @@ Enemy::Enemy(GameWorld* world, sf::Texture* texture) : GameObject(world, texture
 	//GetTexture2D()->GetSprite()->setTextureRect(sf::IntRect(0, 0, 5, 11));
 	//GetTransform()->SetPosition(LLGP::Vector2f(100.f, 100.f));
 	_boxCollider = new BoxCollider(GetTransform(), LLGP::Vector2f(25.0f, 55.0f));
-	_sphereCollider = new SphereCollider(GetTransform(), 20.0f);
-	SetCollider(_boxCollider);
+	_sphereCollider = new SphereCollider(GetTransform(), 30.0f);
+	SetCollider(_sphereCollider);
 
+}
+
+void Enemy::Start()
+{
 }
 
 void Enemy::Update(float dt)

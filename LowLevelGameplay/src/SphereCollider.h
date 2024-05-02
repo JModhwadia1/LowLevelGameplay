@@ -8,7 +8,7 @@ public:
 	 bool CollidesWith(Collider& other, CollisionManifold& out) override { return other.CollidesWith(*this, out); }
 	 bool CollidesWith(SphereCollider& other, CollisionManifold& out) override;
 	 bool CollidesWith(BoxCollider& other, CollisionManifold& out) override;
-	
+	 bool CollidesWith(LineCollider& other, CollisionManifold& out) override;
 	float GetRadius() { return _radius; }
 
 
