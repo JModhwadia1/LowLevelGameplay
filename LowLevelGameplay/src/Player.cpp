@@ -14,7 +14,7 @@ Player::Player(GameWorld* world, sf::Texture* texture) : GameObject(world, textu
 	GetTexture2D()->GetSprite()->setTextureRect(sf::IntRect(0,0,5,11));
 	_boxCollider = new BoxCollider(GetTransform(), LLGP::Vector2f(25.0f, 55.0f));
 	_sphereCollider = new SphereCollider(GetTransform(), 20.0f);
-	SetCollider(_sphereCollider);
+	SetCollider(_boxCollider);
 
 	healthcomp = new HealthComponent(this);
 	healthcomp->OnHealthUpdated += std::bind(&Player::PrintHealth, this, std::placeholders::_1);
@@ -50,6 +50,9 @@ void Player::Update(float dt)
 	animations[int(currentAnimation)].Update(dt);
 	animations[int(currentAnimation)].ApplyToSprite(*GetTexture2D()->GetSprite());
 	GameObject::Update(dt);
+	
+
+
 	
 }
 

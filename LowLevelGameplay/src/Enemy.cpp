@@ -14,7 +14,7 @@ Enemy::Enemy(GameWorld* world, sf::Texture* texture) : GameObject(world, texture
 	//GetTransform()->SetPosition(LLGP::Vector2f(100.f, 100.f));
 	_boxCollider = new BoxCollider(GetTransform(), LLGP::Vector2f(25.0f, 55.0f));
 	_sphereCollider = new SphereCollider(GetTransform(), 30.0f);
-	SetCollider(_sphereCollider);
+	SetCollider(_boxCollider);
 
 }
 

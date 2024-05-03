@@ -22,7 +22,16 @@ bool BoxCollider::CollidesWith(SphereCollider& other, CollisionManifold& out)
 
 	diff = closest - center;
 
-	return diff.GetMagnitude() < other.GetRadius();
+	if (diff.GetMagnitude() < other.GetRadius()) {
+		out.collisionNormal = diff;
+		out.collisionNormal.Normalise();
+		out.contactPointCount = 1;
+		out.points[0].Position = GetPosition() + (out.collisionNormal * other.GetRadius());
+		out.points[0].penDepth = fabs(diff.GetMagnitude() - other.GetRadius());
+		return true;
+	}
+	return false;
+	
 }
 
 bool BoxCollider::CollidesWith(BoxCollider& other, CollisionManifold& out)
@@ -41,10 +50,14 @@ bool BoxCollider::CollidesWith(BoxCollider& other, CollisionManifold& out)
 	theirMin = theirCenter - (other.GetHalfExtents() / 2);
 
 	// Check to see if there is collision 
-	if (this->_max.x < theirMin.x || 
-		this->_max.y < theirMin.y || 
-		this->_min.x > theirMax.x || 
-		this->_min.y > theirMax.y)
+	//if (this->_max.x < theirMin.x || 
+	//	this->_max.y < theirMin.y || 
+	//	this->_min.x > theirMax.x || 
+	//	this->_min.y > theirMax.y)
+	//	return false;
+	if (this->_max.x < theirMin.x || this->_min.x > theirMax.x)
+		return false;
+	if (this->_max.y < theirMin.y || this->_min.y > theirMax.y)
 		return false;
 	/*if (this->_max.y < theirMin.y || this->_min.y > theirMax.y);
 		return false;*/
@@ -56,12 +69,7 @@ bool BoxCollider::CollidesWith(BoxCollider& other, CollisionManifold& out)
 	out.points[0].penDepth = DistanceToPointAABB(out.points[0].Position, *this);
 
 	return true;
-	//bool CollisionX = this->GetPosition().x + 25.0f >= other.GetPosition().x && other.GetPosition().x + 25.0f >= this->GetPosition().x;
-	//bool CollisionY = this->GetPosition().y + 55.0f >= other.GetPosition().y && other.GetPosition().y + 55.0f >= this->GetPosition().y;
-
-	//return CollisionX && CollisionY;
-	//
-	//	 
+	
 	
 }
 bool BoxCollider::CollidesWith(LineCollider& other, CollisionManifold& out)

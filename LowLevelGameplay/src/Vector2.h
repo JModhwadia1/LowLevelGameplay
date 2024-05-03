@@ -100,6 +100,8 @@ namespace LLGP
 
 	template<typename T, typename U> requires arithmetic<T> and arithmetic<U>
 	Vector2<T> operator*(const U a, Vector2<T> v) { return v *= a; }
+
+
 	
 	//TODO make the /= and / versions
 	template<typename T, typename U> requires arithmetic<T>and arithmetic<U>

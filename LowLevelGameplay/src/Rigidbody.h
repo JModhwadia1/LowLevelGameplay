@@ -22,7 +22,8 @@ public:
 	LLGP::Vector2f GetVelocity() { return mVelocity; }
 	void SetVelocity(LLGP::Vector2f velocity) { mVelocity = velocity; }
 	float GetMaxSpeed() { return mMaxSpeed; }
-
+	void ApplyImpluse(LLGP::Vector2f impulse) { mVelocity += impulse; }
+	float GetInverseMass() { if (mMass == 0) { return 0; return 1.0f / mMass; } }
 protected:
 	LLGP::Vector2f mVelocity = LLGP::Vector2f(0.0f, 0.0f);
 	LLGP::Vector2f mAcceleration = LLGP::Vector2f(0.0f, 0.0f);
@@ -33,6 +34,7 @@ private:
 	float mMaxSpeed; 
 	Transform* _transform;
 	LLGP::Vector2f _netForce;
+	float mMass = 1.0f;
 
 };
 

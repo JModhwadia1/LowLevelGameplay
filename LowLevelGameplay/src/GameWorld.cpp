@@ -29,7 +29,7 @@ void GameWorld::Init()
 
 	mPlayer = new Player(this,mResources.mPlayerTex);
 	mPlayer->OnPlayerDied += std::bind(&GameWorld::HandlePlayerDied, this, std::placeholders::_1);
-	mEnemy = new Enemy(this, mResources.mTanksTex);
+	mEnemy = new Enemy(this, mResources.mEnemyTex);
 	mPlayer->GetTransform()->SetPosition(LLGP::Vector2f(960.0f, 540.0f));
 	mFamilyMan = /*SpawnGameobject<FamilyMan>(mResources.mMenTex);*/new FamilyMan(this, mResources.mEnemyTex);
 
@@ -154,11 +154,12 @@ void GameWorld::Update(float DeltaTime)
 	//}
 	
 
-	UpdateCollisions();
+	//UpdateCollisions();
 
 	mEnemySpawnTime -= DeltaTime;
 
-	if (mEnemySpawnTime <= 0.0f) {
+	if (mEnemySpawnTime <= 0.0f)
+	{
 		mEnemySpawnTime = 5.0f;
 		//SpawnNewEnemy();
 	}
@@ -231,6 +232,39 @@ void GameWorld::UpdateCollisions()
 			{
 				if (a->IsCollideable() && b->IsCollideable() && a->GetCollider()->CollidesWith(*b->GetCollider(), manifold))
 				{
+
+					LLGP::Vector2f collisionNormal = manifold.collisionNormal;
+
+					collisionNormal.Normalise();
+					LLGP::Vector2f relativeVelocity = a->GetRigidbody()->GetVelocity() - b->GetRigidbody()->GetVelocity();
+					float dot = LLGP::Vector2f::Dot(collisionNormal, relativeVelocity);
+					if (dot < 0.0f) {
+
+						// Restitution - Between 0 and 1 for testing
+						float e = 1.0f;
+						// Get inverse mass of object A
+						float invMassA = a->GetRigidbody()->GetInverseMass();
+						// Get inverse mass of object B
+						float invMassB = b->GetRigidbody()->GetInverseMass();
+						// Calculate the inverse mass sum =  InvMassA + InvMass B
+						float inverseMassSum = invMassA + invMassB;
+						// Calculate total velocity
+						float vj = -(1 + e) * dot;
+						// Caluculate impulse
+						float j = vj * (inverseMassSum);
+
+
+
+						// Apply Impulse to object A
+						a->GetRigidbody()->ApplyImpluse(invMassA * j * collisionNormal);
+						b->GetRigidbody()->ApplyImpluse(-(invMassB * j * collisionNormal));
+						
+						std::cout << "impulse: " << j<< std::endl;
+
+						
+
+						manifold = CollisionManifold();
+					}
 					a->OnCollision(*b);
 					b->OnCollision(*a);
 				}

@@ -101,7 +101,7 @@ int main()
 			// Collect collision info
 			// dispatch collisions
 
-			
+			mWorld->UpdateCollisions();
 
 			timeSincePhysicsStep -= FIXEDFRAMERATE;
 		}

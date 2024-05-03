@@ -21,7 +21,7 @@ void Rigidbody::Update(float deltaTime)
 	//mVelocity = mAcceleration * mMaxSpeed;
 
 	// Increase pos
-	pos += mVelocity * deltaTime;
+	pos += (mVelocity / mMass) * deltaTime;
 	
 	// Set position
 	_transform->SetPosition(pos);
