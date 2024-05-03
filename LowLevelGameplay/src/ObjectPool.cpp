@@ -22,11 +22,20 @@ void ObjectPool::Start()
 
 void ObjectPool::Cleanup()
 {
-	for (Pool p : m_Pools)
+	/*for (Pool p : m_Pools)
 	{
-		for (GameObject* o : p._Objects.)
+		for (GameObject* o : p._Objects)
 		{
 			delete(o);
+		}
+	}*/
+
+	for (int i = 0; i < m_Pools.size(); i++)
+	{
+		for (int j = 0; j < m_Pools[i]._Objects.size(); j++)
+		{
+			GameObject* o = m_Pools[i]._Objects[j];
+			delete o;
 		}
 	}
 }
@@ -45,7 +54,7 @@ GameObject* ObjectPool::GetPooledObject(std::string tag)
 				if (o.first)
 				{
 					//TODO:figure this out
-					o.first = false;
+					o.first = false;	// Not active
 					return o.second;
 				}
 			}
