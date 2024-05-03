@@ -5,7 +5,7 @@
 #include "LineCollider.h"
 #include "Enemy.h"
 
-Bullet::Bullet(GameWorld* world, sf::Texture* texture) : GameObject(world, world->GetResources().mBulletTex)
+Bullet::Bullet() : GameObject(GameWorld::world->GetResources().mBulletTex)
 {
 	GetRigidbody()->SetMaxSpeed(mBulletSpeed);
 
@@ -17,8 +17,6 @@ Bullet::Bullet(GameWorld* world, sf::Texture* texture) : GameObject(world, world
 	std::cout << GetTexture2D()->GetSprite()->getScale().x + GetTransform()->GetPosition().x << std::endl;
 
 	SetCollider(mLineCollider);
-
-	
 }
 
 void Bullet::Launch(const BulletLaunchParams* params)
@@ -29,7 +27,7 @@ void Bullet::Launch(const BulletLaunchParams* params)
 
 	mOwner = params->mOwner;
 	mDamage = params->mDamage;
-	GameObject::Draw(GetWorld().mWindow);
+	GameObject::Draw(GameWorld::world->mWindow);
 }
 
 void Bullet::Start()

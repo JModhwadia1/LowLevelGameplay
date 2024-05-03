@@ -14,8 +14,9 @@ class GameObject : public Object
 {
 public:
 	GameObject() = default;
-	GameObject(GameWorld* world, sf::Texture* texture);
+	GameObject(sf::Texture* texture);
 	~GameObject();
+
 	virtual void Start();
 	virtual void Update(float dt);
 	virtual void Draw(sf::RenderWindow* window);
@@ -26,8 +27,6 @@ public:
 	inline void SetName(std::string newName) { m_Name = newName; }
 	inline std::string GetName() { return m_Name; }
 	void SetActive(bool newActive) { m_Active = newActive; }
-
-	GameWorld& GetWorld() const { return *mWorld; }
 
 	inline void SetTag(std::string newTag) { m_Tag = newTag; }
 	
@@ -53,8 +52,6 @@ protected:
 
 
 private:
-
-	
 	std::string m_Name;
 	std::string m_Tag;
 	bool m_Active;
@@ -64,9 +61,5 @@ private:
 	Transform* _transform;
 	Rigidbody* _rigidbody;
 	std::vector <std::unique_ptr<Component>> m_Components;
-	
-	GameWorld* mWorld;
-
-
 };
 

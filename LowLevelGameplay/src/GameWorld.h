@@ -38,7 +38,8 @@ public:
 
 
 public:
-	 GameWorld() = default;
+	 static GameWorld* world;
+//	 GameWorld() = default;
 	 GameWorld(sf::RenderWindow* window);
 	 ~GameWorld();
 	const float arenaSize = 900;

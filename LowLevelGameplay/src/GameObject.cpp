@@ -1,21 +1,20 @@
 #include "GameObject.h"
 #include "Event.h"
 
-GameObject::GameObject(GameWorld* world, sf::Texture* texture)
+#include <GameWorld.h>
+
+GameObject::GameObject(sf::Texture* texture)
 {
 	_texture = new Texture2D(texture);
 	_transform = new Transform(LLGP::Vector2f(0, 0), LLGP::Vector2f(1, 1));
 	_rigidbody = new Rigidbody(_transform);
-	 mWorld = world;
 }
 
 GameObject::~GameObject()
 {
-	_texture = nullptr;
-	_rigidbody = nullptr;
-	_transform = nullptr;
-	_collider = nullptr;
-	mWorld = nullptr;
+	delete(_rigidbody);
+	delete(_transform);
+	delete(_collider);
 
 }
 

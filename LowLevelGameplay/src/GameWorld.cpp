@@ -13,6 +13,7 @@
 
 GameWorld::GameWorld(sf::RenderWindow* window)
 {
+	world = this;
 	mWindow = window;
 	Init();
 }
@@ -25,6 +26,10 @@ GameWorld::~GameWorld()
 void GameWorld::Init()
 {
 	LoadTextures();
+	ObjectPool::AddTypeToPool(std::bind([](){return new Bullet();}), 50);
+	//Add more types
+	ObjectPool::Start();
+
 
 
 	mPlayer = new Player(this,mResources.mPlayerTex);
