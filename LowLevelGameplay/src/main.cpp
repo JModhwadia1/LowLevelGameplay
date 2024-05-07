@@ -61,6 +61,7 @@ int main()
 	
 	
 	/*GameWorld* mWorld = new GameWorld(&window);*/
+	GameWorld::world->Init();
 
 	std::chrono::steady_clock::time_point lastTime = std::chrono::steady_clock::now();
 	float deltaTime = 0.0f;

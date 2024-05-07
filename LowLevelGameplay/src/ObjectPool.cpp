@@ -8,7 +8,7 @@ void ObjectPool::Start()
 {
 	for (int i = 0; i < objectsToPool.size(); i++)
 	{
-		m_Pools.push_back(Pool());
+		/*m_Pools.push_back(Pool());*/
 	
 
 		for (int j= 0; j < objectsToPool[i].amountToPool; j++)
@@ -75,13 +75,13 @@ void ObjectPool::AddTypeToPool(std::function<GameObject* ()> infactory, int Amou
 {
 	if (std::find_if(objectsToPool.begin(), objectsToPool.end(), [infactory](ObjectPoolItem& b) {return b.typeFactory.target_type().hash_code() == infactory.target_type().hash_code(); }) == objectsToPool.end())
 		{
-				objectsToPool.push_back(ObjectPoolItem(infactory, AmountToPool, Expand));
+			objectsToPool.push_back(ObjectPoolItem(infactory, AmountToPool, Expand));
 		}
 }
 
 //GameObject* ObjectPool::GetPooledObject(std::string tag)
 //{
-//	
+// 	
 //}
 
 	

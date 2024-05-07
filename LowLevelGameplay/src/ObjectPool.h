@@ -19,11 +19,10 @@ public:
 
 struct Pool
 {
+	Pool(std::string poolTag) { _PoolTag = poolTag; }
 	std::string _PoolTag;
 	//TODO: add utility functions for getting next avail and returning
 	std::vector<GameObject*> _Objects;
-
-	//GameObject* GetPooledObject(std::string tag);
 };
 
 extern class ObjectPool {
@@ -31,10 +30,10 @@ public:
 
 	static void Start();
 	static void Cleanup();
-	//static void SetWorld(GameWorld* world) { mWorld = world; }
 	static GameObject* GetPooledObject(std::string tag);
 	static void AddTypeToPool(std::function<GameObject* ()> infactory,int AmountToPool, bool Expand = true);
 	static std::vector<ObjectPoolItem> objectsToPool;
+	static std::vector<Pool> GetPools() { return m_Pools; }
 private:
 
 	

@@ -4,6 +4,7 @@
 #include "FamilyMan.h"
 #include "Player.h"
 #include "Enemy.h"
+#include "ObjectPool.h"
 
 
 
@@ -27,10 +28,9 @@ void GameWorld::Init()
 {
 	LoadTextures();
 	ObjectPool::AddTypeToPool(std::bind([](){return new Bullet();}), 50);
+	ObjectPool::GetPools().push_back(Pool(std::string("Bullet")));
 	//Add more types
 	ObjectPool::Start();
-
-
 
 	mPlayer = new Player();
 	mPlayer->OnPlayerDied += std::bind(&GameWorld::HandlePlayerDied, this, std::placeholders::_1);
