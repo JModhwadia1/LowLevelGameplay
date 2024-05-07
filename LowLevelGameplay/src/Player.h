@@ -42,7 +42,7 @@ public:
 	LLGP::Vector2f mPrevDirection;
 	void UpdateMovement(float dt);
 	float AccelerationSpeed = 200.0f;
-	float mMaxSpeed = 300.0f;
+	float mMaxSpeed = 10.0f;
 	void HandleOnDied(bool Die);
 
 	void PrintHealth(float Amount);

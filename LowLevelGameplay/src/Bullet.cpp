@@ -5,9 +5,10 @@
 #include "LineCollider.h"
 #include "Enemy.h"
 
-GameWorld* GameWorld::world;
 
-Bullet::Bullet() : GameObject(GameWorld::world->GetResources().mBulletTex)
+
+
+Bullet::Bullet() : GameObject(GameWorld::GetResources().mBulletTex)
 {
 	GetRigidbody()->SetMaxSpeed(mBulletSpeed);
 
@@ -17,7 +18,7 @@ Bullet::Bullet() : GameObject(GameWorld::world->GetResources().mBulletTex)
 		LLGP::Vector2f((GetTransform()->GetPosition().x - GetTexture2D()->GetSprite()->getScale().x), GetTransform()->GetPosition().y - GetTexture2D()->GetSprite()->getScale().y),*GetTexture2D()->GetSprite()); // Tail Point
 
 	std::cout << GetTexture2D()->GetSprite()->getScale().x + GetTransform()->GetPosition().x << std::endl;
-
+	SetActive(true);
 	SetCollider(mLineCollider);
 }
 
@@ -29,7 +30,7 @@ void Bullet::Launch(const BulletLaunchParams* params)
 
 	mOwner = params->mOwner;
 	mDamage = params->mDamage;
-	GameObject::Draw(GameWorld::world->mWindow);
+	GameObject::Draw(GameWorld::mWindow);
 }
 
 void Bullet::Start()

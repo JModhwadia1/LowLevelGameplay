@@ -1,6 +1,7 @@
 #pragma once
 #include "Transform.h"
 
+
 class Rigidbody
 {
 public:
@@ -9,7 +10,6 @@ public:
 
 	void Update(float deltaTime);
 	
-	bool IsKinematic;
 	
 	void SetMaxSpeed(float speed) { mMaxSpeed = speed; }
 	void SetNetForce(LLGP::Vector2f force) { _netForce = force; }

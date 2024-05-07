@@ -3,7 +3,7 @@
 #include "BoxCollider.h"
 #include <iostream>
 
-FamilyMan::FamilyMan() : Family(GameWorld::world->GetResources().mMenTex)
+FamilyMan::FamilyMan() : Family(GameWorld::GetResources().mMenTex)
 {
 	m_MaxSpeed = 100.0f;
 	GetRigidbody()->SetMaxSpeed(m_MaxSpeed);
@@ -11,7 +11,7 @@ FamilyMan::FamilyMan() : Family(GameWorld::world->GetResources().mMenTex)
 	SetCollider(m_BoxCollider);
 	GetTransform()->SetPosition(LLGP::Vector2f(960, 540));
 	GetTexture2D()->GetSprite()->setScale(5, 5);
-	randomPoint = GameWorld::world->GetRandomPosInArena();
+	randomPoint = GameWorld::GetRandomPosInArena();
 	ChangeCurrentState(States::Wander);
 }
 
@@ -32,14 +32,14 @@ void FamilyMan::WanderState(float dt)
 
 	if (m_NewPointGenTime <= 0) {
 		m_NewPointGenTime = 2.0f;
-		randomPoint = GameWorld::world->GetRandomPosInArena();
-		std::cout << "X: " << randomPoint.x << "Y: " << randomPoint.y << std::endl;
+		randomPoint = GameWorld::GetRandomPosInArena();
+		/*std::cout << "X: " << randomPoint.x << "Y: " << randomPoint.y << std::endl;*/
 		
 	}
 	
 	if (GetTransform()->GetPosition() == randomPoint && !m_NewPointGenTime <= 0 ) 
 	{
-		randomPoint = GameWorld::world->GetRandomPosInArena();
+		randomPoint = GameWorld::GetRandomPosInArena();
 	}
 
 	LLGP::Vector2f direction = randomPoint - GetTransform()->GetPosition();

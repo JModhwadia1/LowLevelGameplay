@@ -11,10 +11,11 @@
 // The Object Pool item
 class ObjectPoolItem {
 public:
-	ObjectPoolItem(std::function<GameObject* ()>infactory, int AmountToPool, bool Expand = true) : typeFactory(infactory), amountToPool(AmountToPool), expand(Expand) {}
+	ObjectPoolItem(std::function<GameObject* ()>infactory, int AmountToPool, std::string Name,bool Expand = true) : typeFactory(infactory), amountToPool(AmountToPool), expand(Expand),name(Name) {}
 	std::function<GameObject* ()> typeFactory;
 	int amountToPool;
 	bool expand = true;
+	std::string name;
 };
 
 struct Pool
@@ -25,22 +26,29 @@ struct Pool
 	std::vector<GameObject*> _Objects;
 };
 
-extern class ObjectPool {
+class ObjectPool {
 public:
 
 	static void Start();
 	static void Cleanup();
 	static GameObject* GetPooledObject(std::string tag);
-	static void AddTypeToPool(std::function<GameObject* ()> infactory,int AmountToPool, bool Expand = true);
+	template <typename T> requires std::derived_from<T,GameObject>
+	static T* GetPooledObjectAsType(std::string tag) {
+		return dynamic_cast<T*>(ObjectPool::GetPooledObject(tag));
+	}
+	static void AddTypeToPool(std::function<GameObject* ()> infactory,int AmountToPool,std::string Name, bool Expand = true);
 	static std::vector<ObjectPoolItem> objectsToPool;
 	static std::vector<Pool> GetPools() { return m_Pools; }
 private:
 
 	
 	static std::vector<Pool> m_Pools;
-	static GameWorld* mWorld;
+	
 
 };
+
+
+
 
 
 

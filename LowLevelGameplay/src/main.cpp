@@ -1,10 +1,10 @@
 #include "GameWorld.h"
 #include <chrono>
+#include "Constants.h"
 
 
 
 
-#define FIXEDFRAMERATE 0.016
 class B
 {
 public:
@@ -61,7 +61,7 @@ int main()
 	
 	
 	/*GameWorld* mWorld = new GameWorld(&window);*/
-	GameWorld::world->Init();
+	GameWorld::Init(&window);
 
 	std::chrono::steady_clock::time_point lastTime = std::chrono::steady_clock::now();
 	float deltaTime = 0.0f;
@@ -81,12 +81,12 @@ int main()
 		deltaTime = std::chrono::duration_cast<std::chrono::microseconds>(now - lastTime).count() / 1000000.f;
 		lastTime = now;
 
-		GameWorld::world->mWindow = &window;
-		GameWorld::world->Update(deltaTime);
 		
+		std::cout << deltaTime << std::endl;
 		
 		/*mPlayer->Update(deltaTime);
 		enemy->Update(deltaTime);
+		
 		
 		
 
@@ -97,6 +97,8 @@ int main()
 			std::cout << "COLLISION" << std::endl;
 		}*/
 
+		GameWorld::Update(deltaTime);
+
 		timeSincePhysicsStep += deltaTime;
 
 		while (timeSincePhysicsStep > FIXEDFRAMERATE)
@@ -104,7 +106,8 @@ int main()
 			// Collect collision info
 			// dispatch collisions
 
-			GameWorld::world->UpdateCollisions();
+			GameWorld::UpdateCollisions();
+			GameWorld::UpdateRigidbodies(FIXEDFRAMERATE);
 
 			timeSincePhysicsStep -= FIXEDFRAMERATE;
 		}
@@ -112,7 +115,7 @@ int main()
 		window.clear();
 		/*mPlayer->Render(window);
 		enemy->Draw(window);*/
-		GameWorld::world->Render(&window);
+		GameWorld::Render(&window);
 		window.display();
 	}
 

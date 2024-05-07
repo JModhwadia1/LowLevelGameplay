@@ -10,31 +10,52 @@
 
 
 
+float GameWorld::m_ArenaLeftPos = 500.0f;
+float GameWorld::m_ArenaRightPos = 1430.0f;
+float GameWorld::m_ArenaTopPos = 50.0f;
+float GameWorld::m_ArenaBottomPos = 950.0f;
+const float GameWorld::arenaSize = 900.0f;
+float GameWorld::mEnemySpawnTime = 5.0f;
 
 
-GameWorld::GameWorld(sf::RenderWindow* window)
+Player* GameWorld::mPlayer = nullptr;
+Enemy* GameWorld::mEnemy = nullptr;
+FamilyMan* GameWorld::mFamilyMan = nullptr;
+std::vector<GameObject*> GameWorld::mGameobjects;
+GameWorld::Resources GameWorld::mResources;
+sf::RenderWindow* GameWorld::mWindow = nullptr;
+
+
+
+//
+//GameWorld::GameWorld(sf::RenderWindow* window)
+//{
+//	
+//	Init();
+//}
+
+
+//
+//GameWorld::~GameWorld()
+//{
+//	mPlayer->OnPlayerDied -= std::bind(&GameWorld::HandlePlayerDied, this, std::placeholders::_1);
+//}
+
+void GameWorld::Init(sf::RenderWindow* window)
 {
-	world = this;
+	//world = this;
 	mWindow = window;
-	Init();
-}
-
-GameWorld::~GameWorld()
-{
-	mPlayer->OnPlayerDied -= std::bind(&GameWorld::HandlePlayerDied, this, std::placeholders::_1);
-}
-
-void GameWorld::Init()
-{
 	LoadTextures();
-	ObjectPool::AddTypeToPool(std::bind([](){return new Bullet();}), 50);
-	ObjectPool::GetPools().push_back(Pool(std::string("Bullet")));
+	ObjectPool::AddTypeToPool(std::bind([](){return new Bullet();}), 50,"Bullet");
+	/*ObjectPool::GetPools().push_back(Pool(std::string("Bullet")));*/
 	//Add more types
 	ObjectPool::Start();
 
+	std::cout << "1st pool object size:" << ObjectPool::GetPools()[0]._Objects.size();
+
 	mPlayer = new Player();
-	mPlayer->OnPlayerDied += std::bind(&GameWorld::HandlePlayerDied, this, std::placeholders::_1);
-	mEnemy = new Enemy(world->GetResources().mEnemyTex);
+	//mPlayer->OnPlayerDied += std::bind(&GameWorld::HandlePlayerDied, this, std::placeholders::_1);
+	mEnemy = new Enemy(GetResources().mEnemyTex);
 	mPlayer->GetTransform()->SetPosition(LLGP::Vector2f(960.0f, 540.0f));
 	mFamilyMan = /*SpawnGameobject<FamilyMan>(mResources.mMenTex);*/new FamilyMan();
 
@@ -188,6 +209,16 @@ void GameWorld::Render(sf::RenderWindow* window)
 	RenderArenaBounds();
 }
 
+void GameWorld::UpdateRigidbodies(float FixedDeltaTime)
+{
+	for (int i = 0; i < mGameobjects.size(); i++)
+	{
+		if (mGameobjects[i]) {
+			mGameobjects[i]->GetRigidbody()->Update(FixedDeltaTime);
+		}
+	}
+}
+
 LLGP::Vector2f const GameWorld::GetRandomPosInArena()
 {
 	const LLGP::Vector2f randomPos(LLGP::FRandomRange(m_ArenaLeftPos, m_ArenaRightPos), LLGP::FRandomRange(m_ArenaTopPos, m_ArenaBottomPos));
@@ -264,7 +295,8 @@ void GameWorld::UpdateCollisions()
 						a->GetRigidbody()->ApplyImpluse(invMassA * j * collisionNormal);
 						b->GetRigidbody()->ApplyImpluse(-(invMassB * j * collisionNormal));
 						
-						std::cout << "impulse: " << j<< std::endl;
+						std::cout << "Vel: " << a->GetRigidbody()->GetVelocity().x << ", " << a->GetRigidbody()->GetVelocity().y << " ---  Impulse: " << (j * collisionNormal).x << ", " << (j * collisionNormal).y << std::endl;
+
 
 						
 

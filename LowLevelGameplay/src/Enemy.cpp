@@ -60,6 +60,7 @@ void Enemy::IdleState()
 
 void Enemy::ChaseState()
 {
+	
 	// Get direction
 	LLGP::Vector2f direction = _playerRef->GetTransform()->GetPosition() - GetTransform()->GetPosition();
 	
@@ -80,7 +81,7 @@ void Enemy::DeathState()
 void Enemy::UpdateStates()
 {
 	//if (_playerRef == nullptr) return;
-	_playerRef = GameWorld::world->GetPlayer();
+	_playerRef = GameWorld::GetPlayer();
 	float  distanceToPlayer = (_playerRef->GetTransform()->GetPosition() - GetTransform()->GetPosition()).GetMagnitude();
 
 	if (distanceToPlayer <= AttackDistance)
@@ -97,7 +98,9 @@ void Enemy::OnCollision(GameObject& other)
 {
 	if (Player* player = dynamic_cast<Player*>(&other))
 	{
-	
+		mMaxSpeed = 0.0f;
+
+		std::cout << "collided with player" << std::endl;;
 	}
 }
 

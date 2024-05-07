@@ -2,18 +2,19 @@
 //#include "GameWorld.h"
 
 
-
+std::vector<Pool> ObjectPool::m_Pools;
+std::vector<ObjectPoolItem> ObjectPool::objectsToPool;
 //TODO create return function which finds pool, loops objects, checks equality between, set bool to true;
 void ObjectPool::Start()
 {
 	for (int i = 0; i < objectsToPool.size(); i++)
 	{
-		/*m_Pools.push_back(Pool());*/
+		m_Pools.push_back(Pool(objectsToPool[i].name));
 	
 
 		for (int j= 0; j < objectsToPool[i].amountToPool; j++)
 		{
-			// Need a way to ignore the gameobject type so that we can use item.objectToPool
+			
 			GameObject* obj = objectsToPool[i].typeFactory();
 			m_Pools[i]._Objects.push_back(obj);
 		}
@@ -71,11 +72,11 @@ GameObject* ObjectPool::GetPooledObject(std::string tag)
 	}
 }
 
-void ObjectPool::AddTypeToPool(std::function<GameObject* ()> infactory, int AmountToPool, bool Expand)
+void ObjectPool::AddTypeToPool(std::function<GameObject* ()> infactory, int AmountToPool, std::string Name, bool Expand)
 {
 	if (std::find_if(objectsToPool.begin(), objectsToPool.end(), [infactory](ObjectPoolItem& b) {return b.typeFactory.target_type().hash_code() == infactory.target_type().hash_code(); }) == objectsToPool.end())
 		{
-			objectsToPool.push_back(ObjectPoolItem(infactory, AmountToPool, Expand));
+			objectsToPool.push_back(ObjectPoolItem(infactory, AmountToPool,Name,Expand));
 		}
 }
 

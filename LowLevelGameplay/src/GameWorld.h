@@ -38,48 +38,49 @@ public:
 
 
 public:
-	 static GameWorld* world;
+	 //static GameWorld* world;
 //	 GameWorld() = default;
-	 GameWorld(sf::RenderWindow* window);
-	 ~GameWorld();
-	const float arenaSize = 900;
+	 //GameWorld(sf::RenderWindow* window);
+	 //~GameWorld();
+	static const float arenaSize;
 
 	// Positions of each side of the area (Note: does not affect arena visually)
-	float m_ArenaLeftPos = 500.0f;
-	float m_ArenaRightPos = 1430.0f;
-	float m_ArenaTopPos = 50.0f;
-	float m_ArenaBottomPos = 950.0f;
-	void Init();
-	void LoadTextures();
-	void Update(float DeltaTime);
-	void Render(sf::RenderWindow* window);
-	Player* GetPlayer() const { if (mPlayer != nullptr) { return mPlayer; } }
-	const Resources& GetResources() { return mResources; }
-	void AddToGameobjects(GameObject* gameobject) { mGameobjects.push_back(gameobject); }
-	LLGP::Vector2f const GetRandomPosInArena();
-	void RenderArenaBounds();
-	bool IsGameobjectOutOfBounds(GameObject* gameobject);
+	static float m_ArenaLeftPos;
+	static float m_ArenaRightPos;
+	static float m_ArenaTopPos;
+	static float m_ArenaBottomPos;
+	static void Init(sf::RenderWindow* window);
+	static void LoadTextures();
+	static void Update(float DeltaTime);
+	static void UpdateRigidbodies(float FixedDeltaTime);
+	static void Render(sf::RenderWindow* window);
+	static Player* GetPlayer()  { if (mPlayer != nullptr) { return mPlayer; } }
+	static const Resources& GetResources() { return mResources; }
+	static void AddToGameobjects(GameObject* gameobject) { mGameobjects.push_back(gameobject); }
+	static LLGP::Vector2f const GetRandomPosInArena();
+	static void RenderArenaBounds();
+	static bool IsGameobjectOutOfBounds(GameObject* gameobject);
 	template <typename T>
-	T* SpawnGameobject(sf::Texture* texture);
-	void UpdateCollisions();
-	sf::RenderWindow* mWindow;
+	static T* SpawnGameobject(sf::Texture* texture);
+	static void UpdateCollisions();
+	static sf::RenderWindow* mWindow;
 
-	void SpawnNewEnemy();
+	static void SpawnNewEnemy();
 
-	void UpdateArenaBounds(float dt);
+	static void UpdateArenaBounds(float dt);
 	
-	void HandlePlayerDied(bool die);
+	static void HandlePlayerDied(bool die);
 
 	
 
 private:
-	Player* mPlayer = nullptr;
-	Enemy* mEnemy = nullptr;
-	FamilyMan* mFamilyMan = nullptr;
-	Resources mResources;
-	std::vector<GameObject*> mGameobjects;
+	static Player* mPlayer;
+	static Enemy* mEnemy;
+	static FamilyMan* mFamilyMan;
+	static Resources mResources;
+	static std::vector<GameObject*> mGameobjects;
 
-	float mEnemySpawnTime = 5.0f;
+	static float mEnemySpawnTime;
 
 
 

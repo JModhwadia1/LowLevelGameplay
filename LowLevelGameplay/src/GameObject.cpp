@@ -1,6 +1,6 @@
 #include "GameObject.h"
 #include "Event.h"
-
+#include "Constants.h"
 #include <GameWorld.h>
 
 GameObject::GameObject(sf::Texture* texture)
@@ -24,7 +24,7 @@ void GameObject::Start()
 
 void GameObject::Update(float dt)
 {
-	_rigidbody->Update(dt);
+	/*_rigidbody->Update(dt);*/
 	_texture->GetSprite()->setPosition(_transform->GetPosition());
 }
 
