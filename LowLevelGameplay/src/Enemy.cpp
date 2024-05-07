@@ -5,7 +5,7 @@
 #include "SphereCollider.h"
 #include <iostream>
 
-Enemy::Enemy(GameWorld* world, sf::Texture* texture) : GameObject(world, texture)
+Enemy::Enemy(sf::Texture* texture) : GameObject(texture)
 {
 
 	GetRigidbody()->SetMaxSpeed(mMaxSpeed);
@@ -80,7 +80,7 @@ void Enemy::DeathState()
 void Enemy::UpdateStates()
 {
 	//if (_playerRef == nullptr) return;
-	_playerRef = GetWorld().GetPlayer();
+	_playerRef = GameWorld::world->GetPlayer();
 	float  distanceToPlayer = (_playerRef->GetTransform()->GetPosition() - GetTransform()->GetPosition()).GetMagnitude();
 
 	if (distanceToPlayer <= AttackDistance)

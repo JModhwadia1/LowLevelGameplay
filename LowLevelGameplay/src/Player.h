@@ -32,7 +32,7 @@ enum AnimationIndex
 class Player : public GameObject
 {
 public:
-	explicit Player(GameWorld* world, sf::Texture* texture);
+	explicit Player();
 	~Player();
 
 	virtual void Start() override;

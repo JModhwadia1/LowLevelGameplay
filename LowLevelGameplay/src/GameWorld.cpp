@@ -32,11 +32,11 @@ void GameWorld::Init()
 
 
 
-	mPlayer = new Player(this,mResources.mPlayerTex);
+	mPlayer = new Player();
 	mPlayer->OnPlayerDied += std::bind(&GameWorld::HandlePlayerDied, this, std::placeholders::_1);
-	mEnemy = new Enemy(this, mResources.mEnemyTex);
+	mEnemy = new Enemy(world->GetResources().mEnemyTex);
 	mPlayer->GetTransform()->SetPosition(LLGP::Vector2f(960.0f, 540.0f));
-	mFamilyMan = /*SpawnGameobject<FamilyMan>(mResources.mMenTex);*/new FamilyMan(this, mResources.mEnemyTex);
+	mFamilyMan = /*SpawnGameobject<FamilyMan>(mResources.mMenTex);*/new FamilyMan();
 
 
 	mGameobjects.push_back(mPlayer);

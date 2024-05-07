@@ -20,7 +20,7 @@ class Enemy : public GameObject
 	};
 
 public:
-	Enemy(GameWorld* world,sf::Texture* texture);
+	Enemy(sf::Texture* texture);
 
 	void Start() override;
 	void ChangeCurrentState(States state) { _currentState = state; }

@@ -18,7 +18,7 @@ class Family : public GameObject
 
 public:
 
-	Family(GameWorld* world, sf::Texture* texture);
+	Family(sf::Texture* texture);
 	~Family();
 	virtual void IdleState(){};
 	virtual void WanderState(float dt) {};

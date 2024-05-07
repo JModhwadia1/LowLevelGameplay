@@ -5,6 +5,8 @@
 #include "LineCollider.h"
 #include "Enemy.h"
 
+GameWorld* GameWorld::world;
+
 Bullet::Bullet() : GameObject(GameWorld::world->GetResources().mBulletTex)
 {
 	GetRigidbody()->SetMaxSpeed(mBulletSpeed);

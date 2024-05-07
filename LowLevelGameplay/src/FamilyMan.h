@@ -4,7 +4,7 @@
 class FamilyMan : public Family
 {
 public:
-	FamilyMan(GameWorld* world, sf::Texture* texture);
+	FamilyMan();
 	~FamilyMan();
 	
 	void IdleState() override;

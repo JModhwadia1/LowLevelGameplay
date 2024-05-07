@@ -27,7 +27,7 @@ public:
 	inline void SetName(std::string newName) { m_Name = newName; }
 	inline std::string GetName() { return m_Name; }
 	void SetActive(bool newActive) { m_Active = newActive; }
-
+	bool GetIsActive() { return m_Active; }
 	inline void SetTag(std::string newTag) { m_Tag = newTag; }
 	
 	inline bool CompareTag(std::string comp) { return m_Tag == comp; }

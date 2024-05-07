@@ -6,7 +6,7 @@
 
 
 
-Player::Player(GameWorld* world, sf::Texture* texture) : GameObject(world, texture)
+Player::Player() : GameObject(GameWorld::world->GetResources().mPlayerTex)
 {
 	
 	GetRigidbody()->SetMaxSpeed(mMaxSpeed);
@@ -21,10 +21,10 @@ Player::Player(GameWorld* world, sf::Texture* texture) : GameObject(world, textu
 	healthcomp->OnDied += std::bind(&Player::HandleOnDied, this, std::placeholders::_1);
 
 
-	animations[int(AnimationIndex::WalkingUp)] = Animation(23, 0, 7, 12,"Textures/Player.png",*texture);
-	animations[int(AnimationIndex::WalkingDown)] = Animation(14, 0, 7, 12, "Textures/Player.png",*texture);
-	animations[int(AnimationIndex::WalkingLeft)] = Animation(0, 0, 5, 12, "Textures/Player.png",*texture);
-	animations[int(AnimationIndex::WalkingRight)] = Animation(7, 0, 5, 12, "Textures/Player.png",*texture);
+	animations[int(AnimationIndex::WalkingUp)] = Animation(23, 0, 7, 12,"Textures/Player.png",*GameWorld::world->GetResources().mPlayerTex);
+	animations[int(AnimationIndex::WalkingDown)] = Animation(14, 0, 7, 12, "Textures/Player.png", *GameWorld::world->GetResources().mPlayerTex);
+	animations[int(AnimationIndex::WalkingLeft)] = Animation(0, 0, 5, 12, "Textures/Player.png",*GameWorld::world->GetResources().mPlayerTex);
+	animations[int(AnimationIndex::WalkingRight)] = Animation(7, 0, 5, 12, "Textures/Player.png",*GameWorld::world->GetResources().mPlayerTex);
 
 
 }
@@ -113,10 +113,16 @@ void Player::UpdateMovement(float dt)
 			params.mDirection = mPrevDirection;
 			params.mDamage = 10.0f;
 
-			if (Bullet* bullet = GetWorld().SpawnGameobject<Bullet>(GetWorld().GetResources().mBulletTex)) 
+			if (GameObject* bullet = ObjectPool::GetPooledObject("Bullet"))
 			{
-				bullet->Launch(&params);
+				/*bullet->Launch(&params);*/
+				dynamic_cast<Bullet*>(bullet)->Launch(&params);
 			}
+
+			/*if (Bullet* bullet = ObjectPool::GetPooledObject("Bullet"))
+			{
+
+			}*/
 		}
 		
 	}

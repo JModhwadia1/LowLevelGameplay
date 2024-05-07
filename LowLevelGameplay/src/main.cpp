@@ -60,7 +60,7 @@ int main()
 	sf::RenderWindow window(sf::VideoMode(1920, 1080), "SFML works!");
 	
 	
-	GameWorld* mWorld = new GameWorld(&window);
+	/*GameWorld* mWorld = new GameWorld(&window);*/
 
 	std::chrono::steady_clock::time_point lastTime = std::chrono::steady_clock::now();
 	float deltaTime = 0.0f;
@@ -80,7 +80,9 @@ int main()
 		deltaTime = std::chrono::duration_cast<std::chrono::microseconds>(now - lastTime).count() / 1000000.f;
 		lastTime = now;
 
-		mWorld->Update(deltaTime);
+		GameWorld::world->mWindow = &window;
+		GameWorld::world->Update(deltaTime);
+		
 		
 		/*mPlayer->Update(deltaTime);
 		enemy->Update(deltaTime);
@@ -101,7 +103,7 @@ int main()
 			// Collect collision info
 			// dispatch collisions
 
-			mWorld->UpdateCollisions();
+			GameWorld::world->UpdateCollisions();
 
 			timeSincePhysicsStep -= FIXEDFRAMERATE;
 		}
@@ -109,7 +111,7 @@ int main()
 		window.clear();
 		/*mPlayer->Render(window);
 		enemy->Draw(window);*/
-		mWorld->Render(&window);
+		GameWorld::world->Render(&window);
 		window.display();
 	}
 

@@ -1,6 +1,6 @@
 #include "Family.h"
 
-Family::Family(GameWorld* world, sf::Texture* texture) : GameObject(world, texture)
+Family::Family(sf::Texture* texture) : GameObject(texture)
 {
 	
 }

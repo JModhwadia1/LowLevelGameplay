@@ -67,7 +67,7 @@ public:
 	void SpawnNewEnemy();
 
 	void UpdateArenaBounds(float dt);
-	GameWorld* GetWorld() { return this; }
+	
 	void HandlePlayerDied(bool die);
 
 	
@@ -89,7 +89,7 @@ private:
 template<typename T>
 T* GameWorld::SpawnGameobject(sf::Texture* texture) 
 {
-	if (T* newGameobject = new T(this, texture)) 
+	if (T* newGameobject = new T(texture)) 
 	{
 		mGameobjects.push_back(newGameobject);
 		return newGameobject;
