@@ -84,30 +84,20 @@ int main()
 		
 		std::cout << deltaTime << std::endl;
 		
-		/*mPlayer->Update(deltaTime);
-		enemy->Update(deltaTime);
 		
-		
-		
-
-		CollisionManifold manifold;
-
-		if (mPlayer->IsCollideable() && enemy->IsCollideable() && mPlayer->GetCollider()->CollidesWith(*enemy->GetCollider(), manifold))
-		{
-			std::cout << "COLLISION" << std::endl;
-		}*/
 
 		GameWorld::Update(deltaTime);
-
 		timeSincePhysicsStep += deltaTime;
+		
 
 		while (timeSincePhysicsStep > FIXEDFRAMERATE)
 		{
 			// Collect collision info
 			// dispatch collisions
 
-			GameWorld::UpdateCollisions();
+			
 			GameWorld::UpdateRigidbodies(FIXEDFRAMERATE);
+			GameWorld::UpdateCollisions();
 
 			timeSincePhysicsStep -= FIXEDFRAMERATE;
 		}

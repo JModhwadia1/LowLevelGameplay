@@ -1,5 +1,5 @@
 #include "ObjectPool.h"
-//#include "GameWorld.h"
+#include "GameWorld.h"
 
 
 std::vector<Pool> ObjectPool::m_Pools;
@@ -46,6 +46,7 @@ GameObject* ObjectPool::GetPooledObject(std::string tag)
 					if (o->GetIsActive())
 					{
 						o->SetActive(false);
+						GameWorld::AddToGameobjects(o);
 						return o;
 						//if (o.first)
 						//{

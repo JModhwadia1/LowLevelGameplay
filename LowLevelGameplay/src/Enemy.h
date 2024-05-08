@@ -39,11 +39,12 @@ public:
 protected:
 	States _currentState = States::Idle;
 private:
-	float mMaxSpeed = 10.0f;
+	float mMaxSpeed = 5.0f;
 	Player* _playerRef = nullptr;
 	float AttackDistance = 50.0f;
 	BoxCollider* _boxCollider;
 	SphereCollider* _sphereCollider;
+	sf::RectangleShape shape;
 
 	
 	

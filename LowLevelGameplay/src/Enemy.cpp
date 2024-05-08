@@ -14,7 +14,7 @@ Enemy::Enemy(sf::Texture* texture) : GameObject(texture)
 	//GetTransform()->SetPosition(LLGP::Vector2f(100.f, 100.f));
 	_boxCollider = new BoxCollider(GetTransform(), LLGP::Vector2f(25.0f, 55.0f));
 	_sphereCollider = new SphereCollider(GetTransform(), 30.0f);
-	SetCollider(_boxCollider);
+	SetCollider(_sphereCollider);
 
 }
 
@@ -24,6 +24,11 @@ void Enemy::Start()
 
 void Enemy::Update(float dt)
 {
+	shape.setSize(_boxCollider->GetHalfExtents());
+	shape.setFillColor(sf::Color::Transparent);
+	shape.setOutlineThickness(3.0f);
+	shape.setOutlineColor(sf::Color::Red);
+	shape.setPosition(GetTransform()->GetPosition());
 	UpdateStates();
 
 	switch (_currentState)
@@ -51,6 +56,7 @@ void Enemy::Update(float dt)
 void Enemy::Draw(sf::RenderWindow* window)
 {
 	GameObject::Draw(window);
+	window->draw(shape);
 }
 
 void Enemy::IdleState()
@@ -98,7 +104,7 @@ void Enemy::OnCollision(GameObject& other)
 {
 	if (Player* player = dynamic_cast<Player*>(&other))
 	{
-		mMaxSpeed = 0.0f;
+
 
 		std::cout << "collided with player" << std::endl;;
 	}

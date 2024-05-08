@@ -7,7 +7,7 @@ GameObject::GameObject(sf::Texture* texture)
 {
 	_texture = new Texture2D(texture);
 	_transform = new Transform(LLGP::Vector2f(0, 0), LLGP::Vector2f(1, 1));
-	_rigidbody = new Rigidbody(_transform);
+	_rigidbody = new Rigidbody(_transform,_texture->GetSprite());
 }
 
 GameObject::~GameObject()
@@ -24,8 +24,8 @@ void GameObject::Start()
 
 void GameObject::Update(float dt)
 {
-	/*_rigidbody->Update(dt);*/
-	_texture->GetSprite()->setPosition(_transform->GetPosition());
+	///*_rigidbody->Update(dt);*/
+	//_texture->GetSprite()->setPosition(_transform->GetPosition());
 }
 
 void GameObject::Draw(sf::RenderWindow* window)

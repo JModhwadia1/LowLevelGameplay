@@ -5,7 +5,7 @@
 class Rigidbody
 {
 public:
-	Rigidbody(Transform* transform);
+	Rigidbody(Transform* transform, sf::Sprite* sprite);
 	~Rigidbody();
 
 	void Update(float deltaTime);
@@ -35,6 +35,7 @@ private:
 	Transform* _transform;
 	LLGP::Vector2f _netForce;
 	float mMass = 1.0f;
+	sf::Sprite* _sprite;
 
 };
 

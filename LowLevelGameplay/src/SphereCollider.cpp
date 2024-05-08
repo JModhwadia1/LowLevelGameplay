@@ -40,28 +40,7 @@ bool SphereCollider::CollidesWith(SphereCollider& other, CollisionManifold& out)
 
 bool SphereCollider::CollidesWith(BoxCollider& other, CollisionManifold& out)
 {
-	//LLGP::Vector2f min = other.GetMin();
-	//LLGP::Vector2f max = other.GetMax();
-
-	//LLGP::Vector2f closestPointToCircle = this->GetPosition();
-
-	//if (closestPointToCircle.x < min.x) {
-	//	closestPointToCircle.x = min.x;
-	//}
-	//else if (closestPointToCircle.x > max.x) {
-	//	closestPointToCircle.x = max.x;
-	//}
-
-	//if (closestPointToCircle.y < min.y) {
-	//	closestPointToCircle.y = min.y;
-	//}
-	//else if (closestPointToCircle.y > max.y) {
-	//	closestPointToCircle.y = max.y;
-	//}
-
-	//LLGP::Vector2f circleToBox = this->GetPosition() - closestPointToCircle;
-
-	//return circleToBox.GetSqrMagnitude() <= this->_radius * this->_radius;
+	
 
 	LLGP::Vector2f center = this->GetPosition();
 
@@ -78,7 +57,17 @@ bool SphereCollider::CollidesWith(BoxCollider& other, CollisionManifold& out)
 
 	diff = closest - center;
 
-	return diff.GetMagnitude() < this->_radius;
+	if (diff.GetMagnitude() < this->_radius) {
+		out.collisionNormal = diff;
+		out.collisionNormal.Normalise();
+		out.contactPointCount = 1.0f;
+		out.points[0].Position = GetPosition() + (out.collisionNormal * this->_radius);
+		out.points->penDepth = fabs(diff.GetMagnitude() - this->_radius);
+		return true;
+	}
+	return false;
+
+	
 
 }
 

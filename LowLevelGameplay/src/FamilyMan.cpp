@@ -5,7 +5,7 @@
 
 FamilyMan::FamilyMan() : Family(GameWorld::GetResources().mMenTex)
 {
-	m_MaxSpeed = 100.0f;
+	m_MaxSpeed = 10.0f;
 	GetRigidbody()->SetMaxSpeed(m_MaxSpeed);
 	m_BoxCollider = new BoxCollider(GetTransform(), LLGP::Vector2f(25.0f, 55.0f));
 	SetCollider(m_BoxCollider);

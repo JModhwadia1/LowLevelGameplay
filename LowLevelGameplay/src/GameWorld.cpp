@@ -165,8 +165,7 @@ void GameWorld::LoadTextures()
 
 void GameWorld::Update(float DeltaTime)
 {
-	/*mPlayer->Update(DeltaTime);
-	mEnemy->Update(DeltaTime);*/
+	
 
 	for (int i = 0; i < mGameobjects.size(); i++)
 	{
@@ -214,6 +213,7 @@ void GameWorld::UpdateRigidbodies(float FixedDeltaTime)
 	for (int i = 0; i < mGameobjects.size(); i++)
 	{
 		if (mGameobjects[i]) {
+			
 			mGameobjects[i]->GetRigidbody()->Update(FixedDeltaTime);
 		}
 	}
@@ -270,14 +270,15 @@ void GameWorld::UpdateCollisions()
 				{
 
 					LLGP::Vector2f collisionNormal = manifold.collisionNormal;
-
+				
 					collisionNormal.Normalise();
 					LLGP::Vector2f relativeVelocity = a->GetRigidbody()->GetVelocity() - b->GetRigidbody()->GetVelocity();
+					
 					float dot = LLGP::Vector2f::Dot(collisionNormal, relativeVelocity);
 					if (dot < 0.0f) {
 
 						// Restitution - Between 0 and 1 for testing
-						float e = 1.0f;
+						float e = 0.1f;
 						// Get inverse mass of object A
 						float invMassA = a->GetRigidbody()->GetInverseMass();
 						// Get inverse mass of object B

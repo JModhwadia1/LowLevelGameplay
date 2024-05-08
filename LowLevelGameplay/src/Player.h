@@ -56,11 +56,11 @@ private:
 	SphereCollider* _sphereCollider;
 
 	float mShootCooldown;
-	float mShootDelay = 0.1f;
+	float mShootDelay = 1.0f;
 	EFacingDirection mFacingDirection = EFacingDirection::FACING_LEFT;
 
 	HealthComponent* healthcomp;
 
-
+	sf::RectangleShape shape;
 };
 

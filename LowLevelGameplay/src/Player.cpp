@@ -27,7 +27,8 @@ Player::Player() : GameObject(GameWorld::GetResources().mPlayerTex)
 	animations[int(AnimationIndex::WalkingLeft)] = Animation(0, 0, 5, 12, "Textures/Player.png",*GameWorld::GetResources().mPlayerTex);
 	animations[int(AnimationIndex::WalkingRight)] = Animation(7, 0, 5, 12, "Textures/Player.png",*GameWorld::GetResources().mPlayerTex);
 
-
+	// set prev direction to the facing direction of the player when spanwed (which is left)
+	mPrevDirection = LLGP::Vector2f(-1.0f, 0.0f);
 }
 
 Player::~Player()
@@ -50,6 +51,12 @@ void Player::Update(float dt)
 	UpdateMovement(dt);
 	animations[int(currentAnimation)].Update(dt);
 	animations[int(currentAnimation)].ApplyToSprite(*GetTexture2D()->GetSprite());
+	
+	shape.setSize(_boxCollider->GetHalfExtents());
+	shape.setFillColor(sf::Color::Transparent);
+	shape.setOutlineThickness(3.0f);
+	shape.setOutlineColor(sf::Color::Red);
+	shape.setPosition(GetTransform()->GetPosition());
 	GameObject::Update(dt);
 	
 
@@ -61,6 +68,7 @@ void Player::Draw(sf::RenderWindow* window)
 {
 	//window.draw(mSprite);
 	GameObject::Draw(window);
+	window->draw(shape);
 }
 
 void Player::UpdateMovement(float dt)

@@ -37,7 +37,7 @@ bool BoxCollider::CollidesWith(SphereCollider& other, CollisionManifold& out)
 bool BoxCollider::CollidesWith(BoxCollider& other, CollisionManifold& out)
 {
 	// Get the center of the collider
-	_center = this->GetPosition();;
+	_center = this->GetPosition();
 	// Get the max of this collider
 	_max = _center + (_halfExtents / 2);
 	// Get the min of this collider
@@ -59,13 +59,12 @@ bool BoxCollider::CollidesWith(BoxCollider& other, CollisionManifold& out)
 		return false;
 	if (this->_max.y < theirMin.y || this->_min.y > theirMax.y)
 		return false;
-	/*if (this->_max.y < theirMin.y || this->_min.y > theirMax.y);
-		return false;*/
-		
+	
+	
 	out.contactPointCount = 1;
 	out.collisionNormal = other.GetPosition() - GetPosition();
 	out.collisionNormal.Normalise();
-	out.points[0].Position = GetPosition() + out.collisionNormal;
+	out.points[0].Position = this->GetPosition() + out.collisionNormal;
 	out.points[0].penDepth = DistanceToPointAABB(out.points[0].Position, *this);
 
 	return true;
