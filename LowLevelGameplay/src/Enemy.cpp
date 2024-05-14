@@ -53,6 +53,13 @@ void Enemy::Update(float dt)
 	GameObject::Update(dt);
 }
 
+void Enemy::FixedUpdate(float fixedUpdate)
+{
+	
+	GetRigidbody()->AddForce(direction.Normalised() * mMaxSpeed);
+	GetRigidbody()->Update(fixedUpdate);
+}
+
 void Enemy::Draw(sf::RenderWindow* window)
 {
 	GameObject::Draw(window);
@@ -68,10 +75,9 @@ void Enemy::ChaseState()
 {
 	
 	// Get direction
-	LLGP::Vector2f direction = _playerRef->GetTransform()->GetPosition() - GetTransform()->GetPosition();
+	direction = _playerRef->GetTransform()->GetPosition() - GetTransform()->GetPosition();
 	
-	// Chase towawrds the player
-	GetRigidbody()->AddForce(direction.Normalised() * mMaxSpeed);
+	
 }
 
 void Enemy::AttackState()

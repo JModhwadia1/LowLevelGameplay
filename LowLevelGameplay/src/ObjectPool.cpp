@@ -81,17 +81,4 @@ void ObjectPool::AddTypeToPool(std::function<GameObject* ()> infactory, int Amou
 		}
 }
 
-//GameObject* ObjectPool::GetPooledObject(std::string tag)
-//{
-// 	
-//}
 
-	
-
-//void ObjectPool::AddTypeToPool(std::function<GameObject* ()> infactory, int AmountToPool, bool Expand)
-//{
-//	if (std::find_if(objectsToPool.begin(), objectsToPool.end(), [infactory](ObjectPoolItem &b) {return b.typeFactory.target_type().hash_code() == infactory.target_type().hash_code(); }) == objectsToPool.end())
-//	{
-//		objectsToPool.push_back(ObjectPoolItem(infactory, AmountToPool, Expand));
-//	}
-//}

@@ -11,19 +11,14 @@ public:
 		_texture.loadFromFile(filePath);
 
 		
-		/*if (!_texture.loadFromFile(filePath))
-		{
-			std::cout << "can't load texture in animation" << std::endl;
-		}*/
-		
 		//_texture = texture;
 		for (int i = 0; i < numberOfFrames; i++)
 		{
-			//frames[i] = { x + i * width,y,x + (i + 1) * width, y + height };
+			
 
-			//frames[i] = { x,y + i * height,x + width, y + (i + 1) * height };
+			
 			frames[i] = { x, y + i * height, width, height };
-			//frames[i] = { x + i * width, y, width, height };
+		
 
 		}
 

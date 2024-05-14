@@ -25,6 +25,7 @@ public:
 	void Start() override;
 	void ChangeCurrentState(States state) { _currentState = state; }
 	void Update(float dt)override;
+	void FixedUpdate(float fixedUpdate) override;
 	void Draw(sf::RenderWindow* window)override;
 	void IdleState();
 	void ChaseState();
@@ -45,6 +46,8 @@ private:
 	BoxCollider* _boxCollider;
 	SphereCollider* _sphereCollider;
 	sf::RectangleShape shape;
+	// Get direction
+	LLGP::Vector2f direction;
 
 	
 	

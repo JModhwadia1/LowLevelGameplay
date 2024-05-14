@@ -57,11 +57,11 @@ void GameWorld::Init(sf::RenderWindow* window)
 	//mPlayer->OnPlayerDied += std::bind(&GameWorld::HandlePlayerDied, this, std::placeholders::_1);
 	mEnemy = new Enemy(GetResources().mEnemyTex);
 	mPlayer->GetTransform()->SetPosition(LLGP::Vector2f(960.0f, 540.0f));
-	mFamilyMan = /*SpawnGameobject<FamilyMan>(mResources.mMenTex);*/new FamilyMan();
+//	mFamilyMan = /*SpawnGameobject<FamilyMan>(mResources.mMenTex);*/new FamilyMan();
 
 
 	mGameobjects.push_back(mPlayer);
-	mGameobjects.push_back(mFamilyMan);
+	//mGameobjects.push_back(mFamilyMan);
 	mGameobjects.push_back(mEnemy);
 
 	
@@ -174,13 +174,6 @@ void GameWorld::Update(float DeltaTime)
 		}
 	}
 
-	//if (IsGameobjectOutOfBounds(mPlayer)) {
-	//	//std::cout << "Player is out of bounds" << std::endl;
-	//}
-	
-
-	//UpdateCollisions();
-
 	mEnemySpawnTime -= DeltaTime;
 
 	if (mEnemySpawnTime <= 0.0f)
@@ -193,8 +186,8 @@ void GameWorld::Update(float DeltaTime)
 
 void GameWorld::Render(sf::RenderWindow* window)
 {
-	/*mPlayer->Draw(window);
-	mEnemy->Draw(window);*/
+
+	mEnemy->Draw(window);
 
 
 	for (int i = 0; i < mGameobjects.size(); i++)
@@ -208,13 +201,13 @@ void GameWorld::Render(sf::RenderWindow* window)
 	RenderArenaBounds();
 }
 
-void GameWorld::UpdateRigidbodies(float FixedDeltaTime)
+void GameWorld::FixedUpdate(float FixedDeltaTime)
 {
 	for (int i = 0; i < mGameobjects.size(); i++)
 	{
 		if (mGameobjects[i]) {
 			
-			mGameobjects[i]->GetRigidbody()->Update(FixedDeltaTime);
+			mGameobjects[i]->FixedUpdate(FixedDeltaTime);
 		}
 	}
 }
@@ -293,10 +286,10 @@ void GameWorld::UpdateCollisions()
 
 
 						// Apply Impulse to object A
-						a->GetRigidbody()->ApplyImpluse(invMassA * j * collisionNormal);
-						b->GetRigidbody()->ApplyImpluse(-(invMassB * j * collisionNormal));
+						a->GetTransform()->ChangePosition(invMassA * j * collisionNormal);
+						b->GetTransform()->ChangePosition(-(invMassB * j * collisionNormal));
 						
-						std::cout << "Vel: " << a->GetRigidbody()->GetVelocity().x << ", " << a->GetRigidbody()->GetVelocity().y << " ---  Impulse: " << (j * collisionNormal).x << ", " << (j * collisionNormal).y << std::endl;
+						std::cout << "COllision" << std::endl;
 
 
 						

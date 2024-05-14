@@ -26,6 +26,6 @@ void Rigidbody::Update(float deltaTime)
 	//// set it to 0 as its calculated each frame
 	mAcceleration = LLGP::Vector2f::zero;
 	mVelocity = LLGP::Vector2f::zero;
-	//_netForce = LLGP::Vector2f::zero;
+	
 }
 

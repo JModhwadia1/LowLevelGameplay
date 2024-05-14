@@ -24,8 +24,7 @@ void GameObject::Start()
 
 void GameObject::Update(float dt)
 {
-	///*_rigidbody->Update(dt);*/
-	//_texture->GetSprite()->setPosition(_transform->GetPosition());
+	
 }
 
 void GameObject::Draw(sf::RenderWindow* window)

@@ -1,16 +1,13 @@
 #pragma once
 #include "Vector2.h"
 #include <SFML/Graphics.hpp>
-//#include "Transform.h"
-//#include "Rigidbody.h"
 #include "GameObject.h"
 #include "Animation.h"
 #include "BoxCollider.h"
 #include "SphereCollider.h"
 #include "HealthComponent.h"
-//#include "Event.h"
 
-//class HealthComponent;
+
 
 enum EFacingDirection {
 	FACING_RIGHT,
@@ -35,14 +32,15 @@ public:
 	explicit Player();
 	~Player();
 
-	virtual void Start() override;
-	virtual void Update(float dt)override;
+	void Start() override;
+	void Update(float dt)override;
+	void FixedUpdate(float fixedUpdate) override;
 	void Draw(sf::RenderWindow* window)override;
 	LLGP::Vector2f direction;
 	LLGP::Vector2f mPrevDirection;
 	void UpdateMovement(float dt);
 	float AccelerationSpeed = 200.0f;
-	float mMaxSpeed = 10.0f;
+	float mMaxSpeed = 600.0f;
 	void HandleOnDied(bool Die);
 
 	void PrintHealth(float Amount);

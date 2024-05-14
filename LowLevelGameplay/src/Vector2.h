@@ -16,7 +16,6 @@ namespace LLGP
 	//static constexpr float Half = 0.5f;
 	//static constexpr float RadianConversionConstant = 180.0f;
 
-
 	static constexpr float RadiansToDegrees(float rad) { return rad * (RadianConversionConstant / PI); }
 	static constexpr float DegreesToRadians(float deg) { return deg * (PI / RadianConversionConstant); }
 

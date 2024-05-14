@@ -57,11 +57,16 @@ void Player::Update(float dt)
 	shape.setOutlineThickness(3.0f);
 	shape.setOutlineColor(sf::Color::Red);
 	shape.setPosition(GetTransform()->GetPosition());
-	GameObject::Update(dt);
 	
 
 
 	
+}
+
+void Player::FixedUpdate(float fixedUpdate)
+{
+	GetRigidbody()->SetVelocity(direction * mMaxSpeed);
+	GetRigidbody()->Update(fixedUpdate);
 }
 
 void Player::Draw(sf::RenderWindow* window)
@@ -73,13 +78,13 @@ void Player::Draw(sf::RenderWindow* window)
 
 void Player::UpdateMovement(float dt)
 {
+	direction = LLGP::Vector2f(0.0f, 0.0f);
 	
 	if (sf::Keyboard::isKeyPressed(sf::Keyboard::W) || sf::Keyboard::isKeyPressed(sf::Keyboard::Up))
 	{
 		mFacingDirection = FACING_UP;
 		direction.y -= 1.0f;
 		currentAnimation = AnimationIndex::WalkingUp;
-		mPrevDirection = direction;
 	}
 	
 
@@ -87,8 +92,7 @@ void Player::UpdateMovement(float dt)
 	{
 		mFacingDirection = FACING_DOWN;
 		direction.y += 1.0f;
-		currentAnimation = AnimationIndex::WalkingDown; 
-		mPrevDirection = direction;
+		currentAnimation = AnimationIndex::WalkingDown;
 	}
 
 	else if (sf::Keyboard::isKeyPressed(sf::Keyboard::D) || sf::Keyboard::isKeyPressed(sf::Keyboard::Right))
@@ -96,7 +100,6 @@ void Player::UpdateMovement(float dt)
 		mFacingDirection = FACING_RIGHT;
 		direction.x += 1.0f;
 		currentAnimation = AnimationIndex::WalkingRight;
-		mPrevDirection = direction;
 	}
 
 	else if (sf::Keyboard::isKeyPressed(sf::Keyboard::A) || sf::Keyboard::isKeyPressed(sf::Keyboard::Left))
@@ -104,9 +107,9 @@ void Player::UpdateMovement(float dt)
 		mFacingDirection = FACING_LEFT;
 		direction.x -= 1.0f;
 		currentAnimation = AnimationIndex::WalkingLeft;
-		mPrevDirection = direction;
 
 	}
+	mPrevDirection = direction;
 	
 	mShootCooldown -= dt;
 	if (sf::Keyboard::isKeyPressed(sf::Keyboard::Space)) {
@@ -141,9 +144,8 @@ void Player::UpdateMovement(float dt)
 		healthcomp->TakeDamage(nullptr,10.0f);
 	}
 
-
-	GetRigidbody()->AddForce(direction * mMaxSpeed);
-	direction = LLGP::Vector2f(0.0f, 0.0f);
+	
+	
 }
 
 void Player::HandleOnDied(bool Die)

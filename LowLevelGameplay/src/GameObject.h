@@ -3,13 +3,11 @@
 #include "Texture2D.h"
 #include "Rigidbody.h"
 #include "Object.h"
-//#include "GameWorld.h"
 #include "Event.h"
 
 
 class Collider;
 class GameWorld;
-//class Event;
 class GameObject : public Object
 {
 public:
@@ -19,6 +17,7 @@ public:
 
 	virtual void Start();
 	virtual void Update(float dt);
+	virtual void FixedUpdate(float fixedUpdate) {};
 	virtual void Draw(sf::RenderWindow* window);
 	Rigidbody* GetRigidbody() { return _rigidbody; }
 	Texture2D* GetTexture2D() { return _texture; }

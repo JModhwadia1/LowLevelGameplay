@@ -1,19 +1,12 @@
 #pragma once
 #include <SFML/Graphics.hpp>
-//#include "Player.h"
 #include "GameObject.h"
-//#include "Enemy.h"
 #include "Event.h"
-
 #include <iostream>
 
 class FamilyMan;
 class Player;
 class Enemy;
-//class Enemy;
-
-
-
 
 class GameWorld
 {
@@ -36,12 +29,8 @@ public:
 		sf::Texture* mTanksTex;
 	};
 
-
 public:
-	 //static GameWorld* world;
-//	 GameWorld() = default;
-	 //GameWorld(sf::RenderWindow* window);
-	 //~GameWorld();
+
 	static const float arenaSize;
 
 	// Positions of each side of the area (Note: does not affect arena visually)
@@ -52,7 +41,7 @@ public:
 	static void Init(sf::RenderWindow* window);
 	static void LoadTextures();
 	static void Update(float DeltaTime);
-	static void UpdateRigidbodies(float FixedDeltaTime);
+	static void FixedUpdate(float FixedDeltaTime);
 	static void Render(sf::RenderWindow* window);
 	static Player* GetPlayer()  { if (mPlayer != nullptr) { return mPlayer; } }
 	static const Resources& GetResources() { return mResources; }
@@ -71,20 +60,13 @@ public:
 	
 	static void HandlePlayerDied(bool die);
 
-	
-
 private:
 	static Player* mPlayer;
 	static Enemy* mEnemy;
 	static FamilyMan* mFamilyMan;
 	static Resources mResources;
 	static std::vector<GameObject*> mGameobjects;
-
 	static float mEnemySpawnTime;
-
-
-
-
 };
 
 template<typename T>
