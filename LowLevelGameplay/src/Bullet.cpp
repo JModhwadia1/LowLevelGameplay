@@ -13,13 +13,10 @@ Bullet::Bullet() : GameObject(GameWorld::GetResources().mBulletTex)
 	GetRigidbody()->SetMaxSpeed(mBulletSpeed);
 
 	mBoxCollider = new BoxCollider(GetTransform(), LLGP::Vector2f(2.0f, 2.0f));
-	mLineCollider = new LineCollider(GetTransform(),
-		LLGP::Vector2f((GetTransform()->GetPosition().x + GetTexture2D()->GetSprite()->getScale().x), GetTransform()->GetPosition().y + GetTexture2D()->GetSprite()->getScale().y), // Head Point
-		LLGP::Vector2f((GetTransform()->GetPosition().x - GetTexture2D()->GetSprite()->getScale().x), GetTransform()->GetPosition().y - GetTexture2D()->GetSprite()->getScale().y),*GetTexture2D()->GetSprite()); // Tail Point
-
+	mLineCollider = new LineCollider(GetTransform(), mDirection.Normalised(), -mDirection.Normalised(),
 	std::cout << GetTexture2D()->GetSprite()->getScale().x + GetTransform()->GetPosition().x << std::endl;
 	SetActive(true);
-	SetCollider(mLineCollider);
+	SetCollider(mBoxCollider);
 }
 
 void Bullet::Launch(const BulletLaunchParams* params)
@@ -50,9 +47,14 @@ void Bullet::OnCollision(GameObject& other)
 
 void Bullet::Update(float dt)
 {
-	GetRigidbody()->AddForce(mDirection * mBulletSpeed);
-	GameObject::Update(dt);
+	/*GetRigidbody()->AddForce(mDirection * mBulletSpeed);*/
 
+}
+
+void Bullet::FixedUpdate(float fixedDeltatime) 
+{
+	GetRigidbody()->SetVelocity(mDirection * mBulletSpeed);
+	GetRigidbody()->Update(fixedDeltatime);
 }
 
 void Bullet::Draw(sf::RenderWindow* window) {

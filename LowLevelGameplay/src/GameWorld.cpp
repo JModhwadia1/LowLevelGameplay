@@ -265,13 +265,13 @@ void GameWorld::UpdateCollisions()
 					LLGP::Vector2f collisionNormal = manifold.collisionNormal;
 				
 					collisionNormal.Normalise();
-					LLGP::Vector2f relativeVelocity = a->GetRigidbody()->GetVelocity() - b->GetRigidbody()->GetVelocity();
+					LLGP::Vector2f relativeVelocity = b->GetRigidbody()->GetVelocity() - a->GetRigidbody()->GetVelocity();
 					
 					float dot = LLGP::Vector2f::Dot(collisionNormal, relativeVelocity);
 					if (dot < 0.0f) {
 
 						// Restitution - Between 0 and 1 for testing
-						float e = 0.1f;
+						float e = 1.1f;
 						// Get inverse mass of object A
 						float invMassA = a->GetRigidbody()->GetInverseMass();
 						// Get inverse mass of object B

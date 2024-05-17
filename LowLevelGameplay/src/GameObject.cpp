@@ -8,6 +8,7 @@ GameObject::GameObject(sf::Texture* texture)
 	_texture = new Texture2D(texture);
 	_transform = new Transform(LLGP::Vector2f(0, 0), LLGP::Vector2f(1, 1));
 	_rigidbody = new Rigidbody(_transform,_texture->GetSprite());
+	
 }
 
 GameObject::~GameObject()

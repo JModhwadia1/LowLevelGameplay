@@ -13,5 +13,6 @@ public:
 	sf::Sprite* GetSprite() { return mSprite; }
 private:
 	sf::Sprite* mSprite;
+	
 };
 

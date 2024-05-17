@@ -9,7 +9,7 @@ int main()
 {
 	sf::RenderWindow window(sf::VideoMode(1920, 1080), "SFML works!");
 	
-	
+
 	/*GameWorld* mWorld = new GameWorld(&window);*/
 	GameWorld::Init(&window);
 

@@ -13,7 +13,7 @@ Player::Player() : GameObject(GameWorld::GetResources().mPlayerTex)
 	GetRigidbody()->SetMaxSpeed(mMaxSpeed);
 	GetTexture2D()->GetSprite()->setScale(5, 5);
 	GetTexture2D()->GetSprite()->setTextureRect(sf::IntRect(0,0,5,11));
-	_boxCollider = new BoxCollider(GetTransform(), LLGP::Vector2f(25.0f, 55.0f));
+	_boxCollider = new BoxCollider(GetTransform(), LLGP::Vector2f(GetTexture2D()->GetSprite()->getGlobalBounds().getSize().x, GetTexture2D()->GetSprite()->getGlobalBounds().getSize().y));
 	_sphereCollider = new SphereCollider(GetTransform(), 20.0f);
 	SetCollider(_boxCollider);
 
@@ -78,38 +78,55 @@ void Player::Draw(sf::RenderWindow* window)
 
 void Player::UpdateMovement(float dt)
 {
-	direction = LLGP::Vector2f(0.0f, 0.0f);
-	
-	if (sf::Keyboard::isKeyPressed(sf::Keyboard::W) || sf::Keyboard::isKeyPressed(sf::Keyboard::Up))
-	{
-		mFacingDirection = FACING_UP;
-		direction.y -= 1.0f;
-		currentAnimation = AnimationIndex::WalkingUp;
+	direction = LLGP::Vector2f((float)(sf::Keyboard::isKeyPressed(sf::Keyboard::D) || sf::Keyboard::isKeyPressed(sf::Keyboard::Right)) - (float)(sf::Keyboard::isKeyPressed(sf::Keyboard::A) || sf::Keyboard::isKeyPressed(sf::Keyboard::Left)),
+		(float)(sf::Keyboard::isKeyPressed(sf::Keyboard::S) || sf::Keyboard::isKeyPressed(sf::Keyboard::Down)) - (float)(sf::Keyboard::isKeyPressed(sf::Keyboard::W) || sf::Keyboard::isKeyPressed(sf::Keyboard::Up)));
+
+	if (direction != LLGP::Vector2f(0, 0)) {
+
+		mPrevDirection = direction;
 	}
 	
-
-	else if (sf::Keyboard::isKeyPressed(sf::Keyboard::S) || sf::Keyboard::isKeyPressed(sf::Keyboard::Down))
+	switch ((int)direction.x)
 	{
-		mFacingDirection = FACING_DOWN;
-		direction.y += 1.0f;
-		currentAnimation = AnimationIndex::WalkingDown;
-	}
-
-	else if (sf::Keyboard::isKeyPressed(sf::Keyboard::D) || sf::Keyboard::isKeyPressed(sf::Keyboard::Right))
-	{
+	case 1:
 		mFacingDirection = FACING_RIGHT;
-		direction.x += 1.0f;
-		currentAnimation = AnimationIndex::WalkingRight;
-	}
-
-	else if (sf::Keyboard::isKeyPressed(sf::Keyboard::A) || sf::Keyboard::isKeyPressed(sf::Keyboard::Left))
-	{
+		break;
+	case -1:
 		mFacingDirection = FACING_LEFT;
-		direction.x -= 1.0f;
-		currentAnimation = AnimationIndex::WalkingLeft;
-
+		break;
+	default:
+		break;
 	}
-	mPrevDirection = direction;
+
+	switch ((int)direction.y)
+	{
+	case 1:
+		mFacingDirection = FACING_UP;
+		break;
+	case -1:
+		mFacingDirection = FACING_DOWN;
+		break;
+	default:
+		break;
+	}
+
+	switch (mFacingDirection)
+	{
+	case FACING_RIGHT:
+		currentAnimation = AnimationIndex::WalkingRight;
+		break;
+	case FACING_LEFT:
+		currentAnimation = AnimationIndex::WalkingLeft;
+		break;
+	case FACING_UP:
+		currentAnimation = AnimationIndex::WalkingUp;
+		break;
+	case FACING_DOWN:
+		currentAnimation = AnimationIndex::WalkingDown;
+		break;
+	default:
+		break;
+	}
 	
 	mShootCooldown -= dt;
 	if (sf::Keyboard::isKeyPressed(sf::Keyboard::Space)) {

@@ -23,6 +23,7 @@ public:
 	float GetDamage() const { return mDamage; }
 	float GetBulletSpeed() { return mBulletSpeed; }
 	void Update(float dt) override;
+	void FixedUpdate(float fixedUpdate);
 	void OnCollision(GameObject& other) override;
 
 	void Draw(sf::RenderWindow* window)override;
@@ -30,7 +31,7 @@ public:
 	LineCollider* mLineCollider;
 
 private:
-	float mBulletSpeed = 20.0f;
+	float mBulletSpeed = 1000.0f;
 	const GameObject* mOwner = nullptr;
 	float mDamage = 10.0f;
 	LLGP::Vector2f mDirection;

@@ -1,3 +1,4 @@
 #pragma once
 
-#define FIXEDFRAMERATE 0.016
+
+#define FIXEDFRAMERATE (1.0f/60.f)
