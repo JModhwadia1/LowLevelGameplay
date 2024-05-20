@@ -60,8 +60,7 @@ public:
 	{
 		mGameobjects.insert(std::make_unique<T>(texture));
 		//mGameobjects.emplace(std::make_unique<T>(texture));
-		return static_cast<T*>(mGameobjects.end) // does not return the last element
-
+		return static_cast<T*>(mGameobjects[mGameobjects.size() - 1]); // does not return the last element
 	}
 	static void DeleteObject(GameObject* object);
 	static void UpdateCollisions();

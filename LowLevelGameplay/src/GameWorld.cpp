@@ -164,8 +164,8 @@ void GameWorld::Update(float DeltaTime)
 	
 	for (int i = 0; i < mGameobjects.size(); i++)
 	{
-		if (mGameobjects[i]) {
-			mGameobjects[i]->Update(DeltaTime);
+		if (mGameobjects[i].get()) {
+			mGameobjects[i].get()->Update(DeltaTime);
 		}
 	}
 
@@ -330,7 +330,6 @@ void GameWorld::UpdateArenaBounds(float dt)
 		if (IsGameobjectOutOfBounds(mGameobjects[i].get())) {
 			mGameobjects[i].get()->ApplyDamage(nullptr, Damage);
 		}
-
 	}
 	
 }
