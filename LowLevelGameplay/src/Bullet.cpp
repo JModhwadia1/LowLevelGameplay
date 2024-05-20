@@ -12,17 +12,17 @@ Bullet::Bullet() : GameObject(GameWorld::GetResources().mBulletTex)
 {
 	GetRigidbody()->SetMaxSpeed(mBulletSpeed);
 
-	mBoxCollider = new BoxCollider(GetTransform(), LLGP::Vector2f(2.0f, 2.0f));
-	mLineCollider = new LineCollider(GetTransform(), mDirection.Normalised(), -mDirection.Normalised(),
+	mBoxCollider = new BoxCollider(GetTransform(), LLGP::Vector2f(GetTexture2D()->GetSprite()->getGlobalBounds().getSize().x, GetTexture2D()->GetSprite()->getGlobalBounds().getSize().y));
+	mLineCollider = new LineCollider(GetTransform(), mDirection.Normalised(), -mDirection.Normalised(), *GetTexture2D()->GetSprite());
 	std::cout << GetTexture2D()->GetSprite()->getScale().x + GetTransform()->GetPosition().x << std::endl;
 	SetActive(true);
-	SetCollider(mBoxCollider);
+	SetCollider(mLineCollider);
 }
 
 void Bullet::Launch(const BulletLaunchParams* params)
 {
 	GetTransform()->SetPosition(params->mStartPos);
-	//GetRigidbody()->SetVelocity((params->mDirection * mBulletSpeed).Normalised());
+	
 	mDirection = params->mDirection;
 
 	mOwner = params->mOwner;
@@ -39,7 +39,7 @@ void Bullet::OnCollision(GameObject& other)
 
 
 	if (Enemy* enemy = dynamic_cast<Enemy*>(&other)) {
-		std::cout << "Bullet Collided with enemy" << std::endl;
+		enemy->ApplyDamage(this, mDamage);
 
 	}
 		
@@ -47,17 +47,25 @@ void Bullet::OnCollision(GameObject& other)
 
 void Bullet::Update(float dt)
 {
-	/*GetRigidbody()->AddForce(mDirection * mBulletSpeed);*/
+	if (!GetIsActive()) return;
+	mLifetime -= dt;
+
+	if (mLifetime <= 0) {
+		SetActive(false);
+		GameWorld::RemoveFromGameobject(this);
+		mLifetime = 5.0f;
+	}
 
 }
 
 void Bullet::FixedUpdate(float fixedDeltatime) 
 {
+	if (!GetIsActive()) return;
 	GetRigidbody()->SetVelocity(mDirection * mBulletSpeed);
 	GetRigidbody()->Update(fixedDeltatime);
 }
 
 void Bullet::Draw(sf::RenderWindow* window) {
-
+	if (!GetIsActive()) return;
 	GameObject::Draw(window);
 }

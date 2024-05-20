@@ -17,6 +17,8 @@ GameObject::~GameObject()
 	delete(_transform);
 	delete(_collider);
 
+
+
 }
 
 void GameObject::Start()
@@ -25,11 +27,12 @@ void GameObject::Start()
 
 void GameObject::Update(float dt)
 {
-	
+	//if (!m_Active) return;
 }
 
 void GameObject::Draw(sf::RenderWindow* window)
 {
+//	if (!m_Active) { return; }
 	_texture->Draw(window);
 }
 

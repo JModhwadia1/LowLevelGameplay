@@ -8,6 +8,8 @@ Rigidbody::Rigidbody(Transform* transform, sf::Sprite* sprite)
 
 Rigidbody::~Rigidbody()
 {
+	_transform = nullptr;
+	_sprite = nullptr;
 }
 
 void Rigidbody::Update(float deltaTime)

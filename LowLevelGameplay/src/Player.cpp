@@ -18,8 +18,8 @@ Player::Player() : GameObject(GameWorld::GetResources().mPlayerTex)
 	SetCollider(_boxCollider);
 
 	healthcomp = new HealthComponent(this);
-	healthcomp->OnHealthUpdated += std::bind(&Player::PrintHealth, this, std::placeholders::_1);
-	healthcomp->OnDied += std::bind(&Player::HandleOnDied, this, std::placeholders::_1);
+	healthcomp->OnHealthUpdated.AddListener(this, std::bind(&Player::PrintHealth, this, std::placeholders::_1));
+	healthcomp->OnDied.AddListener(this, std::bind(&Player::HandleOnDied, this, std::placeholders::_1));
 
 
 	animations[int(AnimationIndex::WalkingUp)] = Animation(23, 0, 7, 12,"Textures/Player.png",*GameWorld::GetResources().mPlayerTex);
@@ -33,13 +33,13 @@ Player::Player() : GameObject(GameWorld::GetResources().mPlayerTex)
 
 Player::~Player()
 {
-	healthcomp->OnHealthUpdated -= std::bind(&Player::PrintHealth, this, std::placeholders::_1);
-	healthcomp->OnDied -= std::bind(&Player::HandleOnDied, this, std::placeholders::_1);
+	healthcomp->OnHealthUpdated.RemoveListener(this, std::bind(&Player::PrintHealth, this, std::placeholders::_1));
+	healthcomp->OnDied.RemoveListener(this,  std::bind(&Player::HandleOnDied, this, std::placeholders::_1));
 	
-	healthcomp = nullptr;
-	_boxCollider = nullptr;
-	_sphereCollider = nullptr;
-
+	delete(_boxCollider);
+	delete(_sphereCollider);
+	delete(healthcomp);
+	
 }
 
 void Player::Start()
@@ -71,7 +71,6 @@ void Player::FixedUpdate(float fixedUpdate)
 
 void Player::Draw(sf::RenderWindow* window)
 {
-	//window.draw(mSprite);
 	GameObject::Draw(window);
 	window->draw(shape);
 }
@@ -80,6 +79,7 @@ void Player::UpdateMovement(float dt)
 {
 	direction = LLGP::Vector2f((float)(sf::Keyboard::isKeyPressed(sf::Keyboard::D) || sf::Keyboard::isKeyPressed(sf::Keyboard::Right)) - (float)(sf::Keyboard::isKeyPressed(sf::Keyboard::A) || sf::Keyboard::isKeyPressed(sf::Keyboard::Left)),
 		(float)(sf::Keyboard::isKeyPressed(sf::Keyboard::S) || sf::Keyboard::isKeyPressed(sf::Keyboard::Down)) - (float)(sf::Keyboard::isKeyPressed(sf::Keyboard::W) || sf::Keyboard::isKeyPressed(sf::Keyboard::Up)));
+	
 
 	if (direction != LLGP::Vector2f(0, 0)) {
 
@@ -147,11 +147,6 @@ void Player::UpdateMovement(float dt)
 				bullet->Launch(&params);
 				std::cout << "Bullet spawned" << std::endl;
 			}
-
-			/*if (Bullet* bullet = ObjectPool::GetPooledObject("Bullet"))
-			{
-
-			}*/
 		}
 		
 	}

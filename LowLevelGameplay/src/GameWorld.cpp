@@ -3,9 +3,11 @@
 #include "Bullet.h"
 #include "FamilyMan.h"
 #include "Player.h"
-#include "Enemy.h"
+#include "Grunts.h"
+#include "Hulks.h"
+#include <algorithm>
 #include "ObjectPool.h"
-
+#include "Brains.h"
 
 
 
@@ -19,7 +21,9 @@ float GameWorld::mEnemySpawnTime = 5.0f;
 
 
 Player* GameWorld::mPlayer = nullptr;
-Enemy* GameWorld::mEnemy = nullptr;
+Grunts* GameWorld::mGrunt = nullptr;
+Hulks* GameWorld::mHulk = nullptr;
+Brains* GameWorld::mBrain = nullptr;
 FamilyMan* GameWorld::mFamilyMan = nullptr;
 std::vector<GameObject*> GameWorld::mGameobjects;
 GameWorld::Resources GameWorld::mResources;
@@ -27,26 +31,14 @@ sf::RenderWindow* GameWorld::mWindow = nullptr;
 
 
 
-//
-//GameWorld::GameWorld(sf::RenderWindow* window)
-//{
-//	
-//	Init();
-//}
 
-
-//
-//GameWorld::~GameWorld()
-//{
-//	mPlayer->OnPlayerDied -= std::bind(&GameWorld::HandlePlayerDied, this, std::placeholders::_1);
-//}
 
 void GameWorld::Init(sf::RenderWindow* window)
 {
 	//world = this;
 	mWindow = window;
 	LoadTextures();
-	ObjectPool::AddTypeToPool(std::bind([](){return new Bullet();}), 50,"Bullet");
+	ObjectPool::AddTypeToPool(std::bind([](){return new Bullet();}), 1000,"Bullet");
 	/*ObjectPool::GetPools().push_back(Pool(std::string("Bullet")));*/
 	//Add more types
 	ObjectPool::Start();
@@ -54,19 +46,27 @@ void GameWorld::Init(sf::RenderWindow* window)
 	std::cout << "1st pool object size:" << ObjectPool::GetPools()[0]._Objects.size();
 
 	mPlayer = new Player();
-	//mPlayer->OnPlayerDied += std::bind(&GameWorld::HandlePlayerDied, this, std::placeholders::_1);
-	mEnemy = new Enemy(GetResources().mEnemyTex);
+	
+	mGrunt = new Grunts(mResources.mGruntsTex);
+	mHulk = new Hulks(mResources.mHulksTex);
+	mHulk->GetTransform()->SetPosition(GetRandomPosInArena());
+	mBrain = new Brains(mResources.mBrainsTex);
+	mBrain->GetTransform()->SetPosition(LLGP::Vector2f(100.0f, 400.0f));
+	mGrunt->GetTransform()->SetPosition(LLGP::Vector2f(200.0f, 540.0f));
 	mPlayer->GetTransform()->SetPosition(LLGP::Vector2f(960.0f, 540.0f));
 //	mFamilyMan = /*SpawnGameobject<FamilyMan>(mResources.mMenTex);*/new FamilyMan();
 
 
 	mGameobjects.push_back(mPlayer);
+	mGameobjects.push_back(mHulk);
+	mGameobjects.push_back(mGrunt);
+	mGameobjects.push_back(mBrain);
 	//mGameobjects.push_back(mFamilyMan);
-	mGameobjects.push_back(mEnemy);
+
 
 	
 
-	/*ObjectPool::objectsToPool.push_back(ObjectPoolItem());*/
+	
 
 
 	
@@ -158,7 +158,7 @@ void GameWorld::LoadTextures()
 
 	if (!mResources.mTanksTex->loadFromFile("Textures/enemies.png", sf::IntRect(0, 117, 6, 16)))
 	{
-		std::cout << "enforcers texture not loaded texture not loaded" << std::endl;
+		std::cout << "tanks  texture not loaded texture not loaded" << std::endl;
 		return;
 	}
 }
@@ -166,7 +166,7 @@ void GameWorld::LoadTextures()
 void GameWorld::Update(float DeltaTime)
 {
 	
-
+	
 	for (int i = 0; i < mGameobjects.size(); i++)
 	{
 		if (mGameobjects[i]) {
@@ -180,14 +180,29 @@ void GameWorld::Update(float DeltaTime)
 	{
 		mEnemySpawnTime = 5.0f;
 		//SpawnNewEnemy();
+		
+		
+	
+		
 	}
 	//UpdateArenaBounds(DeltaTime);
 }
 
+
+void GameWorld::FixedUpdate(float FixedDeltaTime)
+{
+	
+	for (int i = 0; i < mGameobjects.size(); i++)
+	{
+		if (mGameobjects[i]) {
+			
+			mGameobjects[i]->FixedUpdate(FixedDeltaTime);
+		}
+	}
+}
 void GameWorld::Render(sf::RenderWindow* window)
 {
 
-	mEnemy->Draw(window);
 
 
 	for (int i = 0; i < mGameobjects.size(); i++)
@@ -199,17 +214,6 @@ void GameWorld::Render(sf::RenderWindow* window)
 	}
 
 	RenderArenaBounds();
-}
-
-void GameWorld::FixedUpdate(float FixedDeltaTime)
-{
-	for (int i = 0; i < mGameobjects.size(); i++)
-	{
-		if (mGameobjects[i]) {
-			
-			mGameobjects[i]->FixedUpdate(FixedDeltaTime);
-		}
-	}
 }
 
 LLGP::Vector2f const GameWorld::GetRandomPosInArena()
@@ -261,47 +265,20 @@ void GameWorld::UpdateCollisions()
 			{
 				if (a->IsCollideable() && b->IsCollideable() && a->GetCollider()->CollidesWith(*b->GetCollider(), manifold))
 				{
-
-					LLGP::Vector2f collisionNormal = manifold.collisionNormal;
-				
-					collisionNormal.Normalise();
-					LLGP::Vector2f relativeVelocity = b->GetRigidbody()->GetVelocity() - a->GetRigidbody()->GetVelocity();
 					
-					float dot = LLGP::Vector2f::Dot(collisionNormal, relativeVelocity);
-					if (dot < 0.0f) {
-
-						// Restitution - Between 0 and 1 for testing
-						float e = 1.1f;
-						// Get inverse mass of object A
-						float invMassA = a->GetRigidbody()->GetInverseMass();
-						// Get inverse mass of object B
-						float invMassB = b->GetRigidbody()->GetInverseMass();
-						// Calculate the inverse mass sum =  InvMassA + InvMass B
-						float inverseMassSum = invMassA + invMassB;
-						// Calculate total velocity
-						float vj = -(1 + e) * dot;
-						// Caluculate impulse
-						float j = vj * (inverseMassSum);
-
-
-
-						// Apply Impulse to object A
-						a->GetTransform()->ChangePosition(invMassA * j * collisionNormal);
-						b->GetTransform()->ChangePosition(-(invMassB * j * collisionNormal));
-						
-						std::cout << "COllision" << std::endl;
-
-
-						
-
-						manifold = CollisionManifold();
-					}
 					a->OnCollision(*b);
 					b->OnCollision(*a);
 				}
 			}
 		}
 	}
+}
+
+void GameWorld::RemoveFromGameobject(GameObject* gameobject)
+{
+	std::vector<GameObject*>::iterator position = std::find(mGameobjects.begin(), mGameobjects.end(), gameobject);
+	mGameobjects.erase(position);
+
 }
 
 void GameWorld::SpawnNewEnemy()

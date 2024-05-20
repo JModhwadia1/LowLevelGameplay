@@ -31,10 +31,12 @@ public:
 	LineCollider* mLineCollider;
 
 private:
-	float mBulletSpeed = 1000.0f;
+	float mBulletSpeed = 200.0f;
 	const GameObject* mOwner = nullptr;
 	float mDamage = 10.0f;
 	LLGP::Vector2f mDirection;
+
+	float mLifetime = 5.0f;
 	
 };
 

@@ -5,14 +5,14 @@ HealthComponent::HealthComponent(GameObject* Owner) /*: mOwner(Owner)*/
 {
 	mCurrentHealth = mMaxHealth;
 	mOwner = Owner;
-	mOwner->OnDamageTaken += std::bind(&HealthComponent::TakeDamage, this, std::placeholders::_1,std::placeholders::_2);
+	mOwner->OnDamageTaken.AddListener(this, std::bind(&HealthComponent::TakeDamage, this, std::placeholders::_1, std::placeholders::_2));
 	
 	
 }
 
 HealthComponent::~HealthComponent()
 {
-	mOwner->OnDamageTaken -= std::bind(&HealthComponent::TakeDamage, this, std::placeholders::_1, std::placeholders::_2);
+	mOwner->OnDamageTaken.RemoveListener(this,std::bind(&HealthComponent::TakeDamage, this, std::placeholders::_1, std::placeholders::_2));
 
 }
 

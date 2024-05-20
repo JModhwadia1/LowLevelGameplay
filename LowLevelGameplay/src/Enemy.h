@@ -1,16 +1,15 @@
 #pragma once
 #include "GameObject.h"
-//#include "Player.h"
-
 
 class Player;
 class BoxCollider;
 class SphereCollider;
-
+class HealthComponent;
 
 
 class Enemy : public GameObject
 {
+protected:
 	enum States
 	{
 		Idle,
@@ -22,35 +21,33 @@ class Enemy : public GameObject
 public:
 	Enemy(sf::Texture* texture);
 
-	void Start() override;
+	virtual void Start() override;
 	void ChangeCurrentState(States state) { _currentState = state; }
-	void Update(float dt)override;
-	void FixedUpdate(float fixedUpdate) override;
-	void Draw(sf::RenderWindow* window)override;
-	void IdleState();
-	void ChaseState();
-	void AttackState();
-	void DeathState();
-	void UpdateStates();
+	virtual void Update(float dt)override;
+	virtual void FixedUpdate(float FixedDeltatime) override;
+	virtual void Draw(sf::RenderWindow* window)override;
+	virtual void IdleState();
+	virtual void ChaseState();
+	virtual void AttackState();
+	virtual void DeathState();
+	virtual void UpdateStates();
 	void SetPlayerRef(Player* player) { _playerRef = player; }
 
 
-	void OnCollision(GameObject& other) override;
+	virtual void OnCollision(GameObject& other) override;
 
 protected:
 	States _currentState = States::Idle;
-private:
 	float mMaxSpeed = 5.0f;
 	Player* _playerRef = nullptr;
 	float AttackDistance = 50.0f;
 	BoxCollider* _boxCollider;
 	SphereCollider* _sphereCollider;
+	HealthComponent* _healthComponent;
 	sf::RectangleShape shape;
 	// Get direction
 	LLGP::Vector2f direction;
 
-	
-	
-
+	LLGP::Event<bool> OnEnemyDied;
 };
 

@@ -7,6 +7,9 @@
 class FamilyMan;
 class Player;
 class Enemy;
+class Grunts;
+class Hulks;
+class Brains;
 
 class GameWorld
 {
@@ -53,7 +56,7 @@ public:
 	static T* SpawnGameobject(sf::Texture* texture);
 	static void UpdateCollisions();
 	static sf::RenderWindow* mWindow;
-
+	static void RemoveFromGameobject(GameObject* gameobject);
 	static void SpawnNewEnemy();
 
 	static void UpdateArenaBounds(float dt);
@@ -62,7 +65,9 @@ public:
 
 private:
 	static Player* mPlayer;
-	static Enemy* mEnemy;
+	static Grunts* mGrunt;
+	static Hulks* mHulk;
+	static Brains* mBrain;
 	static FamilyMan* mFamilyMan;
 	static Resources mResources;
 	static std::vector<GameObject*> mGameobjects;

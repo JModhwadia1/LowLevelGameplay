@@ -18,18 +18,17 @@ bool LineCollider::CollidesWith(BoxCollider& other, CollisionManifold& out)
 	LLGP::Vector2f otherMin = other.GetMin();
 	LLGP::Vector2f otherMax = other.GetMax();
 
-	mHeadPoint.x = GetPosition().x + m_sprite.getScale().x;
-	mHeadPoint.y = GetPosition().y + m_sprite.getScale().y;
+	mHeadPoint.x = GetPosition().x + 1.0f;
+	mHeadPoint.y = GetPosition().y + 1.0f;
 
-	mTailPoint.x = GetPosition().x - m_sprite.getScale().x;
-	mTailPoint.y = GetPosition().y - m_sprite.getScale().y;
+	mTailPoint.x = GetPosition().x - 1.0f;
+	mTailPoint.y = GetPosition().y - 1.0f;
 
 	if (this->mHeadPoint.x < otherMin.x ||
 		this->mHeadPoint.y < otherMin.y ||
 		this->mTailPoint.x > otherMax.x ||
 		this->mTailPoint.y > otherMax.y)
 		return false;
-
 	return true;
 }
 
@@ -40,14 +39,6 @@ bool LineCollider::CollidesWith(LineCollider& other, CollisionManifold& out)
 
 bool LineCollider::LinePoint(float x1, float y1, float x2, float y2, float px, float py)
 {
-	/*LLGP::Vector2f startLine;
-	startLine.x = x1;
-	startLine.y = x2;
-
-	LLGP::Vector2f endLine;
-	endLine.x = x2;
-	endLine.y = y2;*/
-
 	// get distance from the point to the two ends of the line
 	float d1 = ((px - x1) + (py - y1));
 	float d2 = ((px - x2) + (py - y2));
