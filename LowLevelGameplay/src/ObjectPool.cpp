@@ -49,11 +49,6 @@ GameObject* ObjectPool::GetPooledObject(std::string tag)
 						GameWorld::AddToGameobjects(o);
 						o->SetActive(true);
 						return o;
-						//if (o.first)
-						//{
-						//	//TODO:figure this out
-						//	o.first = false;	// Not active
-						//	return o.second;
 					}
 					else if (!o->GetIsActive()) {
 						o->SetActive(true);

@@ -50,7 +50,7 @@ void Hulks::Update(float dt)
 
 	}
 
-	if (GetTransform()->GetPosition() == randomPoint && !m_NewPointGenTime <= 0) {
+	if (GetTransform()->GetPosition() == randomPoint && m_NewPointGenTime <= 0.0f) {
 		randomPoint = GameWorld::GetRandomPosInArena();
 	}
 

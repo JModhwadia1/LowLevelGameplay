@@ -79,7 +79,7 @@ void Player::UpdateMovement(float dt)
 {
 	direction = LLGP::Vector2f((float)(sf::Keyboard::isKeyPressed(sf::Keyboard::D) || sf::Keyboard::isKeyPressed(sf::Keyboard::Right)) - (float)(sf::Keyboard::isKeyPressed(sf::Keyboard::A) || sf::Keyboard::isKeyPressed(sf::Keyboard::Left)),
 		(float)(sf::Keyboard::isKeyPressed(sf::Keyboard::S) || sf::Keyboard::isKeyPressed(sf::Keyboard::Down)) - (float)(sf::Keyboard::isKeyPressed(sf::Keyboard::W) || sf::Keyboard::isKeyPressed(sf::Keyboard::Up)));
-	
+	direction.Normalise();
 
 	if (direction != LLGP::Vector2f(0, 0)) {
 

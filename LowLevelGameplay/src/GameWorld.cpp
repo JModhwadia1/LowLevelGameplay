@@ -25,7 +25,7 @@ Grunts* GameWorld::mGrunt = nullptr;
 Hulks* GameWorld::mHulk = nullptr;
 Brains* GameWorld::mBrain = nullptr;
 FamilyMan* GameWorld::mFamilyMan = nullptr;
-std::vector<GameObject*> GameWorld::mGameobjects;
+std::map<uint64_t, std::unique_ptr<GameObject>> GameWorld::mGameobjects;
 GameWorld::Resources GameWorld::mResources;
 sf::RenderWindow* GameWorld::mWindow = nullptr;
 
@@ -45,8 +45,8 @@ void GameWorld::Init(sf::RenderWindow* window)
 
 	std::cout << "1st pool object size:" << ObjectPool::GetPools()[0]._Objects.size();
 
-	mPlayer = new Player();
-	
+	mPlayer = SpawnGameobject<Player>(mResources.mPlayerTex);
+
 	mGrunt = new Grunts(mResources.mGruntsTex);
 	mHulk = new Hulks(mResources.mHulksTex);
 	mHulk->GetTransform()->SetPosition(GetRandomPosInArena());
@@ -57,11 +57,6 @@ void GameWorld::Init(sf::RenderWindow* window)
 //	mFamilyMan = /*SpawnGameobject<FamilyMan>(mResources.mMenTex);*/new FamilyMan();
 
 
-	mGameobjects.push_back(mPlayer);
-	mGameobjects.push_back(mHulk);
-	mGameobjects.push_back(mGrunt);
-	mGameobjects.push_back(mBrain);
-	//mGameobjects.push_back(mFamilyMan);
 
 
 	
@@ -250,25 +245,46 @@ bool GameWorld::IsGameobjectOutOfBounds(GameObject* gameobject)
 }
 
 
+void GameWorld::DeleteObject(GameObject* object)
+{
+	std::erase_if(mGameobjects, [object](std::pair<uint64_t, std::unique_ptr<GameObject>>check) {return object->uuid == check.first; });
+}
+
 void GameWorld::UpdateCollisions()
 {
 	CollisionManifold manifold;
-	for (auto it = mGameobjects.begin(); it < mGameobjects.end(); ++it)
-	{
-		for (auto it2 = it + 1; it2 < mGameobjects.end(); ++it2)
-		{
-			GameObject* a = *it;
-			GameObject* b = *it2;
-			
+	// change to int
+	//for (int it = mGameobjects.begin(); it < mGameobjects.end(); ++it)
+	//{
+	//	for (auto it2 = it + 1; it2 < mGameobjects.end(); ++it2)
+	//	{
+	//		GameObject* a = *it;
+	//		GameObject* b = *it2;
+	//		
 
-			if (a != nullptr && b != nullptr)
+	//		if (a != nullptr && b != nullptr)
+	//		{
+	//			if (a->IsCollideable() && b->IsCollideable() && a->GetCollider()->CollidesWith(*b->GetCollider(), manifold))
+	//			{
+	//				
+	//				a->OnCollision(*b);
+	//				b->OnCollision(*a);
+	//			}
+	//		}
+	//	}
+	//}
+
+
+	for (int i = 0; i < mGameobjects.size(); i++)
+	{
+		for (int j = i + 1; j < mGameobjects.size(); j++)
+		{
+			
+			if(mGameobjects[i].get()->IsCollideable() && mGameobjects[j].get()->IsCollideable() && 
+				mGameobjects[i].get()->GetCollider()->CollidesWith(*mGameobjects[j].get()->GetCollider(), manifold)) 
 			{
-				if (a->IsCollideable() && b->IsCollideable() && a->GetCollider()->CollidesWith(*b->GetCollider(), manifold))
-				{
-					
-					a->OnCollision(*b);
-					b->OnCollision(*a);
-				}
+				mGameobjects[i].get()->OnCollision(*mGameobjects[j].get());
+				mGameobjects[j].get()->OnCollision(*mGameobjects[i].get());
 			}
 		}
 	}
@@ -276,8 +292,8 @@ void GameWorld::UpdateCollisions()
 
 void GameWorld::RemoveFromGameobject(GameObject* gameobject)
 {
-	std::vector<GameObject*>::iterator position = std::find(mGameobjects.begin(), mGameobjects.end(), gameobject);
-	mGameobjects.erase(position);
+	/*std::vector<GameObject*>::iterator position = std::find(mGameobjects.begin(), mGameobjects.end(), gameobject);
+	mGameobjects.erase(position);*/
 
 }
 
@@ -285,10 +301,12 @@ void GameWorld::SpawnNewEnemy()
 {
 	const LLGP::Vector2f spawnPos(LLGP::FRandomRange(m_ArenaLeftPos, m_ArenaRightPos), LLGP::FRandomRange(m_ArenaTopPos, m_ArenaBottomPos));
 
-	GameObject* newEnemy = nullptr;
+	//std::uniqueGameObject* newEnemy = nullptr;
 
-	newEnemy = SpawnGameobject<Enemy>(GetResources().mEnemyTex);
-	newEnemy->GetTransform()->SetPosition(spawnPos);
+	//newEnemy = SpawnGameobject<Enemy>(GetResources().mEnemyTex);
+	//newEnemy->GetTransform()->SetPosition(spawnPos);
+
+	SpawnGameobject<Enemy>(mResources.mEnemyTex);
 
 }
 
@@ -296,16 +314,25 @@ void GameWorld::UpdateArenaBounds(float dt)
 {
 	const float Damage = 1000.0f;
 	
-	for (GameObject* object : mGameobjects)
+	//for (std::unique_ptr<GameObject> object : mGameobjects.begin())
+	//{
+	//	if (object != nullptr)
+	//	{
+	//		if (IsGameobjectOutOfBounds(object)) 
+	//		{
+	//			object->ApplyDamage(nullptr, Damage);
+	//		}
+	//	}
+	//}
+		
+	for (int i = 0; i < mGameobjects.size(); i++)
 	{
-		if (object != nullptr)
-		{
-			if (IsGameobjectOutOfBounds(object)) 
-			{
-				object->ApplyDamage(nullptr, Damage);
-			}
+		if (IsGameobjectOutOfBounds(mGameobjects[i].get())) {
+			mGameobjects[i].get()->ApplyDamage(nullptr, Damage);
 		}
+
 	}
+	
 }
 
 // Delete player from the world and remove it from the list of gameobjects

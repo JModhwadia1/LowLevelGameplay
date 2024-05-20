@@ -19,9 +19,9 @@ public:
 	virtual void Update(float dt);
 	virtual void FixedUpdate(float fixedUpdate) {};
 	virtual void Draw(sf::RenderWindow* window);
-	Rigidbody* GetRigidbody() { return _rigidbody; }
-	Texture2D* GetTexture2D() { return _texture; }
-	Transform* GetTransform() { return _transform; }
+	Rigidbody* GetRigidbody() { return _rigidbody.get(); }
+	Texture2D* GetTexture2D() { return _texture.get(); }
+	Transform* GetTransform() { return _transform.get(); }
 
 	inline void SetName(std::string newName) { m_Name = newName; }
 	inline std::string GetName() { return m_Name; }
@@ -56,9 +56,9 @@ private:
 	bool m_Active;
 	Collider* _collider = nullptr;
 
-	Texture2D* _texture;
-	Transform* _transform;
-	Rigidbody* _rigidbody;
+	std::unique_ptr<Texture2D> _texture;
+	std::unique_ptr < Transform> _transform;
+	std::unique_ptr < Rigidbody> _rigidbody;
 	std::vector <std::unique_ptr<Component>> m_Components;
 };
 

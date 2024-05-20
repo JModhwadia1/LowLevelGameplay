@@ -5,19 +5,14 @@
 
 GameObject::GameObject(sf::Texture* texture)
 {
-	_texture = new Texture2D(texture);
-	_transform = new Transform(LLGP::Vector2f(0, 0), LLGP::Vector2f(1, 1));
-	_rigidbody = new Rigidbody(_transform,_texture->GetSprite());
+	_texture = std::make_unique<Texture2D>(texture);
+	_transform = std::make_unique<Transform>(LLGP::Vector2f(0, 0), LLGP::Vector2f(1, 1));
+	_rigidbody = std::make_unique<Rigidbody>(_transform,_texture->GetSprite());
 	
 }
 
 GameObject::~GameObject()
 {
-	delete(_rigidbody);
-	delete(_transform);
-	delete(_collider);
-
-
 
 }
 
