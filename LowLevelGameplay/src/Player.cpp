@@ -7,8 +7,9 @@
 
 
 
-Player::Player() : GameObject(GameWorld::GetResources().mPlayerTex)
+Player::Player() 
 {
+	Init(GameWorld::GetResources().mPlayerTex);
 	
 	GetRigidbody()->SetMaxSpeed(mMaxSpeed);
 	GetTexture2D()->GetSprite()->setScale(5, 5);
@@ -33,6 +34,7 @@ Player::Player() : GameObject(GameWorld::GetResources().mPlayerTex)
 
 Player::~Player()
 {
+	
 	healthcomp->OnHealthUpdated.RemoveListener(this, std::bind(&Player::PrintHealth, this, std::placeholders::_1));
 	healthcomp->OnDied.RemoveListener(this,  std::bind(&Player::HandleOnDied, this, std::placeholders::_1));
 	

@@ -3,7 +3,7 @@
 class Grunts : public Enemy
 {
 public:
-	Grunts(sf::Texture* texture);
+	Grunts();
 	~Grunts();
 	void Start() override;
 	void ChangeCurrentState(States state) { _currentState = state; }

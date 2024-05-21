@@ -1,8 +1,7 @@
 #include "Enemy.h"
 
-Enemy::Enemy(sf::Texture* texture) : GameObject(texture)
-{
-}
+
+
 
 void Enemy::Start()
 {

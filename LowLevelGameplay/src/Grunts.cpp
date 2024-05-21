@@ -4,8 +4,9 @@
 #include "Player.h"
 #include "GameWorld.h"
 #include "HealthComponent.h"
-Grunts::Grunts(sf::Texture* texture) : Enemy(texture)
+Grunts::Grunts() 
 {
+	Init(GameWorld::GetResources().mGruntsTex);
 	mMaxSpeed = 100.0f;
 	GetRigidbody()->SetMaxSpeed(mMaxSpeed);
 	GetTexture2D()->GetSprite()->setScale(5, 5);

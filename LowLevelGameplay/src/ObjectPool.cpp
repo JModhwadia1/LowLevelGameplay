@@ -4,7 +4,7 @@
 
 std::vector<Pool> ObjectPool::m_Pools;
 std::vector<ObjectPoolItem> ObjectPool::objectsToPool;
-//TODO create return function which finds pool, loops objects, checks equality between, set bool to true;
+//
 void ObjectPool::Start()
 {
 	for (int i = 0; i < objectsToPool.size(); i++)
@@ -46,13 +46,13 @@ GameObject* ObjectPool::GetPooledObject(std::string tag)
 					if (o->GetIsActive())
 					{
 						o->SetActive(false);
-						GameWorld::AddToGameobjects(o);
+					/*	GameWorld::AddToGameobjects(o);*/
 						o->SetActive(true);
 						return o;
 					}
 					else if (!o->GetIsActive()) {
 						o->SetActive(true);
-						GameWorld::AddToGameobjects(o);
+						//GameWorld::AddToGameobjects(o);
 					}
 				}
 

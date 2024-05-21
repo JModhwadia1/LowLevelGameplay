@@ -7,8 +7,9 @@
 #include "Bullet.h"
 #include "ObjectPool.h"
 
-Brains::Brains(sf::Texture* texture) : Enemy(texture)
+Brains::Brains() 
 {
+	Init(GameWorld::GetResources().mBrainsTex);
 	//mShootCooldown = 0.0f;
 	mMaxSpeed = 100.0f;
 	AttackDistance = 200.0f;

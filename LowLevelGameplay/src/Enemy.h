@@ -19,7 +19,8 @@ protected:
 	};
 
 public:
-	Enemy(sf::Texture* texture);
+
+	Enemy() = default;
 
 	virtual void Start() override;
 	void ChangeCurrentState(States state) { _currentState = state; }

@@ -1,4 +1,5 @@
 #include "Rigidbody.h"
+#include "Transform.h"
 #include <SFML/Window/Mouse.hpp>
 Rigidbody::Rigidbody(Transform* transform, sf::Sprite* sprite)
 {

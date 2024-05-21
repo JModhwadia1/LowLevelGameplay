@@ -3,7 +3,7 @@
 class Brains : public Enemy
 {
 public:
-	Brains(sf::Texture* texture);
+	Brains();
 	~Brains();
 	void Start() override;
 	void ChangeCurrentState(States state) { _currentState = state; }

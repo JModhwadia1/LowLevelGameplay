@@ -3,7 +3,7 @@
 #include "GameObject.h"
 #include "Event.h"
 #include <iostream>
-#include <map>
+#include <unordered_map>
 
 class FamilyMan;
 class Player;
@@ -11,6 +11,7 @@ class Enemy;
 class Grunts;
 class Hulks;
 class Brains;
+
 
 class GameWorld
 {
@@ -49,18 +50,18 @@ public:
 	static void Render(sf::RenderWindow* window);
 	static Player* GetPlayer()  { if (mPlayer != nullptr) { return mPlayer; } }
 	static const Resources& GetResources() { return mResources; }
-	template <typename T> requires(std::derived_from <T,GameObject>)
-		static void AddToGameobjects(T* gameobject) { mGameobjects.insert({gameobject->uuid,std::make_unique<T>(gameobject) });
-}
+	
+
 	static LLGP::Vector2f const GetRandomPosInArena();
 	static void RenderArenaBounds();
 	static bool IsGameobjectOutOfBounds(GameObject* gameobject);
 	template <typename T>
-	static T* SpawnGameobject(sf::Texture* texture)
+	static T* SpawnGameobject()
 	{
-		mGameobjects.insert(std::make_unique<T>(texture));
+		std::unique_ptr<T> temp = std::make_unique<T>();
+		mGameobjects.insert( {temp->uuid, std::move(temp)} );
 		//mGameobjects.emplace(std::make_unique<T>(texture));
-		return static_cast<T*>(mGameobjects[mGameobjects.size() - 1]); // does not return the last element
+		return static_cast<T*>(mGameobjects[mGameobjects.size() - 1].get()); 
 	}
 	static void DeleteObject(GameObject* object);
 	static void UpdateCollisions();
@@ -79,7 +80,7 @@ private:
 	static Brains* mBrain;
 	static FamilyMan* mFamilyMan;
 	static Resources mResources;
-	static std::map<uint64_t,std::unique_ptr<GameObject>> mGameobjects;
+	static std::unordered_map<uint64_t,std::unique_ptr<GameObject>> mGameobjects;
 	static float mEnemySpawnTime;
 };
 

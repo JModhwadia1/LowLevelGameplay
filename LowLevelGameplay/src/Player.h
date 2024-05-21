@@ -29,7 +29,8 @@ enum AnimationIndex
 class Player : public GameObject
 {
 public:
-	explicit Player();
+	Player(const Player&) = default;
+	Player();
 	~Player();
 
 	void Start() override;

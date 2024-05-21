@@ -12,6 +12,7 @@
 
 
 
+
 float GameWorld::m_ArenaLeftPos = 500.0f;
 float GameWorld::m_ArenaRightPos = 1430.0f;
 float GameWorld::m_ArenaTopPos = 50.0f;
@@ -25,7 +26,7 @@ Grunts* GameWorld::mGrunt = nullptr;
 Hulks* GameWorld::mHulk = nullptr;
 Brains* GameWorld::mBrain = nullptr;
 FamilyMan* GameWorld::mFamilyMan = nullptr;
-std::map<uint64_t, std::unique_ptr<GameObject>> GameWorld::mGameobjects;
+std::unordered_map<uint64_t, std::unique_ptr<GameObject>> GameWorld::mGameobjects;
 GameWorld::Resources GameWorld::mResources;
 sf::RenderWindow* GameWorld::mWindow = nullptr;
 
@@ -38,21 +39,20 @@ void GameWorld::Init(sf::RenderWindow* window)
 	//world = this;
 	mWindow = window;
 	LoadTextures();
-	ObjectPool::AddTypeToPool(std::bind([](){return new Bullet();}), 1000,"Bullet");
-	/*ObjectPool::GetPools().push_back(Pool(std::string("Bullet")));*/
+	ObjectPool::AddTypeToPool(std::bind([](){return GameWorld::SpawnGameobject<Bullet>();}), 1000,"Bullet");
 	//Add more types
 	ObjectPool::Start();
 
 	std::cout << "1st pool object size:" << ObjectPool::GetPools()[0]._Objects.size();
 
-	mPlayer = SpawnGameobject<Player>(mResources.mPlayerTex);
+	mPlayer = SpawnGameobject<Player>();
 
-	mGrunt = new Grunts(mResources.mGruntsTex);
-	mHulk = new Hulks(mResources.mHulksTex);
+	/*mGrunt = SpawnGameobject<Grunts>();
+	mHulk = SpawnGameobject <Hulks>();
 	mHulk->GetTransform()->SetPosition(GetRandomPosInArena());
-	mBrain = new Brains(mResources.mBrainsTex);
+	mBrain = SpawnGameobject<Brains>();
 	mBrain->GetTransform()->SetPosition(LLGP::Vector2f(100.0f, 400.0f));
-	mGrunt->GetTransform()->SetPosition(LLGP::Vector2f(200.0f, 540.0f));
+	mGrunt->GetTransform()->SetPosition(LLGP::Vector2f(200.0f, 540.0f));*/
 	mPlayer->GetTransform()->SetPosition(LLGP::Vector2f(960.0f, 540.0f));
 //	mFamilyMan = /*SpawnGameobject<FamilyMan>(mResources.mMenTex);*/new FamilyMan();
 
@@ -247,7 +247,7 @@ bool GameWorld::IsGameobjectOutOfBounds(GameObject* gameobject)
 
 void GameWorld::DeleteObject(GameObject* object)
 {
-	std::erase_if(mGameobjects, [object](std::pair<uint64_t, std::unique_ptr<GameObject>>check) {return object->uuid == check.first; });
+	std::erase_if(mGameobjects, [object](const auto& check) {auto const& [key, value] = check;  return object->uuid == key; });
 }
 
 void GameWorld::UpdateCollisions()
@@ -306,7 +306,7 @@ void GameWorld::SpawnNewEnemy()
 	//newEnemy = SpawnGameobject<Enemy>(GetResources().mEnemyTex);
 	//newEnemy->GetTransform()->SetPosition(spawnPos);
 
-	SpawnGameobject<Enemy>(mResources.mEnemyTex);
+	//SpawnGameobject<Enemy>();
 
 }
 
@@ -338,7 +338,7 @@ void GameWorld::UpdateArenaBounds(float dt)
 void GameWorld::HandlePlayerDied(bool die)
 {
 
-	auto player = std::find(mGameobjects.begin(), mGameobjects.end(), mPlayer);
+	auto player = mGameobjects.find(mPlayer->uuid);
 	mGameobjects.erase(player);
 	delete mPlayer;
 	mPlayer = nullptr;

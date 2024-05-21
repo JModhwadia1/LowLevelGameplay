@@ -3,11 +3,11 @@
 #include "Constants.h"
 #include <GameWorld.h>
 
-GameObject::GameObject(sf::Texture* texture)
+void GameObject::Init(sf::Texture* texture)
 {
 	_texture = std::make_unique<Texture2D>(texture);
 	_transform = std::make_unique<Transform>(LLGP::Vector2f(0, 0), LLGP::Vector2f(1, 1));
-	_rigidbody = std::make_unique<Rigidbody>(_transform,_texture->GetSprite());
+	_rigidbody = std::make_unique<Rigidbody>(_transform.get(), _texture->GetSprite());
 }
 
 GameObject::~GameObject()

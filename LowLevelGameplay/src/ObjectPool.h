@@ -24,6 +24,7 @@ struct Pool
 	std::string _PoolTag;
 	//TODO: add utility functions for getting next avail and returning
 	std::vector<GameObject*> _Objects;
+	/*std::unordered_map<uint64_t, std::unique_ptr<GameObject>> mGameobjects;*/
 };
 
 class ObjectPool {

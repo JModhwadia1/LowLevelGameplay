@@ -3,8 +3,9 @@
 #include "BoxCollider.h"
 #include <iostream>
 
-FamilyMan::FamilyMan() : Family(GameWorld::GetResources().mMenTex)
+FamilyMan::FamilyMan() 
 {
+	Init(GameWorld::GetResources().mMenTex);
 	m_MaxSpeed = 10.0f;
 	GetRigidbody()->SetMaxSpeed(m_MaxSpeed);
 	m_BoxCollider = new BoxCollider(GetTransform(), LLGP::Vector2f(25.0f, 55.0f));

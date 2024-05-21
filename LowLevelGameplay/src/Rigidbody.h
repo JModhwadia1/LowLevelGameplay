@@ -1,5 +1,6 @@
 #pragma once
-#include "Transform.h"
+#include "Vector2.h"
+class Transform;
 
 
 class Rigidbody

@@ -4,8 +4,9 @@
 #include "Player.h"
 #include "GameWorld.h"
 #include "HealthComponent.h"
-Hulks::Hulks(sf::Texture* texture) : Enemy(texture)
+Hulks::Hulks() 
 {
+	Init(GameWorld::GetResources().mHulksTex);
 	mMaxSpeed = 20.0f;
 	GetRigidbody()->SetMaxSpeed(mMaxSpeed);
 	GetTexture2D()->GetSprite()->setScale(5, 5);

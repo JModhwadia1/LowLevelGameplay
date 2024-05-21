@@ -8,8 +8,9 @@
 
 
 
-Bullet::Bullet() : GameObject(GameWorld::GetResources().mBulletTex)
+Bullet::Bullet()
 {
+	Init(GameWorld::GetResources().mBulletTex);
 	GetRigidbody()->SetMaxSpeed(mBulletSpeed);
 
 	mBoxCollider = new BoxCollider(GetTransform(), LLGP::Vector2f(GetTexture2D()->GetSprite()->getGlobalBounds().getSize().x, GetTexture2D()->GetSprite()->getGlobalBounds().getSize().y));
@@ -38,10 +39,10 @@ void Bullet::OnCollision(GameObject& other)
 {
 
 
-	if (Enemy* enemy = dynamic_cast<Enemy*>(&other)) {
-		enemy->ApplyDamage(this, mDamage);
+	//if (Enemy* enemy = dynamic_cast<Enemy*>(&other)) {
+	//	enemy->ApplyDamage(this, mDamage);
 
-	}
+	//}
 		
 }
 
