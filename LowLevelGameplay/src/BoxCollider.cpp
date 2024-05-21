@@ -73,8 +73,8 @@ bool BoxCollider::CollidesWith(LineCollider& other, CollisionManifold& out)
 
 	if (this->_max.x < otherTailPoint.x ||
 		this->_max.y < otherTailPoint.y ||
-		this->_min.x > otherHeadPoint.x ||
-		this->_min.y > otherHeadPoint.y)
+		this->_max.x > otherHeadPoint.x ||
+		this->_max.y > otherHeadPoint.y)
 		return false;
 	return true;
 }

@@ -39,10 +39,10 @@ void Bullet::OnCollision(GameObject& other)
 {
 
 
-	//if (Enemy* enemy = dynamic_cast<Enemy*>(&other)) {
-	//	enemy->ApplyDamage(this, mDamage);
-
-	//}
+	if (Enemy* enemy = dynamic_cast<Enemy*>(&other)) {
+		enemy->ApplyDamage(this, mDamage);
+		std::cout << "Collided with enemy" << std::endl;
+	}
 		
 }
 
@@ -51,10 +51,10 @@ void Bullet::Update(float dt)
 	if (!GetIsActive()) return;
 	mLifetime -= dt;
 
+	// Set itself to false - not sure if works with object pooler tho
 	if (mLifetime <= 0) {
-		SetActive(false);
-		GameWorld::RemoveFromGameobject(this);
 		mLifetime = 5.0f;
+		SetActive(false);
 	}
 
 }

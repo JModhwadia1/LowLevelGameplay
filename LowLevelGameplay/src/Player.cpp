@@ -81,7 +81,7 @@ void Player::UpdateMovement(float dt)
 {
 	direction = LLGP::Vector2f((float)(sf::Keyboard::isKeyPressed(sf::Keyboard::D) || sf::Keyboard::isKeyPressed(sf::Keyboard::Right)) - (float)(sf::Keyboard::isKeyPressed(sf::Keyboard::A) || sf::Keyboard::isKeyPressed(sf::Keyboard::Left)),
 		(float)(sf::Keyboard::isKeyPressed(sf::Keyboard::S) || sf::Keyboard::isKeyPressed(sf::Keyboard::Down)) - (float)(sf::Keyboard::isKeyPressed(sf::Keyboard::W) || sf::Keyboard::isKeyPressed(sf::Keyboard::Up)));
-	direction.Normalise();
+	//direction.Normalise();
 
 	if (direction != LLGP::Vector2f(0, 0)) {
 
@@ -144,12 +144,18 @@ void Player::UpdateMovement(float dt)
 			params.mDirection = mPrevDirection;
 			params.mDamage = 10.0f;
 
+			// Object pooler way
 			if (Bullet* bullet = ObjectPool::GetPooledObjectAsType<Bullet>("Bullet"))
 			{
 				bullet->Launch(&params);
 				std::cout << "Bullet spawned" << std::endl;
 			}
+			// spawn gameobject way  -- doesnt work
+			/*Bullet* bullet = GameWorld::SpawnGameobject<Bullet>();
+			bullet->Launch(&params);*/
+
 		}
+		
 		
 	}
 
