@@ -17,7 +17,7 @@ int main()
 
 	float deltaTime = 0.0f;
 
-	/*sf::Sprite sprite(texture);*/
+	///*sf::Sprite sprite(texture);*/
 	float timeSincePhysicsStep = 0.0f; 
 
 	while (window.isOpen())
@@ -41,9 +41,9 @@ int main()
 		{
 			// Collect collision info
 			// dispatch collisions
-
 			GameWorld::FixedUpdate(FIXEDFRAMERATE);
 			GameWorld::UpdateCollisions();
+
 
 			timeSincePhysicsStep -= FIXEDFRAMERATE;
 		}

@@ -10,7 +10,7 @@ Hulks::Hulks()
 	mMaxSpeed = 20.0f;
 	GetRigidbody()->SetMaxSpeed(mMaxSpeed);
 	GetTexture2D()->GetSprite()->setScale(5, 5);
-	_healthComponent = new HealthComponent(this);
+	_healthComponent = new  HealthComponent(this);
 	_healthComponent->SetMaxHealth(10.0f);
 	_healthComponent->OnDied.AddListener(this, std::bind(&Hulks::HandleOnDied, this, std::placeholders::_1));
 	_boxCollider = new BoxCollider(GetTransform(), LLGP::Vector2f(GetTexture2D()->GetSprite()->getGlobalBounds().getSize().x, GetTexture2D()->GetSprite()->getGlobalBounds().getSize().y));

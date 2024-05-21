@@ -9,6 +9,7 @@ Texture2D::Texture2D(sf::Texture* texture)
 
 Texture2D::~Texture2D()
 {
+	delete(mSprite);
 	mSprite = nullptr;
 }
 

@@ -39,7 +39,7 @@ void GameWorld::Init(sf::RenderWindow* window)
 	//world = this;
 	mWindow = window;
 	LoadTextures();
-	ObjectPool::AddTypeToPool(std::bind([](){return GameWorld::SpawnGameobject<Bullet>();}), 1000,"Bullet");
+	ObjectPool::AddTypeToPool(std::bind([](){return GameWorld::SpawnGameobject<Bullet>();}), 10,"Bullet");
 	//Add more types
 	ObjectPool::Start();
 
@@ -47,12 +47,12 @@ void GameWorld::Init(sf::RenderWindow* window)
 
 	mPlayer = SpawnGameobject<Player>();
 
-	/*mGrunt = SpawnGameobject<Grunts>();
-	mHulk = SpawnGameobject <Hulks>();
-	mHulk->GetTransform()->SetPosition(GetRandomPosInArena());
-	mBrain = SpawnGameobject<Brains>();
-	mBrain->GetTransform()->SetPosition(LLGP::Vector2f(100.0f, 400.0f));
-	mGrunt->GetTransform()->SetPosition(LLGP::Vector2f(200.0f, 540.0f));*/
+	mGrunt = SpawnGameobject<Grunts>();
+	////mHulk = SpawnGameobject <Hulks>();
+	//mHulk->GetTransform()->SetPosition(GetRandomPosInArena());
+	//mBrain = SpawnGameobject<Brains>();
+	//mBrain->GetTransform()->SetPosition(LLGP::Vector2f(100.0f, 400.0f));
+	mGrunt->GetTransform()->SetPosition(LLGP::Vector2f(200.0f, 540.0f));
 	mPlayer->GetTransform()->SetPosition(LLGP::Vector2f(960.0f, 540.0f));
 //	mFamilyMan = /*SpawnGameobject<FamilyMan>(mResources.mMenTex);*/new FamilyMan();
 
@@ -161,13 +161,15 @@ void GameWorld::LoadTextures()
 void GameWorld::Update(float DeltaTime)
 {
 	
-	
-	for (int i = 0; i < mGameobjects.size(); i++)
+	/*
+	for ( int i = 0; i < mGameobjects.size(); i++)
 	{
-		if (mGameobjects[i].get()) {
-			mGameobjects[i].get()->Update(DeltaTime);
-		}
+		mGameobjects[i]->Update(DeltaTime);
 	}
+	*/
+	std::unordered_map<uint64_t, std::unique_ptr<GameObject>>::iterator l_Obj_it;
+	for (l_Obj_it = mGameobjects.begin(); l_Obj_it != mGameobjects.end(); l_Obj_it++)
+		l_Obj_it->second->Update(DeltaTime);
 
 	mEnemySpawnTime -= DeltaTime;
 
@@ -175,10 +177,6 @@ void GameWorld::Update(float DeltaTime)
 	{
 		mEnemySpawnTime = 5.0f;
 		//SpawnNewEnemy();
-		
-		
-	
-		
 	}
 	//UpdateArenaBounds(DeltaTime);
 }
@@ -186,27 +184,21 @@ void GameWorld::Update(float DeltaTime)
 
 void GameWorld::FixedUpdate(float FixedDeltaTime)
 {
+
+
+		std::unordered_map<uint64_t, std::unique_ptr<GameObject>>::iterator l_Obj_it;
+		for (l_Obj_it = mGameobjects.begin(); l_Obj_it != mGameobjects.end(); l_Obj_it++)
+			l_Obj_it->second->FixedUpdate(FixedDeltaTime);
 	
-	for (int i = 0; i < mGameobjects.size(); i++)
-	{
-		if (mGameobjects[i]) {
-			
-			mGameobjects[i]->FixedUpdate(FixedDeltaTime);
-		}
-	}
 }
 void GameWorld::Render(sf::RenderWindow* window)
 {
 
 
-
-	for (int i = 0; i < mGameobjects.size(); i++)
-	{
-		if (mGameobjects[i] != nullptr) {
-
-			mGameobjects[i]->Draw(window);
-		}
-	}
+		std::unordered_map<uint64_t, std::unique_ptr<GameObject>>::iterator l_Obj_it;
+		for (l_Obj_it = mGameobjects.begin(); l_Obj_it != mGameobjects.end(); l_Obj_it++)
+			l_Obj_it->second->Draw(window);
+	
 
 	RenderArenaBounds();
 }
@@ -253,41 +245,20 @@ void GameWorld::DeleteObject(GameObject* object)
 void GameWorld::UpdateCollisions()
 {
 	CollisionManifold manifold;
-	// change to int
-	//for (int it = mGameobjects.begin(); it < mGameobjects.end(); ++it)
-	//{
-	//	for (auto it2 = it + 1; it2 < mGameobjects.end(); ++it2)
-	//	{
-	//		GameObject* a = *it;
-	//		GameObject* b = *it2;
-	//		
 
-	//		if (a != nullptr && b != nullptr)
+	//for (int i = 0; i < mGameobjects.size(); i++)
+	//{
+	//	for (int j = i + 1; j < mGameobjects.size(); j++)
+	//	{
+	//		
+	//		if(mGameobjects[i].get()->IsCollideable() && mGameobjects[j].get()->IsCollideable() && 
+	//			mGameobjects[i].get()->GetCollider()->CollidesWith(*mGameobjects[j].get()->GetCollider(), manifold)) 
 	//		{
-	//			if (a->IsCollideable() && b->IsCollideable() && a->GetCollider()->CollidesWith(*b->GetCollider(), manifold))
-	//			{
-	//				
-	//				a->OnCollision(*b);
-	//				b->OnCollision(*a);
-	//			}
+	//			mGameobjects[i].get()->OnCollision(*mGameobjects[j].get());
+	//			mGameobjects[j].get()->OnCollision(*mGameobjects[i].get());
 	//		}
 	//	}
 	//}
-
-
-	for (int i = 0; i < mGameobjects.size(); i++)
-	{
-		for (int j = i + 1; j < mGameobjects.size(); j++)
-		{
-			
-			if(mGameobjects[i].get()->IsCollideable() && mGameobjects[j].get()->IsCollideable() && 
-				mGameobjects[i].get()->GetCollider()->CollidesWith(*mGameobjects[j].get()->GetCollider(), manifold)) 
-			{
-				mGameobjects[i].get()->OnCollision(*mGameobjects[j].get());
-				mGameobjects[j].get()->OnCollision(*mGameobjects[i].get());
-			}
-		}
-	}
 }
 
 void GameWorld::RemoveFromGameobject(GameObject* gameobject)
@@ -325,12 +296,12 @@ void GameWorld::UpdateArenaBounds(float dt)
 	//	}
 	//}
 		
-	for (int i = 0; i < mGameobjects.size(); i++)
+	/*for (int i = 0; i < mGameobjects.size(); i++)
 	{
 		if (IsGameobjectOutOfBounds(mGameobjects[i].get())) {
 			mGameobjects[i].get()->ApplyDamage(nullptr, Damage);
 		}
-	}
+	}*/
 	
 }
 

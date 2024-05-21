@@ -24,7 +24,7 @@ public:
 	Texture2D* GetTexture2D() { return _texture.get(); }
 	Transform* GetTransform() { return _transform.get(); }
 
-	inline void SetName(std::string newName) { m_Name = newName; }
+	inline void SetName(std::string Name) { m_Name = Name; }
 	inline std::string GetName() { return m_Name; }
 	void SetActive(bool newActive) { m_Active = newActive; }
 	bool GetIsActive() { return m_Active; }

@@ -58,10 +58,12 @@ public:
 	template <typename T>
 	static T* SpawnGameobject()
 	{
+		
 		std::unique_ptr<T> temp = std::make_unique<T>();
-		mGameobjects.insert( {temp->uuid, std::move(temp)} );
+		uint64_t tempUUID = temp->uuid;
+		mGameobjects.insert( {tempUUID, std::move(temp)} );
 		//mGameobjects.emplace(std::make_unique<T>(texture));
-		return static_cast<T*>(mGameobjects[mGameobjects.size() - 1].get()); 
+		return static_cast<T*>(mGameobjects[tempUUID].get()); 
 	}
 	static void DeleteObject(GameObject* object);
 	static void UpdateCollisions();
