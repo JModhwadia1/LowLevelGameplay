@@ -3,6 +3,7 @@
 #include "GameWorld.h"
 #include "BoxCollider.h"
 #include "LineCollider.h"
+#include "SphereCollider.h"
 #include "Enemy.h"
 
 
@@ -13,10 +14,11 @@ Bullet::Bullet() : GameObject(GameWorld::GetResources().mBulletTex)
 	GetRigidbody()->SetMaxSpeed(mBulletSpeed);
 
 	mBoxCollider = new BoxCollider(GetTransform(), LLGP::Vector2f(GetTexture2D()->GetSprite()->getGlobalBounds().getSize().x, GetTexture2D()->GetSprite()->getGlobalBounds().getSize().y));
-	mLineCollider = new LineCollider(GetTransform(), mDirection.Normalised(), -mDirection.Normalised(), *GetTexture2D()->GetSprite());
-	std::cout << GetTexture2D()->GetSprite()->getScale().x + GetTransform()->GetPosition().x << std::endl;
-	SetActive(true);
-	SetCollider(mLineCollider);
+	mLineCollider = new LineCollider(GetTransform(), mDirection.Normalised() * 2.0f, -mDirection.Normalised() * 2.0f, *GetTexture2D()->GetSprite());
+	mSphereCollider = new SphereCollider(GetTransform(), 15.0f);
+	
+	//SetActive(true);
+	SetCollider(mBoxCollider);
 }
 
 void Bullet::Launch(const BulletLaunchParams* params)
@@ -36,11 +38,17 @@ void Bullet::Start()
 
 void Bullet::OnCollision(GameObject& other)
 {
-
-
+	if (!GetIsActive()) return;
+	if (other.uuid == mOwner->uuid) return;
 	if (Enemy* enemy = dynamic_cast<Enemy*>(&other)) {
 		enemy->ApplyDamage(this, mDamage);
-
+		
+		/*GameWorld::RemoveFromGameobject(enemy);*/
+		//delete enemy;
+		//enemy = nullptr;
+		////enemy->SetActive(false);
+		//SetActive(false);
+		
 	}
 		
 }
@@ -52,8 +60,7 @@ void Bullet::Update(float dt)
 
 	if (mLifetime <= 0) {
 		SetActive(false);
-		GameWorld::RemoveFromGameobject(this);
-		mLifetime = 5.0f;
+		mLifetime = 2.0f;
 	}
 
 }

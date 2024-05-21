@@ -16,7 +16,7 @@ Player::Player() : GameObject(GameWorld::GetResources().mPlayerTex)
 	_boxCollider = new BoxCollider(GetTransform(), LLGP::Vector2f(GetTexture2D()->GetSprite()->getGlobalBounds().getSize().x, GetTexture2D()->GetSprite()->getGlobalBounds().getSize().y));
 	_sphereCollider = new SphereCollider(GetTransform(), 20.0f);
 	SetCollider(_boxCollider);
-
+	SetName("Player");
 	healthcomp = new HealthComponent(this);
 	healthcomp->OnHealthUpdated.AddListener(this, std::bind(&Player::PrintHealth, this, std::placeholders::_1));
 	healthcomp->OnDied.AddListener(this, std::bind(&Player::HandleOnDied, this, std::placeholders::_1));
@@ -140,13 +140,17 @@ void Player::UpdateMovement(float dt)
 			params.mOwner = this;
 			params.mStartPos = GetTransform()->GetPosition();
 			params.mDirection = mPrevDirection;
-			params.mDamage = 10.0f;
+			params.mDamage = 10000.0f;
 
-			if (Bullet* bullet = ObjectPool::GetPooledObjectAsType<Bullet>("Bullet"))
+			/*if (Bullet* bullet = ObjectPool::GetPooledObjectAsType<Bullet>("Bullet"))
 			{
+				bullet->SetActive(true);
 				bullet->Launch(&params);
 				std::cout << "Bullet spawned" << std::endl;
-			}
+			}*/
+
+			Bullet* bullet = GameWorld::SpawnGameobject<Bullet>();
+			bullet->Launch(&params);
 		}
 		
 	}
@@ -170,5 +174,5 @@ void Player::HandleOnDied(bool Die)
 
 void Player::PrintHealth(float Amount)
 {
-	std::cout << "Amount" << Amount << std::endl;
+	
 }

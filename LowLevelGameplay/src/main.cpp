@@ -41,9 +41,9 @@ int main()
 		{
 			// Collect collision info
 			// dispatch collisions
-
 			GameWorld::FixedUpdate(FIXEDFRAMERATE);
 			GameWorld::UpdateCollisions();
+
 
 			timeSincePhysicsStep -= FIXEDFRAMERATE;
 		}

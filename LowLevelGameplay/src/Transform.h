@@ -5,6 +5,7 @@
 class Transform
 {
 public:
+	Transform() = default;
 	Transform(LLGP::Vector2f pos, LLGP::Vector2f scale);
 	~Transform();
 

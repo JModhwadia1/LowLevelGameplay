@@ -10,7 +10,7 @@ class Enemy;
 class Grunts;
 class Hulks;
 class Brains;
-
+class Wave;
 class GameWorld
 {
 public:
@@ -49,11 +49,11 @@ public:
 	static Player* GetPlayer()  { if (mPlayer != nullptr) { return mPlayer; } }
 	static const Resources& GetResources() { return mResources; }
 	static void AddToGameobjects(GameObject* gameobject) { mGameobjects.push_back(gameobject); }
-	static LLGP::Vector2f const GetRandomPosInArena();
+	static LLGP::Vector2f  GetRandomPosInArena();
 	static void RenderArenaBounds();
 	static bool IsGameobjectOutOfBounds(GameObject* gameobject);
 	template <typename T>
-	static T* SpawnGameobject(sf::Texture* texture);
+	static T* SpawnGameobject();
 	static void UpdateCollisions();
 	static sf::RenderWindow* mWindow;
 	static void RemoveFromGameobject(GameObject* gameobject);
@@ -72,12 +72,13 @@ private:
 	static Resources mResources;
 	static std::vector<GameObject*> mGameobjects;
 	static float mEnemySpawnTime;
+	static Wave* wave1;
 };
 
 template<typename T>
-T* GameWorld::SpawnGameobject(sf::Texture* texture) 
+T* GameWorld::SpawnGameobject() 
 {
-	if (T* newGameobject = new T(texture)) 
+	if (T* newGameobject = new T()) 
 	{
 		mGameobjects.push_back(newGameobject);
 		return newGameobject;

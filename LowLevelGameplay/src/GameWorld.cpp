@@ -8,8 +8,9 @@
 #include <algorithm>
 #include "ObjectPool.h"
 #include "Brains.h"
+#include <random>
 
-
+#include "Wave.h"
 
 
 float GameWorld::m_ArenaLeftPos = 500.0f;
@@ -17,7 +18,7 @@ float GameWorld::m_ArenaRightPos = 1430.0f;
 float GameWorld::m_ArenaTopPos = 50.0f;
 float GameWorld::m_ArenaBottomPos = 950.0f;
 const float GameWorld::arenaSize = 900.0f;
-float GameWorld::mEnemySpawnTime = 5.0f;
+float GameWorld::mEnemySpawnTime = 1.0f;
 
 
 Player* GameWorld::mPlayer = nullptr;
@@ -29,6 +30,7 @@ std::vector<GameObject*> GameWorld::mGameobjects;
 GameWorld::Resources GameWorld::mResources;
 sf::RenderWindow* GameWorld::mWindow = nullptr;
 
+Wave* GameWorld::wave1 = nullptr;
 
 
 
@@ -38,29 +40,41 @@ void GameWorld::Init(sf::RenderWindow* window)
 	//world = this;
 	mWindow = window;
 	LoadTextures();
-	ObjectPool::AddTypeToPool(std::bind([](){return new Bullet();}), 1000,"Bullet");
+	mPlayer = new Player();
+	//ObjectPool::AddTypeToPool(std::bind([](){return new Bullet();}), 1000,"Bullet");
+	//ObjectPool::AddTypeToPool(std::bind([](){return new Bullet();}), 1000,"BrainsBullet");
+	//ObjectPool::AddTypeToPool(std::bind([]() {return new Grunts(); }), 200, "Grunts");
+	//ObjectPool::AddTypeToPool(std::bind([]() {return new Brains(); }), 200, "Brains");
+	//ObjectPool::AddTypeToPool(std::bind([]() {return new Hulks(); }), 200, "Hulks");
+	//ObjectPool::AddTypeToPool(std::bind([]() {return new FamilyMan(); }), 200, "FamilyMan");
+	//ObjectPool::Start();
+
+	//wave1 = new Wave(10, 10, 10, 10);
+
+
+
+
+
 	/*ObjectPool::GetPools().push_back(Pool(std::string("Bullet")));*/
 	//Add more types
-	ObjectPool::Start();
 
-	std::cout << "1st pool object size:" << ObjectPool::GetPools()[0]._Objects.size();
-
-	mPlayer = new Player();
 	
-	mGrunt = new Grunts(mResources.mGruntsTex);
-	mHulk = new Hulks(mResources.mHulksTex);
-	mHulk->GetTransform()->SetPosition(GetRandomPosInArena());
-	mBrain = new Brains(mResources.mBrainsTex);
-	mBrain->GetTransform()->SetPosition(LLGP::Vector2f(100.0f, 400.0f));
-	mGrunt->GetTransform()->SetPosition(LLGP::Vector2f(200.0f, 540.0f));
+
+	
+	//mGrunt = new Grunts();
+	//mHulk = new Hulks();
+	//mHulk->GetTransform()->SetPosition(GetRandomPosInArena());
+	//mBrain = new Brains();
+	////mBrain->GetTransform()->SetPosition(LLGP::Vector2f(100.0f, 400.0f));
+//	mGrunt->GetTransform()->SetPosition(LLGP::Vector2f(200.0f, 540.0f));
 	mPlayer->GetTransform()->SetPosition(LLGP::Vector2f(960.0f, 540.0f));
 //	mFamilyMan = /*SpawnGameobject<FamilyMan>(mResources.mMenTex);*/new FamilyMan();
 
 
 	mGameobjects.push_back(mPlayer);
-	mGameobjects.push_back(mHulk);
-	mGameobjects.push_back(mGrunt);
-	mGameobjects.push_back(mBrain);
+	//mGameobjects.push_back(mHulk);
+	//mGameobjects.push_back(mGrunt);
+	//mGameobjects.push_back(mBrain);
 	//mGameobjects.push_back(mFamilyMan);
 
 
@@ -165,11 +179,17 @@ void GameWorld::LoadTextures()
 
 void GameWorld::Update(float DeltaTime)
 {
+	for (size_t i = 0; i < mGameobjects.size(); i++)
+	{
+		if (mGameobjects[i]->GetIsActive() == false) {
+			RemoveFromGameobject(mGameobjects[i]);
+		}
+	}
 	
 	
 	for (int i = 0; i < mGameobjects.size(); i++)
 	{
-		if (mGameobjects[i]) {
+		if (mGameobjects[i]->GetIsActive()) {
 			mGameobjects[i]->Update(DeltaTime);
 		}
 	}
@@ -178,8 +198,8 @@ void GameWorld::Update(float DeltaTime)
 
 	if (mEnemySpawnTime <= 0.0f)
 	{
-		mEnemySpawnTime = 5.0f;
-		//SpawnNewEnemy();
+		mEnemySpawnTime = 1.0f;
+		SpawnNewEnemy();
 		
 		
 	
@@ -194,7 +214,7 @@ void GameWorld::FixedUpdate(float FixedDeltaTime)
 	
 	for (int i = 0; i < mGameobjects.size(); i++)
 	{
-		if (mGameobjects[i]) {
+		if (mGameobjects[i]->GetIsActive()) {
 			
 			mGameobjects[i]->FixedUpdate(FixedDeltaTime);
 		}
@@ -207,7 +227,7 @@ void GameWorld::Render(sf::RenderWindow* window)
 
 	for (int i = 0; i < mGameobjects.size(); i++)
 	{
-		if (mGameobjects[i] != nullptr) {
+		if (mGameobjects[i]->GetIsActive()) {
 
 			mGameobjects[i]->Draw(window);
 		}
@@ -216,9 +236,10 @@ void GameWorld::Render(sf::RenderWindow* window)
 	RenderArenaBounds();
 }
 
-LLGP::Vector2f const GameWorld::GetRandomPosInArena()
+LLGP::Vector2f GameWorld::GetRandomPosInArena()
 {
-	const LLGP::Vector2f randomPos(LLGP::FRandomRange(m_ArenaLeftPos, m_ArenaRightPos), LLGP::FRandomRange(m_ArenaTopPos, m_ArenaBottomPos));
+
+	 LLGP::Vector2f randomPos(LLGP::FRandomRange(m_ArenaLeftPos, m_ArenaRightPos), LLGP::FRandomRange(m_ArenaTopPos, m_ArenaBottomPos));
 	return randomPos;
 }
 
@@ -255,22 +276,25 @@ void GameWorld::UpdateCollisions()
 	CollisionManifold manifold;
 	for (auto it = mGameobjects.begin(); it < mGameobjects.end(); ++it)
 	{
-		for (auto it2 = it + 1; it2 < mGameobjects.end(); ++it2)
-		{
-			GameObject* a = *it;
-			GameObject* b = *it2;
-			
-
-			if (a != nullptr && b != nullptr)
+		
+			for (auto it2 = it + 1; it2 < mGameobjects.end(); ++it2)
 			{
-				if (a->IsCollideable() && b->IsCollideable() && a->GetCollider()->CollidesWith(*b->GetCollider(), manifold))
+				GameObject* a = *it;
+				GameObject* b = *it2;
+
+
+				if (a != nullptr && b != nullptr)
 				{
-					
-					a->OnCollision(*b);
-					b->OnCollision(*a);
+					if (a->IsCollideable() && b->IsCollideable() && a->GetCollider()->CollidesWith(*b->GetCollider(), manifold))
+					{
+
+						a->OnCollision(*b);
+						b->OnCollision(*a);
+					}
 				}
 			}
-		}
+		
+		
 	}
 }
 
@@ -283,13 +307,34 @@ void GameWorld::RemoveFromGameobject(GameObject* gameobject)
 
 void GameWorld::SpawnNewEnemy()
 {
-	const LLGP::Vector2f spawnPos(LLGP::FRandomRange(m_ArenaLeftPos, m_ArenaRightPos), LLGP::FRandomRange(m_ArenaTopPos, m_ArenaBottomPos));
+	const LLGP::Vector2f spawnPos = GetRandomPosInArena();
 
-	GameObject* newEnemy = nullptr;
+	//GameObject* newEnemy = nullptr;
 
-	newEnemy = SpawnGameobject<Enemy>(GetResources().mEnemyTex);
-	newEnemy->GetTransform()->SetPosition(spawnPos);
+	//newEnemy = SpawnGameobject<Enemy>(GetResources().mEnemyTex);
 
+
+	/*newEnemy->GetTransform()->SetPosition(spawnPos);*/
+
+	//Enemy* newEnemy;
+	float rand = LLGP::FRandom();
+
+	float gruntsThreshold = 0.5f;
+	float brainsThreshold = 0.95f;
+
+	if (rand < gruntsThreshold) {
+
+
+		
+	}
+	Grunts* grunt = SpawnGameobject<Grunts>();
+	grunt->SetActive(false);
+	grunt->GetTransform()->SetPosition(spawnPos);
+	grunt->SetActive(true);
+	RemoveFromGameobject(mPlayer);
+	mPlayer->OnPlayerDied.Invoke(true);
+	delete mPlayer;
+	mPlayer = nullptr;
 }
 
 void GameWorld::UpdateArenaBounds(float dt)

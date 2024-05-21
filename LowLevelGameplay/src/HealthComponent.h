@@ -26,7 +26,7 @@ public:
 
 private:
 	float mCurrentHealth;
-	float mMaxHealth = 100.0f;
+	float mMaxHealth = 10.0f;
 	float mMinimumHealth = 0.0f;
 
 	GameObject* mOwner;

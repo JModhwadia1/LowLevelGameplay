@@ -4,7 +4,7 @@
 #include "Player.h"
 #include "GameWorld.h"
 #include "HealthComponent.h"
-Hulks::Hulks(sf::Texture* texture) : Enemy(texture)
+Hulks::Hulks() : Enemy(GameWorld::GetResources().mHulksTex)
 {
 	mMaxSpeed = 20.0f;
 	GetRigidbody()->SetMaxSpeed(mMaxSpeed);
@@ -35,6 +35,7 @@ void Hulks::Start()
 
 void Hulks::Update(float dt)
 {
+	if (!GetIsActive()) return;
 	shape.setSize(_boxCollider->GetHalfExtents());
 	shape.setFillColor(sf::Color::Transparent);
 	shape.setOutlineThickness(3.0f);
@@ -81,13 +82,14 @@ void Hulks::Update(float dt)
 
 void Hulks::FixedUpdate(float fixedUpdate)
 {
+	if (!GetIsActive()) return;
 	GetRigidbody()->AddForce(direction.Normalised() * mMaxSpeed);
 	GetRigidbody()->Update(fixedUpdate);
 }
 
 void Hulks::Draw(sf::RenderWindow* window)
 {
-
+	if (!GetIsActive()) return;
 	GameObject::Draw(window);
 	window->draw(shape);
 }

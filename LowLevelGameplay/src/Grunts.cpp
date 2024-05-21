@@ -4,7 +4,8 @@
 #include "Player.h"
 #include "GameWorld.h"
 #include "HealthComponent.h"
-Grunts::Grunts(sf::Texture* texture) : Enemy(texture)
+#include "Bullet.h"
+Grunts::Grunts() : Enemy(GameWorld::GetResources().mGruntsTex)
 {
 	mMaxSpeed = 100.0f;
 	GetRigidbody()->SetMaxSpeed(mMaxSpeed);
@@ -14,7 +15,9 @@ Grunts::Grunts(sf::Texture* texture) : Enemy(texture)
 	_healthComponent->OnDied.AddListener(this, std::bind(&Grunts::HandleOnDied, this, std::placeholders::_1));
 	_boxCollider = new BoxCollider(GetTransform(), LLGP::Vector2f(GetTexture2D()->GetSprite()->getGlobalBounds().getSize().x, GetTexture2D()->GetSprite()->getGlobalBounds().getSize().y));
 	_sphereCollider = new SphereCollider(GetTransform(), 30.0f);
-	SetCollider(_boxCollider);
+	SetCollider(_sphereCollider);
+
+	SetName("Grunts");
 	_playerRef = GameWorld::GetPlayer();
 	_playerRef->OnPlayerDied.AddListener(this, std::bind(&Grunts::HandlePlayerDied, this, std::placeholders::_1));
 }
@@ -24,6 +27,9 @@ Grunts::~Grunts()
 	delete _healthComponent;
 	delete _boxCollider;
 	delete _sphereCollider;
+	_sphereCollider = nullptr;
+	_boxCollider = nullptr;
+	_healthComponent = nullptr;
 	_playerRef->OnPlayerDied.RemoveListener(this, std::bind(&Grunts::HandlePlayerDied, this, std::placeholders::_1));
 	_playerRef = nullptr;
 }
@@ -36,6 +42,7 @@ void Grunts::Start()
 
 void Grunts::Update(float dt)
 {
+	if (!GetIsActive()) return;
 	shape.setSize(_boxCollider->GetHalfExtents());
 	shape.setFillColor(sf::Color::Transparent);
 	shape.setOutlineThickness(3.0f);
@@ -68,24 +75,27 @@ void Grunts::Update(float dt)
 
 void Grunts::FixedUpdate(float fixedUpdate)
 {
-
+	if (!GetIsActive()) return;
 	GetRigidbody()->AddForce(direction.Normalised() * mMaxSpeed);
 	GetRigidbody()->Update(fixedUpdate);
 }
 
 void Grunts::Draw(sf::RenderWindow* window)
 {
+	if (!GetIsActive()) return;
 	GameObject::Draw(window);
 	window->draw(shape);
 }
 
 void Grunts::IdleState()
 {
+	if (!GetIsActive()) return;
 	//std::cout << "Idling" << std::endl;
 }
 
 void Grunts::ChaseState()
 {
+	if (!GetIsActive()) return;
 
 	// Get direction
 	if (_playerRef == nullptr) return;
@@ -96,19 +106,21 @@ void Grunts::ChaseState()
 
 void Grunts::AttackState()
 {
+	if (!GetIsActive()) return;
 	//std::cout << "Attacking" << std::endl;
 
 }
 
 void Grunts::DeathState()
 {
+	if (!GetIsActive()) return;
 }
 
 void Grunts::UpdateStates()
 {
 	//if (_playerRef == nullptr) return;
-
-	if (_playerRef == nullptr) return;
+	if (!GetIsActive()) return;
+	if (_playerRef == nullptr)return;
 	float  distanceToPlayer = (_playerRef->GetTransform()->GetPosition() - GetTransform()->GetPosition()).GetMagnitude();
 
 	if (distanceToPlayer <= AttackDistance)
@@ -124,7 +136,11 @@ void Grunts::UpdateStates()
 void Grunts::HandleOnDied(bool die)
 {
 	if (die) {
-		std::cout << "Grunt has died" << std::endl;
+		//SetActive(false);
+		SetActive(false);
+		
+		
+		
 	}
 }
 
@@ -139,7 +155,8 @@ void Grunts::OnCollision(GameObject& other)
 {
 	if (Player* player = dynamic_cast<Player*>(&other))
 	{
-		std::cout << "collided with player" << std::endl;;
+		//std::cout << "collided with player" << std::endl;;
 	}
+	
 }
 

@@ -7,7 +7,7 @@
 #include "Bullet.h"
 #include "ObjectPool.h"
 
-Brains::Brains(sf::Texture* texture) : Enemy(texture)
+Brains::Brains() : Enemy(GameWorld::GetResources().mBrainsTex)
 {
 	//mShootCooldown = 0.0f;
 	mMaxSpeed = 100.0f;
@@ -23,7 +23,7 @@ Brains::Brains(sf::Texture* texture) : Enemy(texture)
 	_playerRef = GameWorld::GetPlayer();
 	_playerRef->OnPlayerDied.AddListener(this, std::bind(&Brains::HandlePlayerDied, this, std::placeholders::_1));
 
-	std::cout << "brains constructed" << std::endl;
+	
 }
 
 Brains::~Brains()
@@ -41,6 +41,7 @@ void Brains::Start()
 
 void Brains::Update(float dt)
 {
+	if (!GetIsActive()) return;
 	shape.setSize(_boxCollider->GetHalfExtents());
 	shape.setFillColor(sf::Color::Transparent);
 	shape.setOutlineThickness(3.0f);
@@ -59,10 +60,10 @@ void Brains::Update(float dt)
 			params.mDirection = direction.Normalised();
 			params.mDamage = 10.0f;
 
-			if (Bullet* bullet = ObjectPool::GetPooledObjectAsType<Bullet>("Bullet")) 
+			if (Bullet* bullet = ObjectPool::GetPooledObjectAsType<Bullet>("BrainsBullet")) 
 			{
 				bullet->Launch(&params);
-				std::cout << "Bullet spawned" << std::endl;
+				
 			}
 		}
 	}
@@ -89,12 +90,14 @@ void Brains::Update(float dt)
 
 void Brains::FixedUpdate(float fixedUpdate)
 {
+	if (!GetIsActive()) return;
 	GetRigidbody()->AddForce(direction.Normalised() * mMaxSpeed);
 	GetRigidbody()->Update(fixedUpdate);
 }
 
 void Brains::Draw(sf::RenderWindow* window)
 {
+	if (!GetIsActive()) return;
 	GameObject::Draw(window);
 	window->draw(shape);
 }
@@ -139,7 +142,7 @@ void Brains::HandleOnDied(bool die)
 {
 	if (die) 
 	{
-		std::cout << "Brains has died" << std::endl;
+		SetActive(false);
 	}
 }
 void Brains::HandlePlayerDied(bool die)
@@ -154,6 +157,6 @@ void Brains::OnCollision(GameObject& other)
 {
 	if (Player* player = dynamic_cast<Player*>(&other))
 	{
-		std::cout << "Collided with player" << std::endl;
+		
 	}
 }

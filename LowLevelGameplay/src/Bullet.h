@@ -3,6 +3,7 @@
 
 class BoxCollider;
 class LineCollider;
+class SphereCollider;
 
 struct  BulletLaunchParams
 {
@@ -29,14 +30,15 @@ public:
 	void Draw(sf::RenderWindow* window)override;
 	BoxCollider* mBoxCollider;
 	LineCollider* mLineCollider;
+	SphereCollider* mSphereCollider;
 
 private:
-	float mBulletSpeed = 200.0f;
+	float mBulletSpeed = 550.0f;
 	const GameObject* mOwner = nullptr;
 	float mDamage = 10.0f;
 	LLGP::Vector2f mDirection;
 
-	float mLifetime = 5.0f;
+	float mLifetime = 2.0f;
 	
 };
 

@@ -3,7 +3,7 @@
 class Hulks : public Enemy
 {
 public:
-	Hulks(sf::Texture* texture);
+	Hulks();
 	~Hulks();
 	void Start() override;
 	void ChangeCurrentState(States state) { _currentState = state; }

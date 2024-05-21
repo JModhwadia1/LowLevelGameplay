@@ -28,6 +28,7 @@ void HealthComponent::TakeDamage(GameObject* Source, float Amount)
 		Kill();
 		OnHealthUpdated(0.0f);
 		OnDied(true);
+		
 	}
 	else
 	{
