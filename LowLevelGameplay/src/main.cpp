@@ -1,91 +1,23 @@
-#include <SFML/Graphics.hpp>
+#include "GameWorld.h"
 #include <chrono>
-#include "Player.h"
-#include "Event.h"
-#include "InputManager.h"
-#include <iostream>
+#include "Constants.h"
 
 
 
-#include "GlobalEvents.h"
 
-#define FIXEDFRAMERATE 0.016
-
-
-
-class B
-{
-public:
-	
-	LLGP::Event<int> OnSomething;
-	
-	
-	void BroadcastOnSomething(int arg1)
-	{
-		OnSomething(arg1);
-	}
-};
-class A
-{
-private:
-	B* other;
-public:
-	A();
-	A(B* _other) : other(_other) { other->OnSomething += std::bind(&A::Handle_ThatSomething, this, std::placeholders::_1); }
-	void Handle_ThatSomething(int in)
-	{
-		std::cout << in << std::endl;
-		other->OnSomething -= std::bind(&A::Handle_ThatSomething, this, std::placeholders::_1);
-	 }
-
-};
-
-void UsefulFunction(int a, int b)
-{
-	std::cout << a << b << std::endl;
-}
 int main()
 {
-
-	B uno;
-	A dos(&uno);
-
-	uno.OnSomething(50);
-	uno.OnSomething(30);
-
-
-
-
-	LLGP::Event<int, int>eventTest;
-
-	eventTest += &UsefulFunction;
-	eventTest(5, 6);
-
-	
-	Player* mPlayer = nullptr;
-	Player* mPlayer2 = nullptr;
-
-	sf::RenderWindow window(sf::VideoMode(600, 600), "SFML works!");
-	//sf::CircleShape shape(100.f);
-	//shape.setFillColor(sf::Color::Green);
-
-	sf::Texture texture;
-	if (!texture.loadFromFile("Textures/player.png", sf::IntRect(0,0,5,11)))
-	{
-		return EXIT_FAILURE;
-	}
-	std::shared_ptr<sf::Texture> sharedtexture = std::make_shared<sf::Texture>();
-	sharedtexture->loadFromFile("Textures/player.png", sf::IntRect(0, 0, 5, 11));
-
+	sf::RenderWindow window(sf::VideoMode(1920, 1080), "SFML works!");
 	
 
-	// create player
-	mPlayer = new Player(texture);
+	/*GameWorld* mWorld = new GameWorld(&window);*/
+	GameWorld::Init(&window);
 
-	// Init last time
 	std::chrono::steady_clock::time_point lastTime = std::chrono::steady_clock::now();
+
 	float deltaTime = 0.0f;
-	/*sf::Sprite sprite(texture);*/
+
+	///*sf::Sprite sprite(texture);*/
 	float timeSincePhysicsStep = 0.0f; 
 
 	while (window.isOpen())
@@ -96,32 +28,28 @@ int main()
 			if (event.type == sf::Event::Closed)
 				window.close();
 		}
-		// get time now
+
 		std::chrono::steady_clock::time_point now = std::chrono::steady_clock::now();
-		// set deltatime
 		deltaTime = std::chrono::duration_cast<std::chrono::microseconds>(now - lastTime).count() / 1000000.f;
-		// set lasttime to the time now
 		lastTime = now;
-
-
-		InputManager::HandleInputs();
-		OnUpdate(deltaTime);
 		
-		// Update player
-		mPlayer->Update(deltaTime);
-		// Increase physics step value
+	
+		GameWorld::Update(deltaTime);
 		timeSincePhysicsStep += deltaTime;
-
+		
 		while (timeSincePhysicsStep > FIXEDFRAMERATE)
 		{
 			// Collect collision info
 			// dispatch collisions
-			std::cout << "Hello WOrld" << std::endl;
+			GameWorld::FixedUpdate(FIXEDFRAMERATE);
+			GameWorld::UpdateCollisions();
+
+
 			timeSincePhysicsStep -= FIXEDFRAMERATE;
 		}
 		
 		window.clear();
-		mPlayer->Render(window);
+		GameWorld::Render(&window);
 		window.display();
 	}
 

@@ -1,43 +1,34 @@
 #include "Rigidbody.h"
+#include "Transform.h"
 #include <SFML/Window/Mouse.hpp>
-Rigidbody::Rigidbody(Transform* transform)
+Rigidbody::Rigidbody(Transform* transform, sf::Sprite* sprite)
 {
 	_transform = transform;
+	_sprite = sprite;
 }
 
 Rigidbody::~Rigidbody()
 {
+	_transform = nullptr;
+	_sprite = nullptr;
 }
 
 void Rigidbody::Update(float deltaTime)
 {
+	
+	// Get pos each frame
 	LLGP::Vector2f pos = _transform->GetPosition();
-	//mVelocity += mAcceleration * deltaTime;
 
-
+	// Increase pos
+	pos += (mVelocity / mMass) * deltaTime;
 	
-	
-	mVelocity = mDirection * mMaxSpeed;
-	//Clamp Speed
-   /*if (LLGP::LengthSq(mVelocity) > (mMaxSpeed * mMaxSpeed))
-   {
-	   mVelocity.Normalised();
-	   mVelocity *= mMaxSpeed;
-   }*/
-
-   /*if (((mVelocity.x * mVelocity.x) + (mVelocity.y * mVelocity.y)) > (mMaxSpeed * mMaxSpeed))
-   {
-	   mVelocity = mVelocity.Normalised();
-	   mVelocity *= mMaxSpeed;
-   }*/
-
-   //std::cout << direction.x << direction.y << std::endl;
-   //std::cout << "x " << mVelocity.x <<"y " << mVelocity.y << std::endl;
-	pos += mVelocity * deltaTime;
+	// Set position
 	_transform->SetPosition(pos);
+	_sprite->setPosition(_transform->GetPosition());
+
+	//// set it to 0 as its calculated each frame
+	mAcceleration = LLGP::Vector2f::zero;
+	mVelocity = LLGP::Vector2f::zero;
+	
 }
 
-void Rigidbody::AddForce(LLGP::Vector2f Force)
-{
-	mVelocity += Force;
-}

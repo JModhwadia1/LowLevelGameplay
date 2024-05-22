@@ -1,22 +1,42 @@
 #pragma once
-#include "Transform.h"
+#include "Vector2.h"
+class Transform;
+
 
 class Rigidbody
 {
 public:
-	Rigidbody(Transform* transform);
+	Rigidbody(Transform* transform, sf::Sprite* sprite);
 	~Rigidbody();
 
 	void Update(float deltaTime);
-	void AddForce(LLGP::Vector2f Force);
-	void SetDirection(LLGP::Vector2f direction) { mDirection = direction; }
+	
+	
 	void SetMaxSpeed(float speed) { mMaxSpeed = speed; }
-	LLGP::Vector2f mAcceleration = LLGP::Vector2f(0.0f, 0.0f);
+	void SetNetForce(LLGP::Vector2f force) { _netForce = force; }
+	LLGP::Vector2f GetNetForce() { return _netForce; }
+	void AddForce(LLGP::Vector2f force) { mVelocity += force; }
+
+	void ResetVelocity() { mVelocity = LLGP::Vector2f(0, 0); }
+	void SetDirection(LLGP::Vector2f direction) { mDirection = direction; }
+	LLGP::Vector2f GetAcceleration() { return mAcceleration; }
+	LLGP::Vector2f GetVelocity() { return mVelocity; }
+	void SetVelocity(LLGP::Vector2f velocity) { mVelocity = velocity; }
+	float GetMaxSpeed() { return mMaxSpeed; }
+	void ApplyImpluse(LLGP::Vector2f impulse) { mVelocity += impulse; }
+	float GetInverseMass() { if (mMass == 0) { return 0; return 1.0f / mMass; } }
+protected:
 	LLGP::Vector2f mVelocity = LLGP::Vector2f(0.0f, 0.0f);
+	LLGP::Vector2f mAcceleration = LLGP::Vector2f(0.0f, 0.0f);
 	LLGP::Vector2f mDirection = LLGP::Vector2f(0.0f, 0.0f);
+
+
 private:
-	float mMaxSpeed = 300.0f;
+	float mMaxSpeed; 
 	Transform* _transform;
+	LLGP::Vector2f _netForce;
+	float mMass = 1.0f;
+	sf::Sprite* _sprite;
 
 };
 

@@ -11,11 +11,13 @@ public:
 
 
 	// Position
-	void SetPosition(LLGP::Vector2f& pos) { mPosition = pos; }
+	void SetPosition(LLGP::Vector2f pos) { mPosition = pos; }
 	 LLGP::Vector2f GetPosition() { return mPosition; }
 	
 	void SetScale(LLGP::Vector2f& scale) { mScale = scale; }
 	 LLGP::Vector2f GetScale() { return mScale; }
+
+	 void ChangePosition(LLGP::Vector2f pos) { mPosition += pos; }
 
 	void SetRotation(float angle, sf::Sprite sprite) { sprite.setRotation(LLGP::RadiansToDegrees(angle)); }
 	float GetRotation(sf::Sprite sprite) { return LLGP::DegreesToRadians(sprite.getRotation()); }

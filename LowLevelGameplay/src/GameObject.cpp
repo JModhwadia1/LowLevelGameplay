@@ -1,27 +1,38 @@
 #include "GameObject.h"
-#include "GlobalEvents.h"
-GameObject::GameObject(sf::Texture& texture)
-{
-	_texture = new Texture2D(texture);
-	_transform = new Transform(LLGP::Vector2f(0, 0), LLGP::Vector2f(1, 1));
-	_rigidbody = new Rigidbody(_transform);
+#include "Event.h"
+#include "Constants.h"
+#include <GameWorld.h>
 
+void GameObject::Init(sf::Texture* texture)
+{
+	_texture = std::make_unique<Texture2D>(texture);
+	_transform = std::make_unique<Transform>(LLGP::Vector2f(0, 0), LLGP::Vector2f(1, 1));
+	_rigidbody = std::make_unique<Rigidbody>(_transform.get(), _texture->GetSprite());
 }
 
 GameObject::~GameObject()
+{
+
+}
+
+void GameObject::Start()
 {
 }
 
 void GameObject::Update(float dt)
 {
-	_rigidbody->Update(dt);
-	//mSprite.setPosition(_transform->GetPosition());
-	_texture->GetSprite()->setPosition(_transform->GetPosition());
+	//if (!m_Active) return;
 }
 
-void GameObject::Draw(sf::RenderWindow& window)
+void GameObject::Draw(sf::RenderWindow* window)
 {
+//	if (!m_Active) { return; }
 	_texture->Draw(window);
+}
+
+void GameObject::ApplyDamage(GameObject* source, float damage)
+{
+	OnDamageTaken(source, damage);
 }
 
 template <class T> requires isComponent<T>
@@ -43,26 +54,19 @@ template<class T> requires isComponent<T>
 T* GameObject::AddComponent()
 {
 	std::unique_ptr<Component> newComp = std::make_unique<T>(this);
-	OnUpdate += std::bind(&Component::Update, newComp, std::placeholders::_1);
 	m_Components.push_back(std::move(newComp));
 	return static_cast<T*>(m_Components[m_Components.size()].get());
 }
 template<class T> requires isComponent<T>
 bool GameObject::RemoveComponent(T* comp)
 {
-
-	if (!std::find(m_Components.begin, m_Components.end, comp)
+	if (!std::find(m_Components.begin, m_Components.end, comp))
 	{
-		std::cout << "component not found" << std::cout;
 		return false;
 	}
 	else 
 	{
-		OnUpdate -= std::bind(&Component::Update, comp, std::placeholders::_1);
 		m_Components.erase(comp);
 		return true;
-	}
-
-	
-	
+	}	
 }
