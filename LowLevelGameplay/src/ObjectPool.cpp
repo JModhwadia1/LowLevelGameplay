@@ -43,25 +43,30 @@ GameObject* ObjectPool::GetPooledObject(std::string tag)
 				// Loop through all the objects in the current iteration of the pool
 				for (GameObject* o : m_Pools[i]._Objects)
 				{
-					if (o->GetIsActive())
+				/*	if (o->GetIsActive())
 					{
 						o->SetActive(false);
 						return o;
 					}
 					else if (!o->GetIsActive()) {
 						o->SetActive(true);
+					}*/
+					if (!o->GetIsActive()) {
+						o->SetActive(true);
+						GameWorld::AddToCollisionGameobjects(o);
+						return o;
 					}
 				}
 
-				//if here then pool exists but is all in use
-				if (objectsToPool[i].expand)
-				{
-					//TODO: function this and other instances out
-					GameObject* obj = objectsToPool[i].typeFactory();
-					/*m_Pools[i]._Objects.insert(std::pair<bool, GameObject*>(false, obj));*/
-					m_Pools[i]._Objects.push_back(obj);
-					return obj;
-				}
+				////if here then pool exists but is all in use
+				//if (objectsToPool[i].expand)
+				//{
+				//	//TODO: function this and other instances out
+				//	GameObject* obj = objectsToPool[i].typeFactory();
+				//	/*m_Pools[i]._Objects.insert(std::pair<bool, GameObject*>(false, obj));*/
+				//	m_Pools[i]._Objects.push_back(obj);
+				//	return obj;
+				//}
 
 				//if here then pool exists, all are in use and we can't expand so error to developer
 		}

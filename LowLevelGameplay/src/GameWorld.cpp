@@ -29,7 +29,7 @@ FamilyMan* GameWorld::mFamilyMan = nullptr;
 std::unordered_map<uint64_t, std::unique_ptr<GameObject>> GameWorld::mGameobjects;
 GameWorld::Resources GameWorld::mResources;
 sf::RenderWindow* GameWorld::mWindow = nullptr;
-
+std::vector<GameObject*> GameWorld::mCollisionGameobjects;
 
 
 
@@ -39,17 +39,19 @@ void GameWorld::Init(sf::RenderWindow* window)
 	//world = this;
 	mWindow = window;
 	LoadTextures();
+	mPlayer = SpawnGameobject<Player>();
+	AddToCollisionGameobjects(mPlayer);
 	ObjectPool::AddTypeToPool(std::bind([](){return GameWorld::SpawnGameobject<Bullet>();}), 10,"Bullet");
+	ObjectPool::AddTypeToPool(std::bind([](){return GameWorld::SpawnGameobject<Grunts>();}), 10,"Grunts");
 	//Add more types
 	ObjectPool::Start();
 
-	std::cout << "1st pool object size:" << ObjectPool::GetPools()[0]._Objects.size();
+	
 
 	// Spawn player
-	mPlayer = SpawnGameobject<Player>();
 
 	// Spawn grunt
-	mGrunt = SpawnGameobject<Grunts>();
+	mGrunt = ObjectPool::GetPooledObjectAsType<Grunts>("Grunts");
 
 	mGrunt->GetTransform()->SetPosition(LLGP::Vector2f(200.0f, 540.0f));
 	mPlayer->GetTransform()->SetPosition(LLGP::Vector2f(960.0f, 540.0f));
@@ -163,7 +165,9 @@ void GameWorld::Update(float DeltaTime)
 	std::unordered_map<uint64_t, std::unique_ptr<GameObject>>::iterator l_Obj_it;
 	for (l_Obj_it = mGameobjects.begin(); l_Obj_it != mGameobjects.end(); l_Obj_it++) 
 	{
-		l_Obj_it->second->Update(DeltaTime);
+		if (l_Obj_it->second->GetIsActive()) {
+			l_Obj_it->second->Update(DeltaTime);
+		}
 	}
 
 	mEnemySpawnTime -= DeltaTime;
@@ -183,7 +187,9 @@ void GameWorld::FixedUpdate(float FixedDeltaTime)
 	std::unordered_map<uint64_t, std::unique_ptr<GameObject>>::iterator l_Obj_it;
 	for (l_Obj_it = mGameobjects.begin(); l_Obj_it != mGameobjects.end(); l_Obj_it++)
 	{
-		l_Obj_it->second->FixedUpdate(FixedDeltaTime);
+		if (l_Obj_it->second->GetIsActive()) {
+			l_Obj_it->second->FixedUpdate(FixedDeltaTime);
+		}
 
 	}
 	
@@ -195,7 +201,9 @@ void GameWorld::Render(sf::RenderWindow* window)
 	std::unordered_map<uint64_t, std::unique_ptr<GameObject>>::iterator l_Obj_it;
 	for (l_Obj_it = mGameobjects.begin(); l_Obj_it != mGameobjects.end(); l_Obj_it++)
 	{
-		l_Obj_it->second->Draw(window);
+		if (l_Obj_it->second->GetIsActive()) {
+			l_Obj_it->second->Draw(window);
+		}
 	}
 	
 
@@ -246,20 +254,57 @@ void GameWorld::UpdateCollisions()
 	CollisionManifold manifold;
 
 
-	std::unordered_map<uint64_t, std::unique_ptr<GameObject>>::iterator i;
-	std::unordered_map<uint64_t, std::unique_ptr<GameObject>>::iterator j;
-	for (i = mGameobjects.begin(); i != mGameobjects.end(); i++)
+	//std::unordered_map<uint64_t, std::unique_ptr<GameObject>>::iterator i = mGameobjects.begin();
+	//std::unordered_map<uint64_t, std::unique_ptr<GameObject>>::iterator j = mGameobjects.begin();
+
+	//
+
+	///*for(i = mGameobjects.begin(); i != mGameobjects.end(); i++)
+	//{
+	//	j++;
+	//	GameObject* a = nullptr;
+	//	if (i->second.get()->GetIsActive()) {
+
+	//		 a = i->second.get();
+	//	}
+	//	GameObject* b = nullptr;
+	//	if (j != mGameobjects.end() && j->second.get()->GetIsActive()) {
+	//	
+	//		b = j->second.get();
+	//	}
+
+	//	if (a != nullptr && b != nullptr && a->GetIsActive() && b->GetIsActive())
+	//	{
+	//		if (a->IsCollideable() && b->IsCollideable() && a->GetCollider()->CollidesWith(*b->GetCollider(), manifold))
+	//		{
+
+	//			a->OnCollision(*b);
+	//			b->OnCollision(*a);
+	//		}
+	//	}
+	//}*/
+
+	for (auto it = mCollisionGameobjects.begin(); it < mCollisionGameobjects.end(); ++it)
 	{
-		// The second for loop needs to check for i + 1 but i dont know how to
-		for (j = ++i; j != mGameobjects.end(); j++)
+
+		for (auto it2 = it + 1; it2 < mCollisionGameobjects.end(); ++it2)
 		{
-			
-			if (i->second->IsCollideable() && j->second->IsCollideable() && i->second->GetCollider()->CollidesWith(*j->second->GetCollider(), manifold))
+			GameObject* a = *it;
+			GameObject* b = *it2;
+
+
+			if (a != nullptr && b != nullptr)
 			{
-				i->second->OnCollision(*j->second);
-				j->second->OnCollision(*i->second);
+				if (a->IsCollideable() && b->IsCollideable() && a->GetCollider()->CollidesWith(*b->GetCollider(), manifold))
+				{
+
+					a->OnCollision(*b);
+					b->OnCollision(*a);
+				}
 			}
 		}
+
+
 	}
 	
 

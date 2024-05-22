@@ -35,7 +35,7 @@ public:
 	static GameObject* GetPooledObject(std::string tag);
 	template <typename T> requires std::derived_from<T,GameObject>
 	static T* GetPooledObjectAsType(std::string tag) {
-		return dynamic_cast<T*>(ObjectPool::GetPooledObject(tag));
+   		return dynamic_cast<T*>(ObjectPool::GetPooledObject(tag));
 	}
 	static void AddTypeToPool(std::function<GameObject* ()> infactory,int AmountToPool,std::string Name, bool Expand = true);
 	static std::vector<ObjectPoolItem> objectsToPool;

@@ -5,6 +5,7 @@
 #include <iostream>
 #include <unordered_map>
 
+
 class FamilyMan;
 class Player;
 class Enemy;
@@ -72,7 +73,7 @@ public:
 	static void SpawnNewEnemy();
 
 	static void UpdateArenaBounds(float dt);
-	
+	static void AddToCollisionGameobjects(GameObject* gameobject) { mCollisionGameobjects.push_back(gameobject); }
 	static void HandlePlayerDied(bool die);
 
 private:
@@ -84,6 +85,8 @@ private:
 	static Resources mResources;
 	static std::unordered_map<uint64_t,std::unique_ptr<GameObject>> mGameobjects;
 	static float mEnemySpawnTime;
+
+	static std::vector<GameObject*> mCollisionGameobjects;
 };
 
 

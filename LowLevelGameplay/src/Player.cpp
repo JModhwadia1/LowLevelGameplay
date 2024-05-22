@@ -142,7 +142,7 @@ void Player::UpdateMovement(float dt)
 			params.mOwner = this;
 			params.mStartPos = GetTransform()->GetPosition();
 			params.mDirection = mPrevDirection;
-			params.mDamage = 10.0f;
+			params.mDamage = 1000.0f;
 
 			// Object pooler way
 			if (Bullet* bullet = ObjectPool::GetPooledObjectAsType<Bullet>("Bullet"))

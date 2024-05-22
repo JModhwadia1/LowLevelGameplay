@@ -6,6 +6,7 @@
 #include "HealthComponent.h"
 Grunts::Grunts() 
 {
+	SetActive(false);
 	Init(GameWorld::GetResources().mGruntsTex);
 	mMaxSpeed = 100.0f;
 	GetRigidbody()->SetMaxSpeed(mMaxSpeed);
@@ -125,7 +126,7 @@ void Grunts::UpdateStates()
 void Grunts::HandleOnDied(bool die)
 {
 	if (die) {
-		std::cout << "Grunt has died" << std::endl;
+		SetActive(false);
 	}
 }
 
