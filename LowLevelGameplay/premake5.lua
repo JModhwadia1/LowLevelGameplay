@@ -4,7 +4,7 @@ project "LowLevelGameplay"
 	cppdialect "C++20"
 	staticruntime "Off"
 	
-	targetdir ("&{wks.location}/bin/" ..outputdir .. "/%{prj.name}")
+	targetdir ("%{wks.location}/bin/" ..outputdir .. "/%{prj.name}")
 	objdir ("%{wks.location}/bin-int/" ..outputdir .. " / %{prj.name}")
 	
 	files
@@ -29,6 +29,7 @@ project "LowLevelGameplay"
 	links
 	{
 		"opengl32",
+		"openal32",
 		"freetype",
 		"winmm",
 		"gdi32",

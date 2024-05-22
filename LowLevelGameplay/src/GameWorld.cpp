@@ -167,6 +167,11 @@ void GameWorld::LoadTextures()
 		std::cout << "FONT NOT LOADED" << std::endl;
 		return;
 	}
+
+	/*if (!mResources.mBulletBuffer.loadFromFile("Textures/Bullet.wav")) {
+		std::cout << "bullet not loaded" << std::endl;
+		return;
+	}*/
 }
 
 void GameWorld::Update(float DeltaTime)

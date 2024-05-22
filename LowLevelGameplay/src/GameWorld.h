@@ -4,7 +4,7 @@
 #include "Event.h"
 #include <iostream>
 #include <unordered_map>
-
+#include <SFML/Audio.hpp>
 
 class FamilyMan;
 class Player;
@@ -36,7 +36,13 @@ public:
 		sf::Texture* mEnforcersTex;
 		sf::Texture* mTanksTex;
 
+		// Font
 		sf::Font mMainFont;
+
+		// Sounds
+		//sf::SoundBuffer mBulletBuffer;
+
+
 	};
 
 public:
@@ -54,7 +60,7 @@ public:
 	static void FixedUpdate(float FixedDeltaTime);
 	static void Render(sf::RenderWindow* window);
 	static Player* GetPlayer()  { if (mPlayer != nullptr) { return mPlayer; } }
-	static const Resources& GetResources() { return mResources; }
+	static  Resources& GetResources() { return mResources; }
 	
 
 	static LLGP::Vector2f const GetRandomPosInArena();

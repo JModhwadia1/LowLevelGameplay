@@ -31,6 +31,11 @@ Player::Player()
 
 	// set prev direction to the facing direction of the player when spanwed (which is left)
 	mPrevDirection = LLGP::Vector2f(-1.0f, 0.0f);
+
+	
+	if (!bulletBuffer.loadFromFile("Textures/Bullet.wav")) {
+		std::cout << "cant load bullet buffer. Player.cpp" << std::endl;
+	}
 }
 
 Player::~Player()
@@ -159,6 +164,8 @@ void Player::UpdateMovement(float dt)
 			if (Bullet* bullet = ObjectPool::GetPooledObjectAsType<Bullet>("Bullet"))
 			{
 				bullet->Launch(&params);
+				bulletSound.setBuffer(bulletBuffer);
+				bulletSound.play();
 				std::cout << "Bullet spawned" << std::endl;
 			}
 		}

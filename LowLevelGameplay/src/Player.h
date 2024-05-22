@@ -6,7 +6,7 @@
 #include "BoxCollider.h"
 #include "SphereCollider.h"
 #include "HealthComponent.h"
-
+#include <SFML/Audio.hpp>
 
 
 enum EFacingDirection {
@@ -49,7 +49,8 @@ public:
 	LLGP::Event<bool> OnPlayerDied;
 	bool GetInvincible() { return isInvincible; }
 	void SetInvinvible(bool invincible) { isInvincible = invincible; }
-
+	sf::Sound bulletSound;
+	sf::SoundBuffer bulletBuffer;
 	
 private:
 	Animation animations[int(AnimationIndex::Count)]; // 4 anims

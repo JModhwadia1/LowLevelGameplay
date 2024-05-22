@@ -1,11 +1,12 @@
 #pragma once
 #include "Enemy.h"
+
 class Brains : public Enemy
 {
 public:
 	Brains();
 	~Brains();
-	
+
 	void ChangeCurrentState(States state) { _currentState = state; }
 	void Update(float dt)override;
 	void FixedUpdate(float fixedUpdate) override;
@@ -19,6 +20,7 @@ public:
 	void HandleOnDied(bool die);
 	void HandlePlayerDied(bool die);
 	void OnCollision(GameObject& other) override;
+
 private:
 	float mShootCooldown = 0.0f;
 	float mShootDelay = 1.0f;
