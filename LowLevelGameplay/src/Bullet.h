@@ -19,7 +19,7 @@ public:
 	Bullet();
 	Bullet(const Bullet&) = default;
 	void Launch(const BulletLaunchParams* params);
-	virtual void Start() override;
+
 	const GameObject* GetOwner() const { return mOwner ? mOwner : this; }
 	float GetDamage() const { return mDamage; }
 	float GetBulletSpeed() { return mBulletSpeed; }
@@ -32,7 +32,7 @@ public:
 	LineCollider* mLineCollider;
 
 private:
-	float mBulletSpeed = 200.0f;
+	float mBulletSpeed = 500.0f;
 	const GameObject* mOwner = nullptr;
 	float mDamage = 10.0f;
 	LLGP::Vector2f mDirection;

@@ -22,7 +22,7 @@ public:
 
 	Enemy() = default;
 
-	virtual void Start() override;
+	
 	void ChangeCurrentState(States state) { _currentState = state; }
 	virtual void Update(float dt)override;
 	virtual void FixedUpdate(float FixedDeltatime) override;
@@ -36,6 +36,7 @@ public:
 
 
 	virtual void OnCollision(GameObject& other) override;
+	LLGP::Event<bool,int> OnEnemyDied;
 
 protected:
 	States _currentState = States::Idle;
@@ -48,7 +49,7 @@ protected:
 	sf::RectangleShape shape;
 	// Get direction
 	LLGP::Vector2f direction;
+	int pointsToGive = 0;
 
-	LLGP::Event<bool> OnEnemyDied;
 };
 

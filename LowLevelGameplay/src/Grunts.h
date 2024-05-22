@@ -1,11 +1,12 @@
 #pragma once
 #include "Enemy.h"
+#include "Event.h"
 class Grunts : public Enemy
 {
 public:
 	Grunts();
 	~Grunts();
-	void Start() override;
+	
 	void ChangeCurrentState(States state) { _currentState = state; }
 	void Update(float dt)override;
 	void FixedUpdate(float fixedUpdate) override;
@@ -19,6 +20,9 @@ public:
 	void HandleOnDied(bool die);
 	void HandlePlayerDied(bool die);
 	void OnCollision(GameObject& other) override;
+
+	
+
 	
 private:
 

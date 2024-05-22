@@ -5,7 +5,7 @@ class Hulks : public Enemy
 public:
 	Hulks();
 	~Hulks();
-	void Start() override;
+	
 	void ChangeCurrentState(States state) { _currentState = state; }
 	void Update(float dt)override;
 	void FixedUpdate(float fixedUpdate) override;

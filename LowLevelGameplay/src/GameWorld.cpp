@@ -8,7 +8,8 @@
 #include <algorithm>
 #include "ObjectPool.h"
 #include "Brains.h"
-
+#include "GameManager.h"
+#include "UI.h"
 
 
 
@@ -30,6 +31,8 @@ std::unordered_map<uint64_t, std::unique_ptr<GameObject>> GameWorld::mGameobject
 GameWorld::Resources GameWorld::mResources;
 sf::RenderWindow* GameWorld::mWindow = nullptr;
 std::vector<GameObject*> GameWorld::mCollisionGameobjects;
+GameManager* GameWorld::mGameManager= nullptr;
+UI* GameWorld::mUI = nullptr;
 
 
 
@@ -42,7 +45,7 @@ void GameWorld::Init(sf::RenderWindow* window)
 	mPlayer = SpawnGameobject<Player>();
 	AddToCollisionGameobjects(mPlayer);
 	ObjectPool::AddTypeToPool(std::bind([](){return GameWorld::SpawnGameobject<Bullet>();}), 10,"Bullet");
-	ObjectPool::AddTypeToPool(std::bind([](){return GameWorld::SpawnGameobject<Grunts>();}), 10,"Grunts");
+	ObjectPool::AddTypeToPool(std::bind([](){return GameWorld::SpawnGameobject<Grunts>();}), 1000,"Grunts");
 	//Add more types
 	ObjectPool::Start();
 
@@ -51,19 +54,17 @@ void GameWorld::Init(sf::RenderWindow* window)
 	// Spawn player
 
 	// Spawn grunt
-	mGrunt = ObjectPool::GetPooledObjectAsType<Grunts>("Grunts");
+//	mGrunt = ObjectPool::GetPooledObjectAsType<Grunts>("Grunts");
 
-	mGrunt->GetTransform()->SetPosition(LLGP::Vector2f(200.0f, 540.0f));
+	//mGrunt->GetTransform()->SetPosition(LLGP::Vector2f(200.0f, 540.0f));
 	mPlayer->GetTransform()->SetPosition(LLGP::Vector2f(960.0f, 540.0f));
 
+	mGameManager = new GameManager();
+	mGameManager->Init();
 
+	mUI = new UI(mGameManager);
 
-
-	
-
-	
-
-
+	mUI->Init();
 	
 }
 
@@ -156,6 +157,16 @@ void GameWorld::LoadTextures()
 		std::cout << "tanks  texture not loaded texture not loaded" << std::endl;
 		return;
 	}
+
+	//if (!mResources.mMainFont->loadFromFile("Textures/enemies.png")
+	//{
+
+	//}
+
+	if (!mResources.mMainFont.loadFromFile("Textures/American Captain.ttf")) {
+		std::cout << "FONT NOT LOADED" << std::endl;
+		return;
+	}
 }
 
 void GameWorld::Update(float DeltaTime)
@@ -169,15 +180,9 @@ void GameWorld::Update(float DeltaTime)
 			l_Obj_it->second->Update(DeltaTime);
 		}
 	}
-
-	mEnemySpawnTime -= DeltaTime;
-
-	if (mEnemySpawnTime <= 0.0f)
-	{
-		mEnemySpawnTime = 5.0f;
-		//SpawnNewEnemy();
-	}
-	//UpdateArenaBounds(DeltaTime);
+	mGameManager->Update(DeltaTime);
+	
+	UpdateArenaBounds(DeltaTime);
 }
 
 
@@ -197,6 +202,7 @@ void GameWorld::FixedUpdate(float FixedDeltaTime)
 void GameWorld::Render(sf::RenderWindow* window)
 {
 
+	mUI->Draw(window);
 	// Fixes memory leak
 	std::unordered_map<uint64_t, std::unique_ptr<GameObject>>::iterator l_Obj_it;
 	for (l_Obj_it = mGameobjects.begin(); l_Obj_it != mGameobjects.end(); l_Obj_it++)
@@ -254,36 +260,6 @@ void GameWorld::UpdateCollisions()
 	CollisionManifold manifold;
 
 
-	//std::unordered_map<uint64_t, std::unique_ptr<GameObject>>::iterator i = mGameobjects.begin();
-	//std::unordered_map<uint64_t, std::unique_ptr<GameObject>>::iterator j = mGameobjects.begin();
-
-	//
-
-	///*for(i = mGameobjects.begin(); i != mGameobjects.end(); i++)
-	//{
-	//	j++;
-	//	GameObject* a = nullptr;
-	//	if (i->second.get()->GetIsActive()) {
-
-	//		 a = i->second.get();
-	//	}
-	//	GameObject* b = nullptr;
-	//	if (j != mGameobjects.end() && j->second.get()->GetIsActive()) {
-	//	
-	//		b = j->second.get();
-	//	}
-
-	//	if (a != nullptr && b != nullptr && a->GetIsActive() && b->GetIsActive())
-	//	{
-	//		if (a->IsCollideable() && b->IsCollideable() && a->GetCollider()->CollidesWith(*b->GetCollider(), manifold))
-	//		{
-
-	//			a->OnCollision(*b);
-	//			b->OnCollision(*a);
-	//		}
-	//	}
-	//}*/
-
 	for (auto it = mCollisionGameobjects.begin(); it < mCollisionGameobjects.end(); ++it)
 	{
 
@@ -293,13 +269,15 @@ void GameWorld::UpdateCollisions()
 			GameObject* b = *it2;
 
 
-			if (a != nullptr && b != nullptr)
+			if (a != nullptr && b != nullptr && a->GetIsActive() && b->GetIsActive())
 			{
 				if (a->IsCollideable() && b->IsCollideable() && a->GetCollider()->CollidesWith(*b->GetCollider(), manifold))
 				{
-
-					a->OnCollision(*b);
-					b->OnCollision(*a);
+					if (a->GetIsActive() && b->GetIsActive()) {
+						a->OnCollision(*b);
+						b->OnCollision(*a);
+					}
+					
 				}
 			}
 		}
@@ -327,33 +305,19 @@ void GameWorld::SpawnNewEnemy()
 void GameWorld::UpdateArenaBounds(float dt)
 {
 	const float Damage = 1000.0f;
-	
-	//for (std::unique_ptr<GameObject> object : mGameobjects.begin())
-	//{
-	//	if (object != nullptr)
-	//	{
-	//		if (IsGameobjectOutOfBounds(object)) 
-	//		{
-	//			object->ApplyDamage(nullptr, Damage);
-	//		}
-	//	}
-	//}
-		
-	/*for (int i = 0; i < mGameobjects.size(); i++)
-	{
-		if (IsGameobjectOutOfBounds(mGameobjects[i].get())) {
-			mGameobjects[i].get()->ApplyDamage(nullptr, Damage);
-		}
-	}*/
-	
+			
+	// check to see if player is out of bounds
+	if (IsGameobjectOutOfBounds(mPlayer)) {
+		mPlayer->ApplyDamage(nullptr, Damage);
+	}
 }
 
-// Delete player from the world and remove it from the list of gameobjects
-void GameWorld::HandlePlayerDied(bool die)
-{
 
-	auto player = mGameobjects.find(mPlayer->uuid);
-	mGameobjects.erase(player);
-	delete mPlayer;
-	mPlayer = nullptr;
+
+
+void GameWorld::RemovePlayer() {
+	if (mGameManager->GetLives() <= 0)
+	{
+		mPlayer->SetActive(false);
+	}
 }

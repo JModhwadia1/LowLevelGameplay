@@ -33,7 +33,7 @@ public:
 	Player();
 	~Player();
 
-	void Start() override;
+	
 	void Update(float dt)override;
 	void FixedUpdate(float fixedUpdate) override;
 	void Draw(sf::RenderWindow* window)override;
@@ -45,8 +45,11 @@ public:
 	void HandleOnDied(bool Die);
 
 	void PrintHealth(float Amount);
-
+	void OnCollision(GameObject& other) override;
 	LLGP::Event<bool> OnPlayerDied;
+	bool GetInvincible() { return isInvincible; }
+	void SetInvinvible(bool invincible) { isInvincible = invincible; }
+
 	
 private:
 	Animation animations[int(AnimationIndex::Count)]; // 4 anims
@@ -61,5 +64,7 @@ private:
 	HealthComponent* healthcomp;
 
 	sf::RectangleShape shape;
+	bool isInvincible = false;
+	float invinciblityDuration = 2.0f;
 };
 

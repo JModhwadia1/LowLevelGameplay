@@ -5,7 +5,7 @@ class Brains : public Enemy
 public:
 	Brains();
 	~Brains();
-	void Start() override;
+	
 	void ChangeCurrentState(States state) { _currentState = state; }
 	void Update(float dt)override;
 	void FixedUpdate(float fixedUpdate) override;

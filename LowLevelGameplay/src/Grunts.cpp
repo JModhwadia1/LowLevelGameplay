@@ -7,18 +7,22 @@
 Grunts::Grunts() 
 {
 	SetActive(false);
+	pointsToGive = 100.0f;
 	Init(GameWorld::GetResources().mGruntsTex);
 	mMaxSpeed = 100.0f;
+	GetTransform()->SetPosition(GameWorld::GetRandomPosInArena());
 	GetRigidbody()->SetMaxSpeed(mMaxSpeed);
+	SetName("Grunts");
 	GetTexture2D()->GetSprite()->setScale(5, 5);
 	_healthComponent = new HealthComponent(this);
 	_healthComponent->SetMaxHealth(10.0f);
 	_healthComponent->OnDied.AddListener(this, std::bind(&Grunts::HandleOnDied, this, std::placeholders::_1));
-	_boxCollider = new BoxCollider(GetTransform(), LLGP::Vector2f(GetTexture2D()->GetSprite()->getGlobalBounds().getSize().x, GetTexture2D()->GetSprite()->getGlobalBounds().getSize().y));
+	_boxCollider = new BoxCollider(GetTransform(), LLGP::Vector2f(25.0f,55.0f));
 	_sphereCollider = new SphereCollider(GetTransform(), 30.0f);
 	SetCollider(_boxCollider);
 	_playerRef = GameWorld::GetPlayer();
 	_playerRef->OnPlayerDied.AddListener(this, std::bind(&Grunts::HandlePlayerDied, this, std::placeholders::_1));
+
 }
 
 Grunts::~Grunts()
@@ -31,10 +35,7 @@ Grunts::~Grunts()
 }
 
 
-void Grunts::Start()
-{
 
-}
 
 void Grunts::Update(float dt)
 {
@@ -126,22 +127,26 @@ void Grunts::UpdateStates()
 void Grunts::HandleOnDied(bool die)
 {
 	if (die) {
+	
+		OnEnemyDied.Invoke(true, pointsToGive);
 		SetActive(false);
+		
 	}
 }
 
 void Grunts::HandlePlayerDied(bool die)
 {
-	if (die) {
+	if (GameWorld::GetPlayer() == nullptr) {
 		_playerRef = nullptr;
 	}
 }
 
 void Grunts::OnCollision(GameObject& other)
 {
-	if (Player* player = dynamic_cast<Player*>(&other))
+
+	if (_playerRef != nullptr && _playerRef == &other) 
 	{
-		std::cout << "collided with player" << std::endl;;
+		_playerRef->ApplyDamage(this, 1000.0f);
 	}
 }
 

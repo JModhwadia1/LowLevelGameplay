@@ -58,15 +58,15 @@ GameObject* ObjectPool::GetPooledObject(std::string tag)
 					}
 				}
 
-				////if here then pool exists but is all in use
-				//if (objectsToPool[i].expand)
-				//{
-				//	//TODO: function this and other instances out
-				//	GameObject* obj = objectsToPool[i].typeFactory();
-				//	/*m_Pools[i]._Objects.insert(std::pair<bool, GameObject*>(false, obj));*/
-				//	m_Pools[i]._Objects.push_back(obj);
-				//	return obj;
-				//}
+				//if here then pool exists but is all in use
+				if (objectsToPool[i].expand)
+				{
+					//TODO: function this and other instances out
+					GameObject* obj = objectsToPool[i].typeFactory();
+					/*m_Pools[i]._Objects.insert(std::pair<bool, GameObject*>(false, obj));*/
+					m_Pools[i]._Objects.push_back(obj);
+					return obj;
+				}
 
 				//if here then pool exists, all are in use and we can't expand so error to developer
 		}

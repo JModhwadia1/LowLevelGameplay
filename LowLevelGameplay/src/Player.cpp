@@ -2,6 +2,7 @@
 #include <iostream>
 #include "Bullet.h"
 #include "GameWorld.h"
+#include "Grunts.h"
 #include "ObjectPool.h"
 #include <SFML/Window/Mouse.hpp>
 
@@ -10,18 +11,18 @@
 Player::Player() 
 {
 	Init(GameWorld::GetResources().mPlayerTex);
-	
+	SetActive(true);
 	GetRigidbody()->SetMaxSpeed(mMaxSpeed);
 	GetTexture2D()->GetSprite()->setScale(5, 5);
 	GetTexture2D()->GetSprite()->setTextureRect(sf::IntRect(0,0,5,11));
-	_boxCollider = new BoxCollider(GetTransform(), LLGP::Vector2f(GetTexture2D()->GetSprite()->getGlobalBounds().getSize().x, GetTexture2D()->GetSprite()->getGlobalBounds().getSize().y));
+	_boxCollider = new BoxCollider(GetTransform(), LLGP::Vector2f(25.0f, 55.0f));
 	_sphereCollider = new SphereCollider(GetTransform(), 20.0f);
-	SetCollider(_boxCollider);
+	SetCollider(_sphereCollider);
 
 	healthcomp = new HealthComponent(this);
 	healthcomp->OnHealthUpdated.AddListener(this, std::bind(&Player::PrintHealth, this, std::placeholders::_1));
 	healthcomp->OnDied.AddListener(this, std::bind(&Player::HandleOnDied, this, std::placeholders::_1));
-
+	SetName("Player");
 
 	animations[int(AnimationIndex::WalkingUp)] = Animation(23, 0, 7, 12,"Textures/Player.png",*GameWorld::GetResources().mPlayerTex);
 	animations[int(AnimationIndex::WalkingDown)] = Animation(14, 0, 7, 12, "Textures/Player.png", *GameWorld::GetResources().mPlayerTex);
@@ -41,12 +42,13 @@ Player::~Player()
 	delete(_boxCollider);
 	delete(_sphereCollider);
 	delete(healthcomp);
+	_boxCollider = nullptr;
+	_sphereCollider = nullptr;
+	healthcomp = nullptr;
 	
 }
 
-void Player::Start()
-{
-}
+
 
 void Player::Update(float dt)
 {
@@ -60,7 +62,16 @@ void Player::Update(float dt)
 	shape.setOutlineColor(sf::Color::Red);
 	shape.setPosition(GetTransform()->GetPosition());
 	
+	if (isInvincible) {
+		invinciblityDuration -= dt;
 
+		if (invinciblityDuration <= 0.0f) 
+		{
+			invinciblityDuration = 2.0f;
+			isInvincible = false;
+		}
+		
+	}
 
 	
 }
@@ -150,19 +161,12 @@ void Player::UpdateMovement(float dt)
 				bullet->Launch(&params);
 				std::cout << "Bullet spawned" << std::endl;
 			}
-			// spawn gameobject way  -- doesnt work
-			/*Bullet* bullet = GameWorld::SpawnGameobject<Bullet>();
-			bullet->Launch(&params);*/
-
 		}
 		
 		
 	}
 
-	if (sf::Keyboard::isKeyPressed(sf::Keyboard::Q)) {
 	
-		healthcomp->TakeDamage(nullptr,10.0f);
-	}
 
 	
 	
@@ -170,7 +174,7 @@ void Player::UpdateMovement(float dt)
 
 void Player::HandleOnDied(bool Die)
 {
-	if (Die)
+	if (Die && !isInvincible)
 	{
 		OnPlayerDied(Die);
 	}
@@ -178,5 +182,12 @@ void Player::HandleOnDied(bool Die)
 
 void Player::PrintHealth(float Amount)
 {
-	std::cout << "Amount" << Amount << std::endl;
+	/*std::cout << "Amount" << Amount << std::endl;*/
+}
+
+void Player::OnCollision(GameObject& other) 
+{
+
+	
+	
 }

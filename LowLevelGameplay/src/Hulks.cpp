@@ -30,9 +30,7 @@ Hulks::~Hulks()
 	_playerRef = nullptr;
 }
 
-void Hulks::Start()
-{
-}
+
 
 void Hulks::Update(float dt)
 {
@@ -117,6 +115,7 @@ void Hulks::UpdateStates()
 
 void Hulks::HandleOnDied(bool die)
 {
+
 }
 
 void Hulks::HandlePlayerDied(bool die)

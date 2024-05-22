@@ -3,9 +3,7 @@
 
 
 
-void Enemy::Start()
-{
-}
+
 
 void Enemy::Update(float dt)
 {

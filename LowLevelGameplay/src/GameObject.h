@@ -16,7 +16,6 @@ public:
 
 	~GameObject();
 
-	virtual void Start();
 	virtual void Update(float dt);
 	virtual void FixedUpdate(float fixedUpdate) {};
 	virtual void Draw(sf::RenderWindow* window);

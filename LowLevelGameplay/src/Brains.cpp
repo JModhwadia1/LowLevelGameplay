@@ -36,9 +36,7 @@ Brains::~Brains()
 	_playerRef = nullptr;
 }
 
-void Brains::Start()
-{
-}
+
 
 void Brains::Update(float dt)
 {
@@ -141,6 +139,7 @@ void Brains::HandleOnDied(bool die)
 	if (die) 
 	{
 		std::cout << "Brains has died" << std::endl;
+		OnEnemyDied.Invoke(true, pointsToGive);
 	}
 }
 void Brains::HandlePlayerDied(bool die)

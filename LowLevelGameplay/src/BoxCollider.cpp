@@ -49,12 +49,16 @@ bool BoxCollider::CollidesWith(BoxCollider& other, CollisionManifold& out)
 	theirMax = theirCenter + (other.GetHalfExtents() / 2);
 	theirMin = theirCenter - (other.GetHalfExtents() / 2);
 
-	// Check collision
-	if (this->_max.x < theirMin.x || this->_min.x > theirMax.x)
+	//// Check collision
+	//if (this->_max.x < theirMin.x || this->_min.x > theirMax.x)
+	//	return false;
+	//if (this->_max.y < theirMin.y || this->_min.y > theirMax.y)
+	//	return false;
+	if (this->_max.x < theirMin.x ||
+		this->_max.y < theirMin.y ||
+		this->_min.x > theirMax.x ||
+		this->_min.y > theirMax.y)
 		return false;
-	if (this->_max.y < theirMin.y || this->_min.y > theirMax.y)
-		return false;
-	
 	
 	out.contactPointCount = 1;
 	out.collisionNormal = other.GetPosition() - GetPosition();

@@ -12,6 +12,8 @@ class Enemy;
 class Grunts;
 class Hulks;
 class Brains;
+class GameManager;
+class UI;
 
 
 class GameWorld
@@ -33,6 +35,8 @@ public:
 		sf::Texture* mSpheroidsTex;
 		sf::Texture* mEnforcersTex;
 		sf::Texture* mTanksTex;
+
+		sf::Font mMainFont;
 	};
 
 public:
@@ -75,6 +79,7 @@ public:
 	static void UpdateArenaBounds(float dt);
 	static void AddToCollisionGameobjects(GameObject* gameobject) { mCollisionGameobjects.push_back(gameobject); }
 	static void HandlePlayerDied(bool die);
+	static void RemovePlayer();
 
 private:
 	static Player* mPlayer;
@@ -87,6 +92,10 @@ private:
 	static float mEnemySpawnTime;
 
 	static std::vector<GameObject*> mCollisionGameobjects;
+	static GameManager* mGameManager;
+	static UI* mUI;
+
+	static sf::Text mPlayerPoints;
 };
 
 
