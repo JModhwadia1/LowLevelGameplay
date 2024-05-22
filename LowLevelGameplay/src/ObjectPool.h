@@ -6,7 +6,7 @@
 #include <unordered_map>
 
 
-//https://stackoverflow.com/questions/26736405/can-objects-be-created-based-on-type-info
+
 
 // The Object Pool item
 class ObjectPoolItem {

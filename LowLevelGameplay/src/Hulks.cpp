@@ -6,6 +6,7 @@
 #include "HealthComponent.h"
 Hulks::Hulks() : Enemy(GameWorld::GetResources().mHulksTex)
 {
+	SetActive(false);
 	mMaxSpeed = 20.0f;
 	GetRigidbody()->SetMaxSpeed(mMaxSpeed);
 	GetTexture2D()->GetSprite()->setScale(5, 5);

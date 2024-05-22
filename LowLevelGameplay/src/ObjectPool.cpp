@@ -43,11 +43,11 @@ GameObject* ObjectPool::GetPooledObject(std::string tag)
 				// Loop through all the objects in the current iteration of the pool
 				for (GameObject* o : m_Pools[i]._Objects)
 				{
-					if (o->GetIsActive())
+					if (!o->GetIsActive())
 					{
-						o->SetActive(false);
-						/*GameWorld::AddToGameobjects(o);*/
-						/*o->SetActive(true);*/
+						o->SetActive(true);
+					//	o->SetActive(false);
+						GameWorld::AddToGameobjects(o);
 						return o;
 						//if (o.first)
 						//{
@@ -55,10 +55,11 @@ GameObject* ObjectPool::GetPooledObject(std::string tag)
 						//	o.first = false;	// Not active
 						//	return o.second;
 					}
-					else if (!o->GetIsActive()) {
+					/*else if (!o->GetIsActive()) {
 						o->SetActive(true);
 						GameWorld::AddToGameobjects(o);
-					}
+						return o;*/
+					
 				}
 
 				//if here then pool exists but is all in use
@@ -71,11 +72,11 @@ GameObject* ObjectPool::GetPooledObject(std::string tag)
 					return obj;
 				}
 
-				//if here then pool exists, all are in use and we can't expand so error to developer
-		}
+		}		//if here then pool exists, all are in use and we can't expand so error to developer
+	}
 
 			//if here the requested pool doesnt exist
-	}
+	
 }
 
 void ObjectPool::AddTypeToPool(std::function<GameObject* ()> infactory, int AmountToPool, std::string Name, bool Expand)

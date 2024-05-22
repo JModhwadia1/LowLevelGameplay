@@ -7,7 +7,9 @@
 #include "Bullet.h"
 Grunts::Grunts() : Enemy(GameWorld::GetResources().mGruntsTex)
 {
-	mMaxSpeed = 100.0f;
+	/*SetActive(true);*/
+	SetActive(false);
+	mMaxSpeed = 10.0f;
 	GetRigidbody()->SetMaxSpeed(mMaxSpeed);
 	GetTexture2D()->GetSprite()->setScale(5, 5);
 	_healthComponent = new HealthComponent(this);

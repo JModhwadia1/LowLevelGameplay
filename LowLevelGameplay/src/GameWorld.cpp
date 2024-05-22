@@ -43,13 +43,13 @@ void GameWorld::Init(sf::RenderWindow* window)
 	mPlayer = new Player();
 	//ObjectPool::AddTypeToPool(std::bind([](){return new Bullet();}), 1000,"Bullet");
 	//ObjectPool::AddTypeToPool(std::bind([](){return new Bullet();}), 1000,"BrainsBullet");
-	//ObjectPool::AddTypeToPool(std::bind([]() {return new Grunts(); }), 200, "Grunts");
+	ObjectPool::AddTypeToPool(std::bind([]() {return new Grunts(); }), 200, "Grunts");
 	//ObjectPool::AddTypeToPool(std::bind([]() {return new Brains(); }), 200, "Brains");
-	//ObjectPool::AddTypeToPool(std::bind([]() {return new Hulks(); }), 200, "Hulks");
+	ObjectPool::AddTypeToPool(std::bind([]() {return new Hulks(); }), 200, "Hulks");
 	//ObjectPool::AddTypeToPool(std::bind([]() {return new FamilyMan(); }), 200, "FamilyMan");
-	//ObjectPool::Start();
+	ObjectPool::Start();
 
-	//wave1 = new Wave(10, 10, 10, 10);
+	wave1 = new Wave(10, 10, 10, 10);
 
 
 
@@ -194,12 +194,15 @@ void GameWorld::Update(float DeltaTime)
 		}
 	}
 
+
+	wave1->SpawnEnemies(DeltaTime);
+
 	mEnemySpawnTime -= DeltaTime;
 
 	if (mEnemySpawnTime <= 0.0f)
 	{
 		mEnemySpawnTime = 1.0f;
-		SpawnNewEnemy();
+		//SpawnNewEnemy();
 		
 		
 	
