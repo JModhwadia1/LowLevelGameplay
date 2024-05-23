@@ -61,11 +61,7 @@ void Player::Update(float dt)
 	animations[int(currentAnimation)].Update(dt);
 	animations[int(currentAnimation)].ApplyToSprite(*GetTexture2D()->GetSprite());
 	
-	shape.setSize(_boxCollider->GetHalfExtents());
-	shape.setFillColor(sf::Color::Transparent);
-	shape.setOutlineThickness(3.0f);
-	shape.setOutlineColor(sf::Color::Red);
-	shape.setPosition(GetTransform()->GetPosition());
+
 	
 	if (isInvincible) {
 		invinciblityDuration -= dt;

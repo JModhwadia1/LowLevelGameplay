@@ -39,11 +39,7 @@ Grunts::~Grunts()
 
 void Grunts::Update(float dt)
 {
-	shape.setSize(_boxCollider->GetHalfExtents());
-	shape.setFillColor(sf::Color::Transparent);
-	shape.setOutlineThickness(3.0f);
-	shape.setOutlineColor(sf::Color::Red);
-	shape.setPosition(GetTransform()->GetPosition());
+
 
 	UpdateStates();
 
