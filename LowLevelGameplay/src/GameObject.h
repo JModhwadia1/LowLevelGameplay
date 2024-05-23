@@ -35,9 +35,7 @@ public:
 	
 	void ApplyDamage( GameObject* source, float damage);
 
-	template<class T> requires isComponent<T> T* GetComponent();
-	template<class T> requires isComponent<T> T* AddComponent();
-	template<class T> requires isComponent<T>  bool RemoveComponent(T* comp);
+
 
 	bool IsCollideable() const { return _collider != nullptr; }
 
@@ -59,6 +57,6 @@ private:
 	std::unique_ptr <Texture2D> _texture;
 	std::unique_ptr <Transform> _transform;
 	std::unique_ptr <Rigidbody> _rigidbody;
-	std::vector <std::unique_ptr<Component>> m_Components;
+
 };
 

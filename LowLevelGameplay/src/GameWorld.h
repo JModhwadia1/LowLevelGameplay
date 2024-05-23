@@ -86,6 +86,7 @@ public:
 	static void AddToCollisionGameobjects(GameObject* gameobject) { mCollisionGameobjects.push_back(gameobject); }
 	static void HandlePlayerDied(bool die);
 	static void RemovePlayer();
+	static void ShutDown();
 
 private:
 	static Player* mPlayer;

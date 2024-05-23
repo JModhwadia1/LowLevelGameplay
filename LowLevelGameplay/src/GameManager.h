@@ -16,7 +16,7 @@ public:
 	void Init();
 	void Update(float dt);
 	void HandleEnemyDied(bool die, int PointsToGive);
-	void BindToGruntsDiedEvent();
+	void BindToGruntsDiedEvent(Wave* wave);
 	void HandlePlayerDied(bool die);
 
 	Wave* wave1;
@@ -24,9 +24,13 @@ public:
 	LLGP::Event<int> OnPlayerPointUpdated;
 	LLGP::Event<int> OnPlayerLivesUpdated;
 	int GetLives() { return mPlayerLives; }
+	std::vector<Wave*> waves;
+
+	void ClearWave(Wave* wave);
 private:
 	int mPlayerLives = 3;
 	int mPlayerPoints = 0;
+	int wavesCompleted = 0;
 	
 };
 

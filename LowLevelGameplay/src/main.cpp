@@ -52,6 +52,6 @@ int main()
 		GameWorld::Render(&window);
 		window.display();
 	}
-
+	
 	return 0;
 }

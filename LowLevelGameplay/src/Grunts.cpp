@@ -13,11 +13,11 @@ Grunts::Grunts()
 	GetTransform()->SetPosition(GameWorld::GetRandomPosInArena());
 	GetRigidbody()->SetMaxSpeed(mMaxSpeed);
 	SetName("Grunts");
-	GetTexture2D()->GetSprite()->setScale(5, 5);
+	GetTexture2D()->GetSprite()->setScale(4, 4);
 	_healthComponent = new HealthComponent(this);
 	_healthComponent->SetMaxHealth(10.0f);
 	_healthComponent->OnDied.AddListener(this, std::bind(&Grunts::HandleOnDied, this, std::placeholders::_1));
-	_boxCollider = new BoxCollider(GetTransform(), LLGP::Vector2f(25.0f,55.0f));
+	_boxCollider = new BoxCollider(GetTransform(), LLGP::Vector2f(GetTexture2D()->GetSprite()->getScale().x * 5, GetTexture2D()->GetSprite()->getScale().y * 11));
 	_sphereCollider = new SphereCollider(GetTransform(), 30.0f);
 	SetCollider(_boxCollider);
 	_playerRef = GameWorld::GetPlayer();

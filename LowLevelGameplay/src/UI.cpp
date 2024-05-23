@@ -63,6 +63,5 @@ UI::~UI()
 {
 	mGameManager->OnPlayerPointUpdated.RemoveListener(this, std::bind(&UI::HandlePlayerPointsUpdated, this, std::placeholders::_1));
 	mGameManager->OnPlayerLivesUpdated.RemoveListener(this, std::bind(&UI::HandlePlayerLivesUpdated, this, std::placeholders::_1));
-	delete mGameManager;
 	mGameManager = nullptr;
 }
