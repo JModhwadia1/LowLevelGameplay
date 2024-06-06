@@ -29,20 +29,22 @@ void FamilyMan::IdleState()
 void FamilyMan::WanderState(float dt)
 {
 	
+	// reduce timer counter
 	m_NewPointGenTime -= dt;
-
+	// if time is below 0 
 	if (m_NewPointGenTime <= 0) {
+		// reset time
 		m_NewPointGenTime = 2.0f;
+		// gen a new position
 		randomPoint = GameWorld::GetRandomPosInArena();
-		/*std::cout << "X: " << randomPoint.x << "Y: " << randomPoint.y << std::endl;*/
-		
 	}
-	
+	// if we have reached the position before timer ended
 	if (GetTransform()->GetPosition() == randomPoint && !m_NewPointGenTime <= 0 ) 
 	{
+		// get a random pos
 		randomPoint = GameWorld::GetRandomPosInArena();
 	}
-
+	// set direction
 	LLGP::Vector2f direction = randomPoint - GetTransform()->GetPosition();
 	GetRigidbody()->AddForce(direction.Normalised() * m_MaxSpeed);
 }
@@ -76,7 +78,7 @@ void FamilyMan::Update(float dt)
 		break;
 	}
 
-	GameObject::Update(dt);
+	
 }
 
 void FamilyMan::UpdateStates()

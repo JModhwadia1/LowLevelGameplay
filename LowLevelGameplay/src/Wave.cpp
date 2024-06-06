@@ -22,15 +22,6 @@ Wave::~Wave()
 
 void Wave::ClearWave()
 {
-	/*for (int i = 0; i < mGruntsInWave.size(); i++)
-	{
-		mGruntsInWave[i]->SetActive(false);
-	}*/
-
-	/*for (int i = 0; i < mFamilyManInWave.size(); i++)
-	{
-		mFamilyManInWave[i]->SetActive(false);
-	}*/
 }
 void Wave::ReduceGruntCount(bool die, int pointsTogive) {
 	

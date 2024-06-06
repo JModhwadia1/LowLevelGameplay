@@ -25,6 +25,5 @@ private:
 	LLGP::Vector2f _halfExtents;
 	LLGP::Vector2f _max;
 	LLGP::Vector2f _min;
-
 };
 

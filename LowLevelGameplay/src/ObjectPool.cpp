@@ -43,14 +43,6 @@ GameObject* ObjectPool::GetPooledObject(std::string tag)
 				// Loop through all the objects in the current iteration of the pool
 				for (GameObject* o : m_Pools[i]._Objects)
 				{
-				/*	if (o->GetIsActive())
-					{
-						o->SetActive(false);
-						return o;
-					}
-					else if (!o->GetIsActive()) {
-						o->SetActive(true);
-					}*/
 					if (!o->GetIsActive()) {
 						o->SetActive(true);
 						GameWorld::AddToCollisionGameobjects(o);

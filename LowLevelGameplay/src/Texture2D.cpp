@@ -17,3 +17,4 @@ void Texture2D::Draw(sf::RenderWindow* window)
 {
 	window->draw(*mSprite);
 }
+

@@ -19,7 +19,7 @@ Brains::Brains()
 	_healthComponent->SetMaxHealth(10.0f);
 	_healthComponent->OnDied.AddListener(this, std::bind(&Brains::HandleOnDied, this, std::placeholders::_1));
 	_boxCollider = new BoxCollider(GetTransform(), LLGP::Vector2f(GetTexture2D()->GetSprite()->getGlobalBounds().getSize().x, GetTexture2D()->GetSprite()->getGlobalBounds().getSize().y));
-	_sphereCollider = new SphereCollider(GetTransform(), 30.0f);
+
 	SetCollider(_boxCollider);
 	_playerRef = GameWorld::GetPlayer();
 	_playerRef->OnPlayerDied.AddListener(this, std::bind(&Brains::HandlePlayerDied, this, std::placeholders::_1));
@@ -40,12 +40,6 @@ Brains::~Brains()
 
 void Brains::Update(float dt)
 {
-	shape.setSize(_boxCollider->GetHalfExtents());
-	shape.setFillColor(sf::Color::Transparent);
-	shape.setOutlineThickness(3.0f);
-	shape.setOutlineColor(sf::Color::Red);
-	shape.setPosition(GetTransform()->GetPosition());
-
 	UpdateStates();
 
 	if (_currentState == States::Attack) {
@@ -138,7 +132,7 @@ void Brains::HandleOnDied(bool die)
 {
 	if (die) 
 	{
-		std::cout << "Brains has died" << std::endl;
+		
 		OnEnemyDied.Invoke(true, pointsToGive);
 	}
 }
@@ -154,6 +148,6 @@ void Brains::OnCollision(GameObject& other)
 {
 	if (Player* player = dynamic_cast<Player*>(&other))
 	{
-		std::cout << "Collided with player" << std::endl;
+		
 	}
 }

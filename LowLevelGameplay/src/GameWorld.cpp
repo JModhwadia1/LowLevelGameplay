@@ -42,36 +42,37 @@ void GameWorld::Init(sf::RenderWindow* window)
 	//world = this;
 	mWindow = window;
 	LoadTextures();
+	// spawn player
 	mPlayer = SpawnGameobject<Player>();
+	// add it to the collision game object list
 	AddToCollisionGameobjects(mPlayer);
+	// Add bullet to pool
 	ObjectPool::AddTypeToPool(std::bind([](){return GameWorld::SpawnGameobject<Bullet>();}), 10,"Bullet");
+	// Add grunt to pool 
 	ObjectPool::AddTypeToPool(std::bind([](){return GameWorld::SpawnGameobject<Grunts>();}), 1000,"Grunts");
 	//Add more types
 	ObjectPool::Start();
 
 	
 
-	// Spawn player
-
-	// Spawn grunt
-//	mGrunt = ObjectPool::GetPooledObjectAsType<Grunts>("Grunts");
-
-	//mGrunt->GetTransform()->SetPosition(LLGP::Vector2f(200.0f, 540.0f));
+	// set player position
 	mPlayer->GetTransform()->SetPosition(LLGP::Vector2f(960.0f, 540.0f));
 
+	// Spawn game mananger 
 	mGameManager = new GameManager();
 	mGameManager->Init();
-
+	
+	// Spawn UI
 	mUI = new UI(mGameManager);
 
+	// Init UI
 	mUI->Init();
 	
 }
 
 void GameWorld::LoadTextures()
 {
-	//mPlayerTex = new sf::Texture();
-	//mEnemyTex = new sf::Texture();
+	
 	mResources.mPlayerTex = new sf::Texture();
 	mResources.mBulletTex = new sf::Texture();
 	mResources.mEnemyTex = new sf::Texture();
@@ -158,20 +159,11 @@ void GameWorld::LoadTextures()
 		return;
 	}
 
-	//if (!mResources.mMainFont->loadFromFile("Textures/enemies.png")
-	//{
-
-	//}
-
 	if (!mResources.mMainFont.loadFromFile("Textures/American Captain.ttf")) {
 		std::cout << "FONT NOT LOADED" << std::endl;
 		return;
 	}
 
-	/*if (!mResources.mBulletBuffer.loadFromFile("Textures/Bullet.wav")) {
-		std::cout << "bullet not loaded" << std::endl;
-		return;
-	}*/
 }
 
 void GameWorld::Update(float DeltaTime)
@@ -185,8 +177,9 @@ void GameWorld::Update(float DeltaTime)
 			l_Obj_it->second->Update(DeltaTime);
 		}
 	}
+	// update game mananger
 	mGameManager->Update(DeltaTime);
-	
+	// Update arena bounds
 	UpdateArenaBounds(DeltaTime);
 }
 
@@ -200,7 +193,6 @@ void GameWorld::FixedUpdate(float FixedDeltaTime)
 		if (l_Obj_it->second->GetIsActive()) {
 			l_Obj_it->second->FixedUpdate(FixedDeltaTime);
 		}
-
 	}
 	
 }
@@ -217,7 +209,7 @@ void GameWorld::Render(sf::RenderWindow* window)
 		}
 	}
 	
-
+	// Render the arena
 	RenderArenaBounds();
 }
 
@@ -294,18 +286,6 @@ void GameWorld::UpdateCollisions()
 }
 
 
-void GameWorld::SpawnNewEnemy()
-{
-	const LLGP::Vector2f spawnPos(LLGP::FRandomRange(m_ArenaLeftPos, m_ArenaRightPos), LLGP::FRandomRange(m_ArenaTopPos, m_ArenaBottomPos));
-
-	//std::uniqueGameObject* newEnemy = nullptr;
-
-	//newEnemy = SpawnGameobject<Enemy>(GetResources().mEnemyTex);
-	//newEnemy->GetTransform()->SetPosition(spawnPos);
-
-	//SpawnGameobject<Enemy>();
-
-}
 
 void GameWorld::UpdateArenaBounds(float dt)
 {

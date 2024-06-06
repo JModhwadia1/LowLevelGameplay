@@ -36,8 +36,7 @@ GameManager::~GameManager()
 	{
 		waves[i]->GetGruntsInWave()[i]->OnEnemyDied.RemoveListener(this, std::bind(&GameManager::HandleEnemyDied, this, std::placeholders::_1, std::placeholders::_2));
 	}
-	/*delete wave1;
-	wave1 = nullptr;*/
+
 
 
 }
@@ -62,9 +61,8 @@ void GameManager::BindToGruntsDiedEvent(Wave* wave) {
 
 }
 
-void GameManager::Update(float dt) {
-	/*wave1->SpawnEnemies(dt);*/
-
+void GameManager::Update(float dt)
+{
 	for (int i = 0; i < waves.size(); i++)
 	{
 		if (waves[i]->shouldStartSpawningEnemies) {
@@ -98,21 +96,16 @@ void GameManager::HandlePlayerDied(bool die)
 
 void GameManager::ClearWave(Wave* wave)
 {
+	// sets all the enemies to inactive
 	wave->ClearWave();
 	wave->shouldStartSpawningEnemies = false;
 	wavesCompleted++;
 
-	std::cout << "Waves completed " << wavesCompleted << std::endl;
-	std::cout << "Waves length" << waves.size() << std::endl;
+	// check to see if we have not reached the end of waves
 	if (wavesCompleted < waves.size()) {
-		std::cout << "reached here" << std::endl;
+	
+		// increment wave
 		waves[wavesCompleted]->shouldStartSpawningEnemies = true;
 	}
-	
-
-	
-
-	/*delete wave;
-	wave = nullptr;*/
 }
 

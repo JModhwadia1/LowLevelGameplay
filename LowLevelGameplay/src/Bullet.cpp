@@ -40,8 +40,6 @@ void Bullet::OnCollision(GameObject& other)
 	if (other.uuid == mOwner->uuid) return;
 	if (Enemy* enemy = static_cast<Enemy*>(&other)) {
 		enemy->ApplyDamage(this, mDamage);
-
-		std::cout << "hit enemy" << std::endl;
 	}
 		
 }

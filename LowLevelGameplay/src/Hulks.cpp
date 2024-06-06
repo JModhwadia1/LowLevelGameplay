@@ -14,7 +14,7 @@ Hulks::Hulks()
 	_healthComponent->SetMaxHealth(10.0f);
 	_healthComponent->OnDied.AddListener(this, std::bind(&Hulks::HandleOnDied, this, std::placeholders::_1));
 	_boxCollider = new BoxCollider(GetTransform(), LLGP::Vector2f(GetTexture2D()->GetSprite()->getGlobalBounds().getSize().x, GetTexture2D()->GetSprite()->getGlobalBounds().getSize().y));
-	_sphereCollider = new SphereCollider(GetTransform(), 30.0f);
+	
 	SetCollider(_boxCollider);
 	randomPoint = GameWorld::GetRandomPosInArena();
 	ChangeCurrentState(States::Chase);
